@@ -5,27 +5,11 @@ import Calculation from '@/components/Calculation.vue'
 
 <template>
   <main>
-    <ContractForm @input-updated="updateOutput"  />
+    <ContractForm />
     <Calculation />
   </main>
 </template>
 
-
-<script>
-export default {
-  components: {
-    ContractForm,
-    Calculation
-  },
-  methods: {
-    updateOutput(value) {
-      // Handle the value here if needed in the parent component
-      console.log('Received in parent:', value);
-    }
-  }
-}
-
-</script>
 
 <style>
 main {
