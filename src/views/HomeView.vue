@@ -12,10 +12,8 @@ import Calculation from '@/components/Calculation.vue'
         <button class="makeContract">Lav tilbudskontrakt</button>
     </main>
 </template>
-<script>
-import ContractForm from '@/components/ContractForm.vue';
-import Calculation from '@/components/Calculation.vue';
 
+<script>
 export default {
     components: {
         ContractForm,
