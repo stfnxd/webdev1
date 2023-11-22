@@ -1,5 +1,5 @@
 <template>
-    <section class="calculation">
+    <section class="calculation col-5">
         <h1>Beregning</h1>
         <div>
             <p>Input value for calculation: {{ receivedValue }}</p>

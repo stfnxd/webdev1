@@ -1,9 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;1,200;1,300;1,400;1,600;1,700&display=swap');
 :root {
-  --background-color: #F5F5F5; 
+  --white-color: #FFFFFF; 
   --black-color: #000000; 
-  --light-grey: ;
-  --dark-grey: #E7E7E7;
+  --light-grey: #F5F5F5;
+  --medium-grey: rgb(196, 196, 196);
+  --dark-grey: #474747; 
   --main-font: 'Titillium Web', sans-serif;
 }
 
@@ -19,7 +20,7 @@
 body {
   min-height: 100vh;
   color: var(--black-color);
-  background: var(--background-color);
+  background: var(--white-color);
   transition:
     color 0.5s,
     background-color 0.5s;
