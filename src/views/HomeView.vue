@@ -9,7 +9,7 @@ import Calculation from '@/components/Calculation.vue'
             <ContractForm @input-updated="updateValue" />
             <Calculation :receivedValue="receivedValue" />
         </section>
-        <button class="makeContract">Lav tilbudskontrakt</button>
+        <router-link :to="{ path: '/contract-preview' }"><button class="makeContract">Lav tilbudskontrakt</button></router-link>
     </main>
 </template>
 
@@ -42,6 +42,7 @@ main {
 main section.josefine {
     display: flex;
     justify-content: space-between;
+    gap: 50px;
 }
 
 main button.makeContract {
