@@ -42,7 +42,7 @@
         </section>
 
         <section>
-            <h2>Leasingtager</h2>
+            <h3>Leasingtager</h3>
 
             <label for="name">Navn</label><br>
             <input type="text" id="name" class="form-control" name="name" placeholder="Indtast kundens navn">
@@ -58,7 +58,7 @@
         </section>
 
         <section>
-            <h2>Køretøjsdata</h2>
+            <h3>Køretøjsdata</h3>
 
             <div class="contract-checkbox">
                 <label for="checkboxNewVehicle">Nyt køretøj</label>
@@ -123,7 +123,7 @@
         </section>
 
         <section>
-            <h2>Kontraktoplysninger</h2>
+            <h3>Kontraktoplysninger</h3>
 
             <label for="running-time">Løbetid (i måneder)</label><br>
             <input type="number" id="running-time" class="form-control" name="run-time"
@@ -178,9 +178,6 @@ export default {
 </script>
 
 <style>
-.contractForm .dropdown {
-    margin-bottom: 30px;
-}
 
 .contractForm #dropdownMenuButton {
     background-color: var(--light-grey);
@@ -202,13 +199,14 @@ export default {
 }
 
 .contractForm h1,
-.contractForm h2 {
+.contractForm h2,
+.contractForm h3 {
     margin-top: 30px;
 }
 
 .contractForm label,
 .contractForm p {
-    padding-top: 20px;
+    padding-top: 25px;
     margin-bottom: 5px;
 }
 
@@ -226,7 +224,7 @@ export default {
     display: flex;
     justify-content: space-between;
     align-content: center;
-    padding-top: 15px;
+    padding-top: 5px;
     margin-bottom: 5px;
 }
 

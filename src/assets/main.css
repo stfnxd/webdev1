@@ -10,3 +10,10 @@ header {
   padding: 10px 20px;
 }
 
+main {
+  padding: 75px 0;
+}
+
+.image img {
+  width: 100%; 
+}

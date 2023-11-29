@@ -1,6 +1,6 @@
 <template>
     <section class="calculation col-7">
-        <h1>Beregning</h1>
+        <h2>Beregning</h2>
         <div>
             <p>Input value for calculation: {{ receivedValue }}</p>
             <!-- Perform calculations using inputValue -->
@@ -199,7 +199,7 @@ export default {
 <style>
 .calculation {
     margin-top: 30px; 
-    border: 1px solid var(--black-color); 
+    border: 1px solid var(--medium-grey); 
     height: fit-content; 
     padding: 50px;
 }
@@ -224,6 +224,18 @@ export default {
 .calculation table th {
     font-weight: 600;
     font-size: 1.1rem; 
+}
+
+.calculation table tr td,  .calculation table tr th{
+    text-align: center; 
+}
+
+.calculation table tr td:first-of-type, .calculation table tr th:first-of-type {
+    text-align: left; 
+}
+
+.calculation table tr td:last-of-type, .calculation table tr th:last-of-type {
+    width: 30%;
 }
 
 

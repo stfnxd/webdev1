@@ -4,8 +4,12 @@ import ContractPreview from '@/components/ContractPreview.vue'
 
 <template>
     <main>
-        <section class="charlotte">
-            <h1>Tadaaaaa</h1>
+        <router-link :to="{ path: '/' }">
+            <button class="backToForm">Tilbage</button>
+        </router-link>
+        <section class="contractView">
+        
+            <h1>Tadaaaaa!!!</h1>
             <ContractPreview />
         </section>
         <button class="makeContract">Send til kunde på mail</button>
@@ -21,14 +25,26 @@ export default {
 </script>
 
 <style>
-main .charlotte {
+main .contractView {
     max-width: 50vw;
     margin: auto;
     text-align: center;
 }
 
-main .charlotte h1{
+main .contractView h1 {
     margin: 30px 0; 
 }
 
+main .backToForm {
+    border: none;
+    background-color: transparent;
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+}
+
+main .backToForm::before {
+    content: url('@/assets/images/icons8-arrow.png');
+    transform: scale(.5);
+}
 </style>
