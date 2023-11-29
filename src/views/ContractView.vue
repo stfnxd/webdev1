@@ -21,7 +21,7 @@ export default {
 </script>
 
 <style>
-main {
+main .charlotte {
     max-width: 50vw;
     margin: auto;
     text-align: center;
