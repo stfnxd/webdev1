@@ -45,7 +45,12 @@
             <h3>Leasingtager</h3>
 
             <label for="name">Navn</label><br>
-            <input type="text" id="name" class="form-control" name="name" placeholder="Indtast kundens navn">
+            <input v-model="formData.name" type="text" id="name" class="form-control" name="name"
+                placeholder="Indtast kundens navn">
+            
+            <label for="email">Email</label><br>
+            <input v-model="formData.email" type="email" id="email" class="form-control" name="email"
+                placeholder="Indtast kundens email adresse">
 
             <div class="contract-checkbox">
                 <label for="checkboxAge">Kunden er under 25 år</label>
@@ -102,21 +107,24 @@
 
             <label for="salePrice">Udsalgspris</label><br>
             <input type="number" id="salePrice" class="form-control" name="salePrice" placeholder="Indtast udsalgspris">
-            
+
             <label for="cost">Kostpris</label><br>
             <input type="number" id="cost" class="form-control" name="cost" placeholder="Indtast kostpris">
 
             <label for="estimatedMarketValue">Skønnet handelsværdi i DK</label><br>
-            <input type="number" id="estimatedMarketValue" class="form-control" name="estimatedMarketValue" placeholder="Indtast handelsværdi inkl. moms og afgift">
+            <input type="number" id="estimatedMarketValue" class="form-control" name="estimatedMarketValue"
+                placeholder="Indtast handelsværdi inkl. moms og afgift">
 
             <label for="residualValue">Restværdihæftelse ved kontraktstart</label><br>
-            <input type="number" id="residualValue" class="form-control" name="residualValue" placeholder="Indtast restværdihæftelse">
+            <input type="number" id="residualValue" class="form-control" name="residualValue"
+                placeholder="Indtast restværdihæftelse">
 
             <label for="cashPrice">Kontantpris (i stedet for udsalgspris)</label><br>
             <input type="number" id="cashPrice" class="form-control" name="cashPrice" placeholder="Indtast kontantpris">
 
             <label for="registrationFee">Anslået registreringsafgift</label><br>
-            <input type="number" id="registrationFee" class="form-control" name="registrationFee" placeholder="Indtast anslået registreringsafgift">
+            <input type="number" id="registrationFee" class="form-control" name="registrationFee"
+                placeholder="Indtast anslået registreringsafgift">
 
             <label for="initialPrice">Nypris inkl. moms og afgift</label><br>
             <input type="number" id="initialPrice" class="form-control" name="initialPrice" placeholder="Indtast nypris">
@@ -137,32 +145,57 @@
             <input type="number" id="interest-rate" class="form-control" name="interest-rate" placeholder="8.5%">
 
             <label for="contract-creation">Kontraktoprettelse</label><br>
-            <input type="number" id="contract-creation" class="form-control" name="contract-creation"
-                placeholder="0">
+            <input type="number" id="contract-creation" class="form-control" name="contract-creation" placeholder="0">
 
             <label for="one-time-benefit">Engangsydelse i procent, ex. moms (min. 20% - max. 30%)</label><br>
-            <input type="number" id="one-time-benefit" class="form-control" name="one-time-benefit"
-                placeholder="20">
+            <input type="number" id="one-time-benefit" class="form-control" name="one-time-benefit" placeholder="20">
 
             <label for="deposit">Depositum ex. moms (i procent)</label><br>
             <input type="number" id="deposit" class="form-control" name="deposit" placeholder="0">
 
             <label for="depreciation">Afskrivning (anbefalet min. 15% p.a.)</label><br>
-            <input type="number" id="depreciation" class="form-control" name="depreciation" placeholder="Indtast afskrivning i procent">
+            <input type="number" id="depreciation" class="form-control" name="depreciation"
+                placeholder="Indtast afskrivning i procent">
 
             <label for="commission">Provision</label><br>
-            <input type="number" id="commission" class="form-control" name="commission" placeholder="Indtast provision i kroner">
+            <input type="number" id="commission" class="form-control" name="commission"
+                placeholder="Indtast provision i kroner">
 
             <label for="private-share">Privat andel</label><br>
             <input type="number" id="private-share" class="form-control" name="private-share"
                 placeholder="Indtast privat andel i procent">
         </section>
+        <router-link :to="{ path: '/contract-preview' }"><button @click="sendData" class="makeContract">Lav
+                tilbudskontrakt</button></router-link>
     </section>
 </template>
 
 <script>
-export default {
+import { defineComponent, ref } from 'vue';
+import { useMyStore } from '@/store/myStore';
+
+export default defineComponent({
+    setup() {
+        const myStore = useMyStore();
+        const formData = ref({
+            name: '',
+            email: '',
+        });
+
+        const sendData = () => {
+            myStore.setData(formData);
+        };
+
+        return {
+            formData,
+            sendData,
+        };
+    },
+});
+
+/*export default {
     name: 'ContractForm',
+
     data() {
         return {
             inputValue: ''
@@ -174,11 +207,10 @@ export default {
             this.$emit('input-updated', this.inputValue); // Emit the input value
         }
     }
-}
+} */
 </script>
 
 <style>
-
 .contractForm #dropdownMenuButton {
     background-color: var(--light-grey);
     color: var(--dark-grey);
@@ -212,7 +244,8 @@ export default {
 
 .contractForm input[type="text"],
 .contractForm input[type="number"],
-.contractForm input[type="date"] {
+.contractForm input[type="date"],
+.contractForm input[type="email"] {
     background-color: var(--light-grey);
     color: var(--dark-grey);
     padding: .375rem .75rem;
@@ -231,5 +264,4 @@ export default {
 .contract-checkbox label {
     margin: 0;
     padding: 0;
-}
-</style>
+}</style>

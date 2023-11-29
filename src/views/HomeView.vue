@@ -9,7 +9,6 @@ import Calculation from '@/components/Calculation.vue'
             <ContractForm @input-updated="updateValue" />
             <Calculation :receivedValue="receivedValue" />
         </section>
-        <router-link :to="{ path: '/contract-preview' }"><button class="makeContract">Lav tilbudskontrakt</button></router-link>
     </main>
 </template>
 

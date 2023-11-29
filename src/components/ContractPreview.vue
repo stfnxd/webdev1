@@ -28,7 +28,11 @@
 
                 <tr>
                     <td>Navn</td>
-                    <td>værdi</td>
+                    <td>{{ receivedData.name }}</td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td>{{ receivedData.email }}</td>
                 </tr>
             </table>
         </div>
@@ -37,10 +41,21 @@
 </template>
   
 <script>
+import { defineComponent, computed } from 'vue';
+import { useMyStore } from '@/store/myStore';
 
-export default {
-    name: 'ContractPreview',
-};
+export default defineComponent( {
+    setup() {
+    const myStore = useMyStore();
+
+    // Use computed property to automatically update when data changes
+    const receivedData = computed(() => myStore.data);
+
+    return {
+      receivedData,
+    };
+  },
+});
 
 </script>
 
