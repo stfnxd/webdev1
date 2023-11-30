@@ -52,6 +52,5 @@ main button.makeContract {
     background-color: var(--black-color);
     color: var(--white-color);
     border: none;
-    width: 40%;
 }
 </style>

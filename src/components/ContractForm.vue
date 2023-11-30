@@ -5,30 +5,19 @@
         <input v-model="inputValue" @input="emitValue" placeholder="bip bip" type="text">
 
         <section>
-            <p>Kundetype</p>
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Vælg kundetype
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="#">Privat</a>
-                    <a class="dropdown-item" href="#">Erhverv</a>
-                    <a class="dropdown-item" href="#">Split</a>
-                </div>
-            </div>
-
-            <p>Kontrakttype</p>
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Vælg kontrakttype
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="#">Nytegning</a>
-                    <a class="dropdown-item" href="#">Genleasing</a>
-                </div>
-            </div>
+            <label for="customerType">Kundetype</label>
+            <select name="customerType" v-model="formData.customerType">
+                <option value="" disabled selected hidden>Vælg kundetype</option>
+                <option value="Privat">Privat</option>
+                <option value="Erhverv">Erhverv</option>
+                <option value="Split">Split</option>
+            </select>
+            <label for="contractType">Kontrakttype</label>
+            <select name="contractType" v-model="formData.contractType">
+                <option value="" disabled selected hidden>Vælg kontrakttype</option>
+                <option value="Nytegning">Nytegning</option>
+                <option value="Genleasing">Genleasing</option>
+            </select>
 
             <div class="contract-checkbox">
                 <label for="checkboxSeason">Sæson</label>
@@ -44,11 +33,11 @@
         <section>
             <h3>Leasingtager</h3>
 
-            <label for="name">Navn</label><br>
+            <label for="name">Navn</label>
             <input v-model="formData.name" type="text" id="name" class="form-control" name="name"
                 placeholder="Indtast kundens navn">
-            
-            <label for="email">Email</label><br>
+
+            <label for="email">Email</label>
             <input v-model="formData.email" type="email" id="email" class="form-control" name="email"
                 placeholder="Indtast kundens email adresse">
 
@@ -57,9 +46,9 @@
                 <input type="checkbox" id="checkboxAge" name="checkbox" value="1">
             </div>
 
-            <label for="expectedStartDate">Forventet startdato</label><br>
+            <label for="expectedStartDate">Forventet startdato</label>
             <input type="date" id="expectedStartDate" name="expectedStartDate" value="2018-07-22" min="2018-01-01"
-                max="2018-12-31" /><br>
+                max="2018-12-31" />
         </section>
 
         <section>
@@ -92,76 +81,76 @@
                 </div>
             </div>
 
-            <label for="car">Køretøj</label><br>
+            <label for="car">Køretøj</label>
             <input type="text" id="car" class="form-control" name="car" placeholder="Indtast køretøj">
 
-            <label for="framenumber">Stelnummer</label><br>
+            <label for="framenumber">Stelnummer</label>
             <input type="number" id="framenumber" class="form-control" name="framenumber" placeholder="Indtast stelnummer">
 
-            <label for="firstRegistrationDate">1. Indregistreringsdato</label><br>
+            <label for="firstRegistrationDate">1. Indregistreringsdato</label>
             <input type="date" id="firstRegistrationDate" name="firstRegistrationDate" value="2018-07-22" min="2018-01-01"
-                max="2018-12-31" /><br>
+                max="2018-12-31" />
 
-            <label for="mileage">Kilometerstand</label><br>
+            <label for="mileage">Kilometerstand</label>
             <input type="number" id="mileage" class="form-control" name="mileage" placeholder="Indtast kilometerstand">
 
-            <label for="salePrice">Udsalgspris</label><br>
+            <label for="salePrice">Udsalgspris</label>
             <input type="number" id="salePrice" class="form-control" name="salePrice" placeholder="Indtast udsalgspris">
 
-            <label for="cost">Kostpris</label><br>
+            <label for="cost">Kostpris</label>
             <input type="number" id="cost" class="form-control" name="cost" placeholder="Indtast kostpris">
 
-            <label for="estimatedMarketValue">Skønnet handelsværdi i DK</label><br>
+            <label for="estimatedMarketValue">Skønnet handelsværdi i DK</label>
             <input type="number" id="estimatedMarketValue" class="form-control" name="estimatedMarketValue"
                 placeholder="Indtast handelsværdi inkl. moms og afgift">
 
-            <label for="residualValue">Restværdihæftelse ved kontraktstart</label><br>
+            <label for="residualValue">Restværdihæftelse ved kontraktstart</label>
             <input type="number" id="residualValue" class="form-control" name="residualValue"
                 placeholder="Indtast restværdihæftelse">
 
-            <label for="cashPrice">Kontantpris (i stedet for udsalgspris)</label><br>
+            <label for="cashPrice">Kontantpris (i stedet for udsalgspris)</label>
             <input type="number" id="cashPrice" class="form-control" name="cashPrice" placeholder="Indtast kontantpris">
 
-            <label for="registrationFee">Anslået registreringsafgift</label><br>
+            <label for="registrationFee">Anslået registreringsafgift</label>
             <input type="number" id="registrationFee" class="form-control" name="registrationFee"
                 placeholder="Indtast anslået registreringsafgift">
 
-            <label for="initialPrice">Nypris inkl. moms og afgift</label><br>
+            <label for="initialPrice">Nypris inkl. moms og afgift</label>
             <input type="number" id="initialPrice" class="form-control" name="initialPrice" placeholder="Indtast nypris">
         </section>
 
         <section>
             <h3>Kontraktoplysninger</h3>
 
-            <label for="running-time">Løbetid (i måneder)</label><br>
+            <label for="running-time">Løbetid (i måneder)</label>
             <input type="number" id="running-time" class="form-control" name="run-time"
                 placeholder="Indtast løbetid i måneder">
 
-            <label for="active-running-time">Aktiv periode i kontraktens løbetid (i måneder)</label><br>
+            <label for="active-running-time">Aktiv periode i kontraktens løbetid (i måneder)</label>
             <input type="number" id="active-running-time" class="form-control" name="active-running-time"
                 placeholder="Indtast aktiv periode i kontraktens løbetid i måneder">
 
-            <label for="interest-rate">Rente</label><br>
+            <label for="interest-rate">Rente</label>
             <input type="number" id="interest-rate" class="form-control" name="interest-rate" placeholder="8.5%">
 
-            <label for="contract-creation">Kontraktoprettelse</label><br>
+            <label for="contract-creation">Kontraktoprettelse</label>
             <input type="number" id="contract-creation" class="form-control" name="contract-creation" placeholder="0">
 
-            <label for="one-time-benefit">Engangsydelse i procent, ex. moms (min. 20% - max. 30%)</label><br>
+            <label for="one-time-benefit">Engangsydelse i procent, ex. moms (min. 20% - max. 30%)</label>
             <input type="number" id="one-time-benefit" class="form-control" name="one-time-benefit" placeholder="20">
 
-            <label for="deposit">Depositum ex. moms (i procent)</label><br>
+            <label for="deposit">Depositum ex. moms (i procent)</label>
             <input type="number" id="deposit" class="form-control" name="deposit" placeholder="0">
 
-            <label for="depreciation">Afskrivning (anbefalet min. 15% p.a.)</label><br>
+            <label for="depreciation">Afskrivning (anbefalet min. 15% p.a.)</label>
             <input type="number" id="depreciation" class="form-control" name="depreciation"
                 placeholder="Indtast afskrivning i procent">
 
-            <label for="commission">Provision</label><br>
+            <label for="commission">Provision</label>
             <input type="number" id="commission" class="form-control" name="commission"
                 placeholder="Indtast provision i kroner">
 
-            <label for="private-share">Privat andel</label><br>
+            <label for="private-share">Privat andel</label>
             <input type="number" id="private-share" class="form-control" name="private-share"
                 placeholder="Indtast privat andel i procent">
         </section>
@@ -178,6 +167,8 @@ export default defineComponent({
     setup() {
         const myStore = useMyStore();
         const formData = ref({
+            customerType: '',
+            contractType: '',
             name: '',
             email: '',
         });
@@ -191,6 +182,19 @@ export default defineComponent({
             sendData,
         };
     },
+    name: 'ContractForm',
+
+    data() {
+        return {
+            inputValue: ''
+        };
+    },
+    methods: {
+        emitValue() {
+            console.log('Emitting value:', this.inputValue);
+            this.$emit('input-updated', this.inputValue); // Emit the input value
+        }
+    }
 });
 
 /*export default {
@@ -211,6 +215,7 @@ export default defineComponent({
 </script>
 
 <style>
+
 .contractForm #dropdownMenuButton {
     background-color: var(--light-grey);
     color: var(--dark-grey);
@@ -240,6 +245,7 @@ export default defineComponent({
 .contractForm p {
     padding-top: 25px;
     margin-bottom: 5px;
+    display: block;
 }
 
 .contractForm input[type="text"],
@@ -257,11 +263,11 @@ export default defineComponent({
     display: flex;
     justify-content: space-between;
     align-content: center;
-    padding-top: 5px;
-    margin-bottom: 5px;
+    padding-top: 20px;
 }
 
 .contract-checkbox label {
     margin: 0;
     padding: 0;
-}</style>
+}
+</style>

@@ -184,15 +184,40 @@
 </template>
   
 <script>
-export default {
-    name: 'Calculation',
+// export default {
+//     name: 'Calculation',
+//     props: {
+//         receivedValue: {
+//             type: String,
+//             default: ''
+//         }
+//     }
+// };
+
+import { defineComponent, computed } from 'vue';
+import { useMyStore } from '@/store/myStore';
+
+export default defineComponent( {
+    setup() {
+    const myStore = useMyStore();
+
+    // Use computed property to automatically update when data changes
+    const receivedData = computed(() => myStore.data);
+
+    return {
+      receivedData,
+    };
+  },
+  name: 'Calculation',
     props: {
         receivedValue: {
-            type: String,
+             type: String,
             default: ''
         }
-    }
-};
+     }
+});
+
+
 
 </script>
 

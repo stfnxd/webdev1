@@ -23,7 +23,7 @@
             <table>
                 <tr>
                     <td>Kundetype</td>
-                    <td>Privat</td>
+                    <td>{{ receivedData.customerType }}</td>
                 </tr>
 
                 <tr>
@@ -31,8 +31,84 @@
                     <td>{{ receivedData.name }}</td>
                 </tr>
                 <tr>
+                    <td>Tilbudsdato</td>
+                    <td>dato</td>
+                </tr>
+                <tr>
                     <td>Email</td>
                     <td>{{ receivedData.email }}</td>
+                </tr>
+            </table>
+            <h4>Køretøj</h4>
+            <table>
+                <tr>
+                    <td>Fuld afgift betalt</td>
+                    <td>{{ receivedData.name }}</td>
+                </tr>
+
+                <tr>
+                    <td>Momsdød</td>
+                    <td>{{ receivedData.name }}</td>
+                </tr>
+                <tr>
+                    <td>Første indregistreringsdato</td>
+                    <td>dato</td>
+                </tr>
+                <tr>
+                    <td>Nypris inkl. moms og afgift</td>
+                    <td>{{ receivedData.name }}</td>
+                </tr>
+            </table>
+
+            <h4>Økonomi</h4>
+            <table>
+                <tr>
+                    <td>Købspris af forhandler ex. moms</td>
+                    <td>{{ receivedData.name }}</td>
+                </tr>
+
+                <tr>
+                    <td>Løbetid</td>
+                    <td>{{ receivedData.name }}</td>
+                </tr>
+
+                <tr>
+                    <td>Aktivperiode i kontaktensløbetid</td>
+                    <td>{{ receivedData.name }}</td>
+                </tr>
+
+                <tr>
+                    <td>Skønnet afgiftsmæssig handelsvis inkl. moms og afgift</td>
+                    <td>{{ receivedData.name }}</td>
+                </tr>
+
+                <tr>
+                    <td>Anslået registreringsafgift</td>
+                    <td>{{ receivedData.name }}</td>
+                </tr>
+
+                <tr>
+                    <td>Provision ex. moms</td>
+                    <td>{{ receivedData.name }}</td>
+                </tr>
+            </table>
+
+
+            <h4>Beregning</h4>
+            <table>
+                <tr>
+                    <td>Engangsydelse, ex. moms. (Min 20% - Max. 30%)</td>
+                    <td>{{ receivedData.name }}</td>
+                </tr>
+
+                <tr>
+                    <td>Depositum ex. moms</td>
+                    <td>{{ receivedData.name }}</td>
+                </tr>
+
+                <tr>
+                    <td>Afskrivning</td>
+                    <td>{{ receivedData.name }}</td>
                 </tr>
             </table>
         </div>
@@ -85,6 +161,11 @@ export default defineComponent( {
 
     .contract-preview table {
         width: 100%; 
+        margin-bottom: 30px; 
+    }
+
+    .contract-preview table tr td {
+        padding: 5px 0; 
     }
 
     .contract-preview table tr td:last-of-type {
