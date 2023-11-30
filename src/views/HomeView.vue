@@ -48,6 +48,7 @@ main {
 main section.josefine {
     display: flex;
     justify-content: space-between;
+    gap: 50px;
 }
 
 main button.makeContract {
