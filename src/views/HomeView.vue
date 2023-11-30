@@ -11,8 +11,6 @@ import Calculation from '@/components/Calculation.vue'
             <Calculation :receivedValue="receivedValue" />
         </section>
         
-        <button class="makeContract">Lav tilbudskontrakt</button>
-        
     </main>
 </template>
 

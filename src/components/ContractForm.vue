@@ -2,7 +2,7 @@
     <section class="contractForm col-5">
         <h1>Kontrakt</h1>
 
-        <input v-model="inputValue" @input="emitValue" placeholder="bip bip" type="text">
+        <input v-model="formData.bipbip" @input="emitValue" placeholder="bip bip" type="text">
 
         <section>
             <label for="customerType">Kundetype</label>
@@ -34,7 +34,7 @@
             <h3>Leasingtager</h3>
 
             <label for="name">Navn</label>
-            <input v-model="formData.name" type="text" id="name" class="form-control" name="name"
+            <input @input="emitValue" v-model="formData.name" type="text" id="name" class="form-control" name="name"
                 placeholder="Indtast kundens navn">
 
             <label for="email">Email</label>
@@ -68,18 +68,12 @@
                 <label for="checkboxVATDeath">Momsdød</label>
                 <input type="checkbox" id="checkboxVATDeath" name="checkbox" value="1">
             </div>
-
-            <p>Type af køretøj</p>
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Vælg køretøj
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="#">Bil</a>
-                    <a class="dropdown-item" href="#">Motorcykel</a>
-                </div>
-            </div>
+            <label for="vehicleType">Type af køretøj</label>
+            <select name="vehicleType" v-model="formData.vehicleType">
+                <option value="" disabled selected hidden>Vælg type af køretøj</option>
+                <option value="Bil">Bil</option>
+                <option value="Motorcykel">Motorcykel</option>
+            </select>
 
             <label for="car">Køretøj</label>
             <input type="text" id="car" class="form-control" name="car" placeholder="Indtast køretøj">
@@ -167,10 +161,12 @@ export default defineComponent({
     setup() {
         const myStore = useMyStore();
         const formData = ref({
+            bipbip: '',
             customerType: '',
             contractType: '',
             name: '',
             email: '',
+            vehicleType: '',
         });
 
         const sendData = () => {
@@ -184,15 +180,10 @@ export default defineComponent({
     },
     name: 'ContractForm',
 
-    data() {
-        return {
-            inputValue: ''
-        };
-    },
     methods: {
         emitValue() {
-            console.log('Emitting value:', this.inputValue);
-            this.$emit('input-updated', this.inputValue); // Emit the input value
+            console.log('Emitting value:', this.formData);
+            this.$emit('input-updated', this.formData); // Emit the input value
         }
     }
 });
@@ -224,17 +215,6 @@ export default defineComponent({
     border: 1px var(--medium-grey) solid;
 }
 
-.contractForm .dropdown-toggle::after {
-    position: absolute;
-    right: 2%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.contractForm .dropdown-menu {
-    width: 100%;
-}
-
 .contractForm h1,
 .contractForm h2,
 .contractForm h3 {
@@ -251,7 +231,8 @@ export default defineComponent({
 .contractForm input[type="text"],
 .contractForm input[type="number"],
 .contractForm input[type="date"],
-.contractForm input[type="email"] {
+.contractForm input[type="email"],
+.contractForm select {
     background-color: var(--light-grey);
     color: var(--dark-grey);
     padding: .375rem .75rem;
@@ -270,4 +251,25 @@ export default defineComponent({
     margin: 0;
     padding: 0;
 }
+
+.contractForm select {
+    width: 100%;
+}
+
+/* select {
+  border: 0;
+  vertical-align: middle;
+  background: transparent;
+  -webkit-appearance: none;
+  appearance: none;
+  padding-left: 5px;
+}
+
+select option:after {
+  content: '\2304';
+  font-size: 30px;
+  line-height: 23px;
+  padding-right: 2px;
+} */
+
 </style>

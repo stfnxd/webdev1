@@ -2,14 +2,14 @@
     <section class="calculation col-7">
         <h2>Beregning</h2>
         <div>
-            <p>Input value for calculation: {{ receivedValue }}</p>
+            <p>Input value for calculation: {{ receivedValue.name }}</p>
             <!-- Perform calculations using inputValue -->
         </div>
 
         <table>
             <tr>
                 <th>Overblik leasingtilbud</th>
-                <th>Privat inkl. moms</th>
+                <th v-if="receivedValue">Privat inkl. moms</th>
                 <th>Erhverv ekskl. moms</th>
             </tr>
 
