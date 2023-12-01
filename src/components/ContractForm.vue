@@ -1,7 +1,7 @@
 <template>
     <section class="contractForm col-7">
         <h1>Kontrakt</h1>
-        <input v-model="inputValue" @input="emitValue" placeholder="bip bip" type="text">
+        <input v-model="inputValue" @input="emitValue" placeholder="bip bip" id="bipbip" type="text">
         <section></section>
         <p>Kundetype</p>
         <div class="dropdown">
@@ -40,11 +40,11 @@
 
         <section>
             <h2>Leasingtager</h2>
-            <label for="name">Navn</label><br>
-            <input type="text" id="name" class="form-control" name="name" placeholder="Indtast kundens navn">
+            <label for="Kundename">Navn</label><br>
+            <input type="text" id="Kundename" class="form-control" name="Kundename" placeholder="Indtast kundens navn">
             <div class="contract-checkbox">
-                <label for="demoCheckbox">Kunden er under 25 år</label>
-                <input type="checkbox" id="demoCheckbox" name="checkbox" value="1">
+                <label for="25Checkbox">Kunden er under 25 år</label>
+                <input type="checkbox" id="25Checkbox" name="25checkbox" value="1">
             </div>
             <label for="expectedStartDate">Forventet startdato</label><br>
             <input type="date" id="expectedStartDate" name="expectedStartDate" value="2018-07-22" min="2018-01-01"
@@ -53,8 +53,8 @@
         <section>
             <h2>Bildata</h2>
             <div class="contract-checkbox">
-                <label for="demoCheckbox">Ny bil</label>
-                <input type="checkbox" id="demoCheckbox" name="checkbox" value="1">
+                <label for="NyBilCheckbox">Ny bil</label>
+                <input type="checkbox" id="NyBilCheckbox" name="NyBilCheckbox" value="1">
             </div>
             <label for="car">Køretøj</label><br>
             <input type="text" id="car" class="form-control" name="car" placeholder="Indtast køretøj">
@@ -66,19 +66,19 @@
             <label for="mileage">Kilometerstand</label><br>
             <input type="number" id="mileage" class="form-control" name="mileage" placeholder="Indtast kilometerstand">
             <div class="contract-checkbox">
-                <label for="demoCheckbox">Fuld afgift betalt</label>
-                <input type="checkbox" id="demoCheckbox" name="checkbox" value="1">
+                <label for="afgiftCheckbox">Fuld afgift betalt</label>
+                <input type="checkbox" id="afgiftCheckbox" name="afgiftcheckbox" value="1">
             </div>
             <div class="contract-checkbox">
                 <label for="demoCheckbox">Momsdød</label>
                 <input type="checkbox" id="demoCheckbox" name="checkbox" value="1">
             </div>
             <label for="retailPrice">Udsalgspris</label><br>
-            <input type="number" id="retailPrice" class="form-control" name="retailPrice" placeholder="Indtast Udsalgspris">
+            <input type="number" v-model="retailPrice" @input="emitValue" id="retailPrice" class="form-control" name="retailPrice" placeholder="Indtast Udsalgspris">
             <label for="costPrice">Kostpris</label><br>
-            <input type="number" id="costPrice" class="form-control" name="costPrice" placeholder="Indtast kostpris">
+            <input type="number" v-model="costPrice" @input="emitValue" id="costPrice" class="form-control" name="costPrice" placeholder="Indtast kostpris">
             <label for="estimatedRegistrationFee">Anslået registreringsafgift</label><br>
-            <input type="number" id="estimatedRegistrationFee" class="form-control" name="estimatedRegistrationFee"
+            <input type="number" v-model="estimatedRegistrationFee" @input="emitValue" id="estimatedRegistrationFee" class="form-control" name="estimatedRegistrationFee"
                 placeholder="Indtast anslået registreringsafgift">
             <label for="newPrice">Nypris inkl. moms og afgift</label><br>
             <input type="number" id="newPrice" class="form-control" name="newPrice"
@@ -87,49 +87,46 @@
         <section>
             <h2>Kontraktoplysninger</h2>
             <label for="running-time">Løbetid (i måneder)</label><br>
-            <input type="number" id="running-time" class="form-control" name="run-time"
+            <input type="number" v-model="runningTime" @input="emitValue" id="running-time" class="form-control" name="run-time"
                 placeholder="Indtast løbetid i måneder">
             <label for="active-running-time">Aktiv periode i kontraktens løbetid (i måneder)</label><br>
-            <input type="number" id="active-running-time" class="form-control" name="active-running-time"
+            <input type="number" v-model="activeRunningTime" @input="emitValue" id="active-running-time" class="form-control" name="active-running-time"
                 placeholder="Indtast aktiv periode i kontraktens løbetid i måneder">
             <label for="interest-rate">Rente</label><br>
-            <input type="number" id="interest-rate" class="form-control" name="interest-rate" placeholder="Indtast rente">
+            <input type="number" v-model="interestRate" @input="emitValue" id="interest-rate" class="form-control" name="interest-rate" placeholder="Indtast rente">
             <label for="contract-creation">Kontraktoprettelse</label><br>
-            <input type="number" id="contract-creation" class="form-control" name="contract-creation"
+            <input type="number" v-model="contractCreation" @input="emitValue" id="contract-creation" class="form-control" name="contract-creation"
                 placeholder="Her skal der stå et eller andet beløb">
             <label for="one-time-benefit">Engangsydelse, ex. moms (min. 20% - max. 30%)</label><br>
-            <input type="number" id="one-time-benefit" class="form-control" name="one-time-benefit"
+            <input type="number" v-model="oneTimeBenefit" @input="emitValue" id="one-time-benefit" class="form-control" name="one-time-benefit"
                 placeholder="Her skal der stå 20% af en eller anden pris af bilen">
                 <label for="deposit">Depositum ex. moms</label><br>
-            <input type="number" id="deposit" class="form-control" name="deposit"
-                placeholder="0">
-                <label for="deposit">Depositum ex. moms</label><br>
-            <input type="number" id="deposit" class="form-control" name="deposit"
+                <input type="number" v-model="deposit" @input="emitValue" id="deposit" class="form-control" name="deposit"
                 placeholder="0">
                 <label for="depreciation">Afskrivning (anbefalet min. 15% p.a.)</label><br>
-            <input type="number" id="depreciation" class="form-control" name="depreciation"
+            <input type="number" v-model="depreciation" @input="emitValue" id="depreciation" class="form-control" name="depreciation"
                 placeholder="0">
                 <label for="private-share">Privat andel</label><br>
-            <input type="number" id="private-share" class="form-control" name="private-share"
+            <input type="number" v-model="privateShare" @input="emitValue" id="private-share" class="form-control" name="private-share"
                 placeholder="Indtast privat andel">
        
         </section>
         <section>
             <h2>Genleasing</h2>
             <label for="residual-value-start">Restværdihæftelse ved kontraktstart</label><br>
-            <input type="number" id="residual-value-start" class="form-control" name="residual-value-start"
+            <input type="number" v-model="residualValueStart" @input="emitValue" id="residual-value-start" class="form-control" name="residual-value-start"
                 placeholder="Indtast restværdihæftelse">
             <label for="estimated-tax-trade">Skønnet afgiftsmæssig handelspris inkl. moms og afgift</label><br>
-            <input type="number" id="estimated-tax-trade" class="form-control" name="estimated-tax-trade"
+            <input type="number" v-model="estimatedTaxTrade" @input="emitValue" id="estimated-tax-trade" class="form-control" name="estimated-tax-trade"
                 placeholder="Indtast handelspris inkl. moms og afgift">
         </section>
         <section>
             <h2>Pristjek</h2>
             <label for="cash-price">Kontantpris (istedet for udsalgspris)</label><br>
-            <input type="number" id="cash-price" class="form-control" name="cash-price"
+            <input type="number" v-model="cashPrice" @input="emitValue" id="cash-price" class="form-control" name="cash-price"
                 placeholder="Indtast restværdihæftelse">
             <label for="estimated-trade-value">Skønnet handelsværdi i DK (i stedet for kostpris)</label><br>
-            <input type="number" id="estimated-trade-value" class="form-control" name="estimated-trade-value"
+            <input type="number"  v-model="estimatedTradeValue" @input="emitValue" id="estimated-trade-value" class="form-control" name="estimated-trade-value"
                 placeholder="Indtast handelspris inkl. moms og afgift">
         </section>
         
@@ -137,20 +134,62 @@
 </template>
 
 <script>
+
 export default {
-    name: 'ContractForm',
-    data() {
-        return {
-            inputValue: ''
-        };
-    },
-    methods: {
-        emitValue() {
-            console.log('Emitting value:', this.inputValue);
-            this.$emit('input-updated', this.inputValue); // Emit the input value
+  name: 'ContractForm',
+  data() {
+    return {
+      //inputValue: '',  
+      retailPrice: null,
+      costPrice: null,
+      estimatedTradeValue: null,
+      residualValueStart: null,
+      cashPrice: null,
+      runningTime: null,
+      activeRunningTime: null,
+      interestRate: null,
+      contractCreation: null,
+      oneTimeBenefit: null,
+      deposit: null,
+      depreciation: null,
+      privateShare: null,
+      estimatedRegistrationFee: null
+      // Add more properties if needed
+    };
+  },
+  methods: {
+    emitValue() {
+      const propertyToColumnMapping = {
+        // Map your component property names to database column names
+        //inputValue: 'inputValue',
+        retailPrice: 'Udsalgspris',
+        costPrice: 'Kostpris',
+        estimatedTradeValue: 'Handelsværdi_DK',
+        residualValueStart: 'Restværdihæftelse',
+        cashPrice: 'Kontantpris',
+        runningTime: 'Løbetid',
+        activeRunningTime: 'Kontraktens_Løbetid',
+        interestRate: 'Rente',
+        contractCreation: 'Kontraktoprettelse',
+        oneTimeBenefit: 'Engangsydelse',
+        deposit: 'Depositum',
+        depreciation: 'Afskrivning',
+        privateShare: 'Privat_Andel',
+        estimatedRegistrationFee: 'Registeringsafgift'
+      };
+        const formData = {};
+        for (const property in propertyToColumnMapping) {
+            formData[propertyToColumnMapping[property]] = this[property];
         }
-    }
-}
+
+      console.log('Emitting form data:', formData);
+      this.$emit('input-updated', formData); // Emit the form data
+
+      // Store the form data in the state to be sent to the server
+      //this.$parent.state.formData = formData;
+    },
+  },
+};
 </script>
 
 <style>

@@ -1,41 +1,79 @@
-<script setup>
-import ContractForm from '@/components/ContractForm.vue'
-import Calculation from '@/components/Calculation.vue'
-</script>
 
 <template>
     <main>
+        <form @submit.prevent="submitForm" id="myForm">
         
-        <section class="josefine">
-            <ContractForm @input-updated="updateValue" />
-            <Calculation :receivedValue="receivedValue" />
-        </section>
+            <section class="josefine">
+                <ContractForm @input-updated = "updateValue" />
+                <Calculation :receivedValue = "receivedValue" />
+            </section>
         
-        <button class="makeContract">Lav tilbudskontrakt</button>
+            <button type="submit" class="makeContract">Lav tilbudskontrakt</button>
         
+        </form>
     </main>
 </template>
 
 <script>
+import { reactive } from 'vue';
+import ContractForm from '@/components/ContractForm.vue';
+import Calculation from '@/components/Calculation.vue';
+import axios from 'axios';
 
 export default {
-    components: {
-        ContractForm,
-        Calculation
-                },
-    data() {
-        return {
-                receivedValue: '' // Initialize receivedValue
-                };
-            },
-    methods: {
-        updateValue(value) {
-            console.log('Updating value in ContractCalculation:', value);
-            this.receivedValue = value; // Update receivedValue with input value from ContractForm
-                            }
-            }
+  components: {
+    ContractForm,
+    Calculation,
+  },
+  setup() {
+    const state = reactive({
+      receivedValue: '',
+      formData: {
+        retailPrice: null, 
+        costPrice: null, 
+        estimatedTradeValue: null,
+        residualValueStart: null, 
+        cashPrice: null, 
+        runningTime: null, 
+        activeRunningTime: null,
+        interestRate: null,
+        contractCreation: null,
+        oneTimeBenefit: null,
+        deposit: null,
+        depreciation: null,
+        privateShare: null,
+        estimatedRegistrationFee: null,
+      },
+    });
+
+    const updateValue = (value) => {
+      console.log('Updating value in ContractCalculation:', value);
+      state.receivedValue = value;
+      state.formData = value;
     };
 
+    const submitForm = async () => {
+      try {
+        // Make API call to addKontraktværdier endpoint
+        const response = await axios.post('http://localhost:5174/api/kontraktVaerdier/add', state.formData);
+        
+        // Handle the response as needed
+        console.log('API Response:', response.data);
+
+        // Additional logic if needed based on the response
+        } catch (error) {
+        console.error('Error making API call:', error);
+        // Handle the error, e.g., show an error message to the user
+        }
+    };
+
+    return {
+      state,
+      updateValue,
+      submitForm,
+    };
+  },
+};
 </script>
 
 <style>

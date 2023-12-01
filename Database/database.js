@@ -1,7 +1,7 @@
 
-var mysql = require('mysql2')
+const mysql = require('mysql2');
 
-var con = mysql.createConnection({
+const pool = mysql.createPool({
     host: "localhost",
     port: "3307",
     user: "Line",
@@ -9,20 +9,28 @@ var con = mysql.createConnection({
     database: "tilbudsmodul"
 })
 
+const promisePool = pool.promise();
 
-con.connect (function(err){
-    if(err) throw err;
-    console.log("Connected");
-    var sql="INSERT INTO leasingkøretøj (id, mærke, model, årgang) VALUES ?";
-    var VALUES=[
-        ['4', 'Toyota', 'noget', '1999']
-    ] 
-    con.query(sql,[VALUES], function(err,result){
-        if (err) throw err;
-        console.log("records inserted:"+result.affectedRows)
-    })
-})
+const execute = async (query, values) => {
+  const [rows, fields] = await promisePool.execute(query, values);
+  return rows;
+};
 
-con.query(`select * from tilbudsmodul.bergninger`, (err, res)=>{
+module.exports = {
+  execute
+};
+
+
+/*pool.getConnection((err, connection) => {
+    if (err) {
+      console.error('Error connecting to MySQL:', err);
+    } else {
+      console.log('MySQL Database is connected successfully');
+      connection.release(); // release the connection
+    }
+  });
+
+pool.query(`select * from tilbudsmodul.bergninger`, (error, res)=>{
     return console.log(res)
-})
+});*/
+
