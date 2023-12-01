@@ -2,86 +2,86 @@
     <section class="calculation col-7">
         <h2>Beregning</h2>
         <div>
-            <p>Input value for calculation: {{ receivedValue.name }}</p>
+            <p>Input value for calculation: {{ receivedValue }}</p>
             <!-- Perform calculations using inputValue -->
         </div>
 
         <table>
             <tr>
                 <th>Overblik leasingtilbud</th>
-                <th v-if="receivedValue">Privat inkl. moms</th>
-                <th>Erhverv ekskl. moms</th>
+                <th v-if="receivedValue.customerType == 'Privat'">Inkl. moms</th>
+                <th>Ekskl. moms</th>
             </tr>
 
             <tr>
                 <td>Engangsydelse inkl. kontraktoprettelse</td>
-                <td>VÆRDI</td>
+                <td v-if="receivedValue.customerType == 'Privat'">VÆRDI</td>
                 <td>VÆRDI</td>
             </tr>
 
             <tr>
                 <td>Månedlig leasing</td>
-                <td>VÆRDI</td>
+                <td v-if="receivedValue.customerType == 'Privat'">VÆRDI</td>
                 <td>VÆRDI</td>
             </tr>
 
             <tr>
                 <td><b>Totalpris i leasingperiode</b></td>
-                <td>VÆRDI</td>
+                <td v-if="receivedValue.customerType == 'Privat'">VÆRDI</td>
                 <td>VÆRDI</td>
             </tr>
 
             <tr>
                 <td>Bilens afskrivning i leasingperioden</td>
-                <td>VÆRDI</td>
+                <td v-if="receivedValue.customerType == 'Privat'">VÆRDI</td>
                 <td>VÆRDI</td>
             </tr>
 
             <tr>
                 <td>Resværdi ved udløb</td>
-                <td>VÆRDI</td>
+                <td v-if="receivedValue.customerType == 'Privat'">VÆRDI</td>
                 <td>VÆRDI</td>
             </tr>
 
             <tr>
                 <td>Depositum</td>
-                <td>VÆRDI</td>
+                <td v-if="receivedValue.customerType == 'Privat'">VÆRDI</td>
                 <td>VÆRDI</td>
             </tr>
 
             <tr>
                 <td>Forsikring pr. md. inkl. vejhjælp (moms fri)</td>
-                <td>0</td>
+                <td v-if="receivedValue.customerType == 'Privat'">0</td>
                 <td>0</td>
             </tr>
 
             <tr>
                 <td>Tilbud om friskadedækning</td>
-                <td>VÆRDI</td>
+                <td v-if="receivedValue.customerType == 'Privat'">VÆRDI</td>
                 <td>VÆRDI</td>
             </tr>
 
             <tr>
                 <td>Selvrisiko</td>
-                <td>VÆRDI</td>
+                <td v-if="receivedValue.customerType == 'Privat'">VÆRDI</td>
                 <td>VÆRDI</td>
             </tr>
 
-            <tr>
+            <tr v-if="receivedValue.customerType == 'Erhverv'">
                 <td>Beskatningsgrundlag</td>
-                <td>VÆRDI</td>
+                <td v-if="receivedValue.customerType == 'Privat'">VÆRDI</td>
                 <td>VÆRDI</td>
             </tr>
 
-            <tr>
+            <tr v-if="receivedValue.customerType == 'Erhverv'">
                 <td>Momsfradrag pr. måned</td>
-                <td>VÆRDI</td>
+                <td v-if="receivedValue.customerType == 'Privat'">VÆRDI</td>
                 <td>VÆRDI</td>
             </tr>
 
             <tr>
                 <td>GPS-tracker inkl. abonnoment og montering</td>
-                <td>VÆRDI</td>
+                <td v-if="receivedValue.customerType == 'Privat'">VÆRDI</td>
                 <td>VÆRDI</td>
             </tr>
         </table>
