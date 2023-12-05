@@ -3,85 +3,108 @@
         <h2>Beregning</h2>
         <div>
             <p>Input value for calculation: {{ receivedValue }}</p>
-            <!-- Perform calculations using inputValue -->
         </div>
 
         <table>
             <tr>
                 <th>Overblik leasingtilbud</th>
-                <th v-if="receivedValue.customerType == 'Privat'">Inkl. moms</th>
+                <th v-if="receivedValue.customerType == 'Privat' || receivedValue.customerType == 'Split'">Inkl. moms</th>
                 <th>Ekskl. moms</th>
+            </tr>
+
+            <tr v-if="receivedValue.customerType == 'Split'">
+                <td><b>Leasingydelse - erhverv</b></td>
+                <td v-if="receivedValue.customerType == 'Privat' || receivedValue.customerType == 'Split'"></td>
+                <td></td>
+            </tr>
+
+            <tr v-if="receivedValue.customerType == 'Split'">
+                <td>Engangsydelse inkl. kontraktoprettelse</td>
+                <td v-if="receivedValue.customerType == 'Privat' || receivedValue.customerType == 'Split'">VÆRDI</td>
+                <td>VÆRDI</td>
+            </tr>
+
+            <tr v-if="receivedValue.customerType == 'Split'">
+                <td>Månedlig leasing</td>
+                <td v-if="receivedValue.customerType == 'Privat'  || receivedValue.customerType == 'Split'">VÆRDI</td>
+                <td>VÆRDI</td>
+            </tr>
+
+            <tr v-if="receivedValue.customerType == 'Split'">
+                <td><b>Leasingydelse - privat</b></td>
+                <td v-if="receivedValue.customerType == 'Privat' || receivedValue.customerType == 'Split'"></td>
+                <td></td>
             </tr>
 
             <tr>
                 <td>Engangsydelse inkl. kontraktoprettelse</td>
-                <td v-if="receivedValue.customerType == 'Privat'">VÆRDI</td>
+                <td v-if="receivedValue.customerType == 'Privat' || receivedValue.customerType == 'Split'">VÆRDI</td>
                 <td>VÆRDI</td>
             </tr>
 
             <tr>
                 <td>Månedlig leasing</td>
-                <td v-if="receivedValue.customerType == 'Privat'">VÆRDI</td>
+                <td v-if="receivedValue.customerType == 'Privat' || receivedValue.customerType == 'Split'">VÆRDI</td>
                 <td>VÆRDI</td>
             </tr>
 
             <tr>
                 <td><b>Totalpris i leasingperiode</b></td>
-                <td v-if="receivedValue.customerType == 'Privat'">VÆRDI</td>
+                <td v-if="receivedValue.customerType == 'Privat' || receivedValue.customerType == 'Split'">VÆRDI</td>
                 <td>VÆRDI</td>
             </tr>
 
             <tr>
                 <td>Bilens afskrivning i leasingperioden</td>
-                <td v-if="receivedValue.customerType == 'Privat'">VÆRDI</td>
+                <td v-if="receivedValue.customerType == 'Privat' || receivedValue.customerType == 'Split'">VÆRDI</td>
                 <td>VÆRDI</td>
             </tr>
 
             <tr>
-                <td>Resværdi ved udløb</td>
-                <td v-if="receivedValue.customerType == 'Privat'">VÆRDI</td>
+                <td>Restværdi ved udløb</td>
+                <td v-if="receivedValue.customerType == 'Privat' || receivedValue.customerType == 'Split'">VÆRDI</td>
                 <td>VÆRDI</td>
             </tr>
 
             <tr>
                 <td>Depositum</td>
-                <td v-if="receivedValue.customerType == 'Privat'">VÆRDI</td>
+                <td v-if="receivedValue.customerType == 'Privat' || receivedValue.customerType == 'Split'">VÆRDI</td>
                 <td>VÆRDI</td>
             </tr>
 
             <tr>
                 <td>Forsikring pr. md. inkl. vejhjælp (moms fri)</td>
-                <td v-if="receivedValue.customerType == 'Privat'">0</td>
+                <td v-if="receivedValue.customerType == 'Privat' || receivedValue.customerType == 'Split'">0</td>
                 <td>0</td>
             </tr>
 
             <tr>
                 <td>Tilbud om friskadedækning</td>
-                <td v-if="receivedValue.customerType == 'Privat'">VÆRDI</td>
+                <td v-if="receivedValue.customerType == 'Privat' || receivedValue.customerType == 'Split'">VÆRDI</td>
                 <td>VÆRDI</td>
             </tr>
 
             <tr>
                 <td>Selvrisiko</td>
-                <td v-if="receivedValue.customerType == 'Privat'">VÆRDI</td>
+                <td v-if="receivedValue.customerType == 'Privat' || receivedValue.customerType == 'Split'">VÆRDI</td>
                 <td>VÆRDI</td>
             </tr>
 
-            <tr v-if="receivedValue.customerType == 'Erhverv'">
+            <tr v-if="receivedValue.customerType == 'Erhverv' || receivedValue.customerType == 'Split'">
                 <td>Beskatningsgrundlag</td>
-                <td v-if="receivedValue.customerType == 'Privat'">VÆRDI</td>
+                <td v-if="receivedValue.customerType == 'Privat' || receivedValue.customerType == 'Split'">VÆRDI</td>
                 <td>VÆRDI</td>
             </tr>
 
-            <tr v-if="receivedValue.customerType == 'Erhverv'">
+            <tr v-if="receivedValue.customerType == 'Erhverv' || receivedValue.customerType == 'Split'">
                 <td>Momsfradrag pr. måned</td>
-                <td v-if="receivedValue.customerType == 'Privat'">VÆRDI</td>
+                <td v-if="receivedValue.customerType == 'Privat' || receivedValue.customerType == 'Split'">VÆRDI</td>
                 <td>VÆRDI</td>
             </tr>
 
             <tr>
                 <td>GPS-tracker inkl. abonnoment og montering</td>
-                <td v-if="receivedValue.customerType == 'Privat'">VÆRDI</td>
+                <td v-if="receivedValue.customerType == 'Privat' || receivedValue.customerType == 'Split'">VÆRDI</td>
                 <td>VÆRDI</td>
             </tr>
         </table>
@@ -128,12 +151,12 @@
                 <td>VÆRDI</td>
             </tr>
             
-            <tr>
+            <tr v-if="receivedValue.contractType == 'Nytegning' || receivedValue.import == true">
                 <td>Stålgevinst/valutakursgevinst</td>
                 <td>VÆRDI</td>
             </tr>
 
-            <tr>
+            <tr v-if="receivedValue.contractType == 'Nytegning' || receivedValue.import == true">
                 <td><b>Samlet dækningsbidrag</b></td>
                 <td>VÆRDI</td>
             </tr>
@@ -141,7 +164,7 @@
         </table>
 
 
-        <table>
+        <table v-if="receivedValue.contractType == 'Stilstand' || receivedValue.levyPaid == true">
             <tr>
                 <th>Forholdsmæssig afgift</th>
                 <th>Mdr.</th>

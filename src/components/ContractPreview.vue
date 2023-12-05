@@ -28,12 +28,12 @@
             <table>
                 <tr>
                     <td>Mærke/model</td>
-                    <td>{{ receivedData.customerType }}</td>
+                    <td>{{ receivedData.car }}</td>
                 </tr>
 
                 <tr>
                     <td>Stelnummer</td>
-                    <td>{{ receivedData.name }}</td>
+                    <td>{{ receivedData.frameNumber }}</td>
                 </tr>
                 <tr>
                     <td>1. indregistreringsdato</td>
@@ -41,19 +41,19 @@
                 </tr>
                 <tr>
                     <td>Kilometerstand</td>
-                    <td>{{ receivedData.email }}</td>
+                    <td>{{ receivedData.mileage }}</td>
                 </tr>
             </table>
             <h4>Leasingperiode</h4>
             <table>
                 <tr>
                     <td>Kontraktlængde</td>
-                    <td>{{ receivedData.name }}</td>
+                    <td>{{ receivedData.runningTime }} måneder</td>
                 </tr>
 
                 <tr>
-                    <td>Indregistreringsdato <span>- med ubegrænset antal kilometer</span></td>
-                    <td>{{ receivedData.name }}</td>
+                    <td>Indregistreringsperiode <span>- med ubegrænset antal kilometer</span></td>
+                    <td>dato</td>
                 </tr>
                 <tr>
                     <td>Forventet startdato</td>
@@ -65,7 +65,7 @@
             <table>
                 <tr>
                     <td>Engangsydelse <span>inkl. moms<br><span class="smallFont">Import af køretøj, kontraktoprettelse og 45-pkt. uvildigt autotjek inkluderet</span></span></td>
-                    <td>{{ receivedData.name }}</td>
+                    <td>{{ receivedData.oneTimeBenefit }}</td>
                 </tr>
             </table>
             <table class="mt-3 mb-4">
