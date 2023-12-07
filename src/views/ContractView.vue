@@ -8,8 +8,6 @@ import ContractPreview from '@/components/ContractPreview.vue'
             <button class="backToForm">Tilbage</button>
         </router-link>
         <section class="contractView">
-        
-            <h1>Tadaaaaa!!!</h1>
             <ContractPreview />
         </section>
         <button class="makeContract">Send til kunde på mail</button>

@@ -5,7 +5,6 @@ import Calculation from '@/components/Calculation.vue'
 
 <template>
     <main>
-        
         <section class="josefine">
             <ContractForm @input-updated="updateValue" />
             <Calculation :receivedValue="receivedValue" />
