@@ -4,7 +4,6 @@ const { execute } = require('../../Database/database.js');
 module.exports = {
   addKontraktværdier: async (data) => {
     const excludedFields = ['Id'];
-    const Id = 8;
     
     const values = [];
     for (const key in data) {
@@ -12,15 +11,17 @@ module.exports = {
     values.push(data[key]);
   }
 } 
+    const placeholders = values.map(() => '?').join(', ');
 
     // Use parameterized queries to prevent SQL injection
+    //Udsalgspris, Kostpris, Handelsværdi_DK, Restværdihæftelse, Kontantpris, Løbetid, Kontraktens_Løbetid, Rente, Kontraktoprettelse, Engangsydelse, Depositum, Afskrivning, Privat_Andel, Registeringsafgift 
     var query = `
     INSERT INTO kontrakt_værdier
-    (Id, Udsalgspris, Kostpris, Handelsværdi_DK, Restværdihæftelse, Kontantpris, Løbetid, Kontraktens_Løbetid, Rente, Kontraktoprettelse, Engangsydelse, Depositum, Afskrivning, Privat_Andel, Registeringsafgift )
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    (${Object.keys(data).filter(key => !excludedFields.includes(key)).join(', ')})
+    VALUES (${placeholders} )`;
 
     // Use an array to pass values securely
-    var valuesArray = [Id, ...values];
+    var valuesArray = [...values];
 //return valuesArray;
     try {
         const response = await execute(query, valuesArray);
