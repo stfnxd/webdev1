@@ -21,7 +21,7 @@
             <tr v-show="receivedValue.customerType == 'Split'">
                 <td>Engangsydelse inkl. kontraktoprettelse</td>
                 <td v-show="receivedValue.customerType == 'Privat' || receivedValue.customerType == 'Split'">VÆRDI</td>
-                <td>VÆRDI</td>
+                <td>{{ receivedValue.oneTimeBenefit }}</td>
             </tr>
 
             <tr v-show="receivedValue.customerType == 'Split'">
@@ -39,7 +39,9 @@
             <tr>
                 <td>Engangsydelse inkl. kontraktoprettelse</td>
                 <td v-show="receivedValue.customerType == 'Privat' || receivedValue.customerType == 'Split'">VÆRDI</td>
-                <td>VÆRDI</td>
+                <td v-if="!receivedValue.oneTimeBenefit && receivedValue.contractType == 'Stilstand'">Engangsydelse er 0%</td>
+                <td v-else-if="!receivedValue.oneTimeBenefit && receivedValue.contractType != 'Stilstand'">Engangsydelse er 20%</td>
+                <td v-else>{{ receivedValue.oneTimeBenefit }}</td>
             </tr>
 
             <tr>
@@ -129,12 +131,16 @@
 
             <tr>
                 <td>Kontraktoprettelse</td>
-                <td>2.500</td>
+                <td v-if="receivedValue.customerType == 'Split' && receivedValue.import">{{ 10500 + 12500 + 2500 + (700 * receivedValue.runningTime)}}</td>
+                <td v-else-if="receivedValue.customerType == 'Split'">{{ 12500 + 2500 + (700 * receivedValue.runningTime)}}</td>
+                <td v-else-if="receivedValue.import">{{ 10500 + 2500 }}</td>
+                <td v-else>2500</td>
             </tr>
 
             <tr>
                 <td>Finansiering</td>
-                <td>VÆRDI</td>
+                <td v-if="receivedValue.interestRate">{{ receivedValue.interestRate }}</td>
+                <td v-else>VÆRDI</td>
             </tr>
 
             <tr>
@@ -149,7 +155,8 @@
 
             <tr>
                 <td>Finansiering</td>
-                <td>VÆRDI</td>
+                <td v-if="receivedValue.interestRate && receivedValue.runningTime">{{ (100 * (100 - receivedValue.interestRate) / 12) * receivedValue.runningTime }}</td>
+                <td v-else>VÆRDI</td>
             </tr>
 
             <tr>
@@ -159,7 +166,9 @@
             
             <tr v-show="receivedValue.contractType == 'Nytegning' || receivedValue.import == true">
                 <td>Stålgevinst/valutakursgevinst</td>
-                <td>VÆRDI</td>
+                <td v-if="receivedValue.import">{{ (receivedValue.salePrice * 7.46) - (receivedValue.cost * 7.46) }}</td>
+                <td v-else-if="!receivedValue.import">{{ receivedValue.salePrice - receivedValue.cost }}</td>
+                <td v-else>VÆRDI</td>
             </tr>
 
             <tr v-show="receivedValue.contractType == 'Nytegning' || receivedValue.import == true">

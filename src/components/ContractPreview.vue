@@ -19,7 +19,7 @@
             <div>
                 <h4>Leasingtager</h4>
                 <p>{{ receivedData.name }}</p>
-                <p>Tilbudsdato: {{ dateInCorrectFormat}}</p>
+                <p>Tilbudsdato: {{ correctStartDate }}</p>
             </div>
         </section>
 
@@ -37,7 +37,7 @@
                 </tr>
                 <tr>
                     <td>1. indregistreringsdato</td>
-                    <td>dato</td>
+                    <td>{{ correctFirstRegistrationDate }}</td>
                 </tr>
                 <tr>
                     <td>Kilometerstand</td>
@@ -53,11 +53,11 @@
 
                 <tr>
                     <td>Indregistreringsperiode <span>- med ubegrænset antal kilometer</span></td>
-                    <td>dato</td>
+                    <td> dato </td>
                 </tr>
                 <tr>
                     <td>Forventet startdato</td>
-                    <td>dato</td>
+                    <td>{{ correctStartDate }}</td>
                 </tr>
             </table>
 
@@ -72,7 +72,7 @@
             <table class="mt-3 mb-4">
                 <tr>
                     <td>Månedlig leasingydelse <span>inkl. moms</span></td>
-                    <td>{{ receivedData.name }}</td>
+                    <td>{{ receivedData.depreciation }} {{ receivedData.runningTime }}</td>
                 </tr>
             </table>
 
@@ -141,14 +141,22 @@ export default defineComponent({
 
         // Use computed property to automatically update when data changes
         const receivedData = computed(() => myStore.data);
-        let dateWrongFormat = receivedData.value.startDate;
-        let dateWrongFormatSplit = dateWrongFormat.split('-');
-        let dateInCorrectFormat = `${dateWrongFormatSplit[2]}.${dateWrongFormatSplit[1]}.${dateWrongFormatSplit[0]}`;
+        let wrongStartDate = receivedData.value.startDate;
+        let wrongStartDateSplit = wrongStartDate.split('-');
+        let correctStartDate = `${wrongStartDateSplit[2]}.${wrongStartDateSplit[1]}.${wrongStartDateSplit[0]}`;
+
+        let wrongFirstRegistrationDate = receivedData.value.firstRegistrationDate;
+        let wrongFirstRegistrationDateSplit = wrongFirstRegistrationDate.split('-');
+        let correctFirstRegistrationDate = `${wrongFirstRegistrationDateSplit[2]}.${wrongFirstRegistrationDateSplit[1]}.${wrongFirstRegistrationDateSplit[0]}`;
+
+        
 
         return {
             receivedData,
-            dateInCorrectFormat
+            correctStartDate,
+            correctFirstRegistrationDate
         };
+        
     },
 });
 

@@ -52,7 +52,7 @@
 
             <label for="expectedStartDate">Forventet startdato</label>
             <input v-model="formData.startDate" @input="emitValue" type="date" id="expectedStartDate"
-                name="expectedStartDate" :min="minDate" />
+                name="expectedStartDate" />
         </section>
 
         <section>
@@ -174,19 +174,19 @@
 
             <label for="interest-rate">Rente</label>
             <input v-model="formData.interestRate" @input="emitValue" type="number" id="interest-rate" class="form-control"
-                name="interest-rate" placeholder="8.5%">
+                name="interest-rate" placeholder="8.5%" min="0" max="100">
 
-            <label for="contract-creation">Kontraktoprettelse</label>
+            <!-- <label for="contract-creation">Kontraktoprettelse</label>
             <input v-model="formData.contractCreation" @input="emitValue" type="number" id="contract-creation"
-                class="form-control" name="contract-creation" placeholder="0">
+                class="form-control" name="contract-creation" placeholder="0"> -->
 
             <div v-if="formData.contractType != 'Stilstand'">
                 <label for="one-time-benefit">Engangsydelse i procent, ex. moms (min. 20% - max. 30%)</label>
                 <input v-model="formData.oneTimeBenefit" @input="emitValue" type="number" id="one-time-benefit"
-                    class="form-control" name="one-time-benefit" placeholder="20%">
+                    class="form-control" name="one-time-benefit" placeholder="20%" min="20" max="30">
             </div>
             <div v-else>
-                <label for="one-time-benefit">Engangsydelse i procent, ex. moms (min. 20% - max. 30%)</label>
+                <label for="one-time-benefit">Engangsydelse i procent, ex. moms</label>
                 <input v-model="formData.oneTimeBenefit" @input="emitValue" type="number" id="one-time-benefit"
                     class="form-control" name="one-time-benefit" placeholder="0%">
             </div>
@@ -217,7 +217,6 @@
 <script>
 import { defineComponent, ref } from 'vue';
 import { useMyStore } from '@/store/myStore';
-import moment from 'moment'; // Import Moment.js
 
 export default defineComponent({
     setup() {
@@ -260,12 +259,13 @@ export default defineComponent({
 
         // checks if first registration date is more than 36 months ago 
         const checkDate = () => {
-            const date = moment(formData.value.firstRegistrationDate);
-            const today = moment();
+            const date = new Date(formData.value.firstRegistrationDate);
+            const today = new Date();
 
-            const thirtySixMonthsAgo = moment(today).subtract(36, 'months');
+            const thirtySixMonthsAgo = new Date(today);
+            thirtySixMonthsAgo.setMonth(thirtySixMonthsAgo.getMonth() - 36);
 
-            if (date.isBefore(thirtySixMonthsAgo)) {
+            if (date < thirtySixMonthsAgo) {
                 showInitialPrice.value = false;
             } else {
                 showInitialPrice.value = true;
@@ -276,13 +276,9 @@ export default defineComponent({
             myStore.setData(formData);
         };
 
-        const today = moment(); // Get today's date using Moment.js
-        const minDate = today.format('YYYY-MM-DD'); // Format as YYYY-MM-DD for input's min attribute
-
         return {
             formData,
             sendData,
-            minDate,
             checkDate,
             showInitialPrice,
         };
@@ -290,7 +286,6 @@ export default defineComponent({
     name: 'ContractForm',
     methods: {
         emitValue() {
-            console.log('Emitting value:', this.formData);
             this.$emit('input-updated', this.formData); // Emit the input value
         },
     }
