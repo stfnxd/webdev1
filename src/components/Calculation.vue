@@ -64,7 +64,7 @@
                 <td>Restværdi ved udløb</td>
                 <td v-show="receivedValue.customerType == 'Privat' || receivedValue.customerType == 'Split'">VÆRDI</td>
                 <td v-if="receivedValue.depreciation && receivedValue.salePrice">
-                    {{  receivedValue.salePrice * ((100 - receivedValue.depreciation) / 100) }}
+                    {{ receivedValue.salePrice * ((100 - receivedValue.depreciation) / 100) }} 
                 </td>
                 <td v-else-if="receivedValue.salePrice && receivedValue.runningTime">
                     {{ receivedValue.salePrice * (0.85 / 12 * receivedValue.runningTime) }}
