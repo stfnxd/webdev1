@@ -1,8 +1,8 @@
-// kontraktVærdierService.js
+// customerService.js
 const { execute } = require('../../Database/database.js');
 
 module.exports = {
-  addKontraktværdier: async (data) => {
+  addCustomerData: async (data) => {
     const excludedFields = ['Id'];
     const values = [];
 
@@ -14,19 +14,19 @@ module.exports = {
 
     // Use parameterized queries to prevent SQL injection
     var query = `
-    INSERT INTO kontrakt_værdier
-    (Udsalgspris, Kostpris, Handelsværdi_DK, Restværdihæftelse, Kontantpris, Løbetid, Kontraktens_Løbetid, Rente, Kontraktoprettelse, Engangsydelse, Depositum, Afskrivning, Privat_Andel, Registeringsafgift )
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    INSERT INTO leasingtager
+    ( Navn, Over_25, Kundetype, Kontrakttype, Tilbudsdato, Sæson, Import )
+    VALUES (?, ?, ?, ?, ?, ?, ?)`;
 
     // Use an array to pass values securely
     var valuesArray = [...values];
 //return valuesArray;
     try {
         const response = await execute(query, valuesArray);
-        console.log('Data kontraktVærdier saved successfully', response);
+        console.log('Data customer saved successfully', response);
         return response;
       } catch (error) {
-        console.error('Error saving kontraktVærdier data:', error);
+        console.error('Error saving customer data:', error);
         throw error;
       }
   },

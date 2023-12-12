@@ -7,12 +7,12 @@
         <div class="dropdown">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
-                Vælg kundetype
+                {{ selectCustomerType ? selectCustomerType : 'Vælg kundetype' }}
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Privat</a>
-                <a class="dropdown-item" href="#">Erhverv</a>
-                <a class="dropdown-item" href="#">Split</a>
+                <a class="dropdown-item" @click="selectCustomerType('Privat')">Privat</a>
+                <a class="dropdown-item" @click="selectCustomerType('Erhverv')">Erhverv</a>
+                <a class="dropdown-item" @click="selectCustomerType('Split')">Split</a>
             </div>
         </div>
 
@@ -20,58 +20,58 @@
         <div class="dropdown">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
-                Vælg kontrakttype
+                {{ selectedContractType ? selectedContractType : 'Vælg kontrakttype' }}
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Nytegning</a>
-                <a class="dropdown-item" href="#">Genleasing</a>
+                <a class="dropdown-item" @click="selectContractType('Nytegning')">Nytegning</a>
+                <a class="dropdown-item" @click="selectContractType('Genleasing')">Genleasing</a>
             </div>
         </div>
 
         <div class="contract-checkbox">
             <label for="checkboxSeason">Sæson</label>
-            <input type="checkbox" id="checkboxSeason" name="checkbox" value="1">
+            <input type="checkbox" v-model="checkboxSeason" @input="emitValue" id="checkboxSeason" name="checkboxSeason" :value="checkboxSeason ? 1 : 0">
         </div>
 
         <div class="contract-checkbox">
             <label for="checkboxImport">Import</label>
-            <input type="checkbox" id="checkboxImport" name="checkbox" value="1">
+            <input type="checkbox" v-model="checkboxImport" @input="emitValue" id="checkboxImport" name="checkboxImport" :value="checkboxImport ? 1 : 0">
         </div>
 
         <section>
             <h2>Leasingtager</h2>
             <label for="Kundename">Navn</label><br>
-            <input type="text" id="Kundename" class="form-control" name="Kundename" placeholder="Indtast kundens navn">
+            <input type="text" v-model="Kundename" @input="emitValue" id="Kundename" class="form-control" name="Kundename" placeholder="Indtast kundens navn">
             <div class="contract-checkbox">
                 <label for="25Checkbox">Kunden er under 25 år</label>
-                <input type="checkbox" id="25Checkbox" name="25checkbox" value="1">
+                <input type="checkbox" v-model="FemOgTyveCheckbox" @input="emitValue" id="FemOgTyveCheckbox" name="FemOgTyveCheckbox" :value="FemOgTyveCheckbox ? 1 : 0">
             </div>
             <label for="expectedStartDate">Forventet startdato</label><br>
-            <input type="date" id="expectedStartDate" name="expectedStartDate" value="2018-07-22" min="2018-01-01"
+            <input type="date" v-model="expectedStartDate" @input="emitValue" id="expectedStartDate" name="expectedStartDate" value="2018-07-22" min="2018-01-01"
                 max="2018-12-31" /><br>
         </section>
         <section>
             <h2>Bildata</h2>
             <div class="contract-checkbox">
                 <label for="NyBilCheckbox">Ny bil</label>
-                <input type="checkbox" id="NyBilCheckbox" name="NyBilCheckbox" value="1">
+                <input type="checkbox" v-model="NyBilCheckbox" @input="emitValue" id="NyBilCheckbox" name="NyBilCheckbox" :value="NyBilCheckbox ? 1 : 0">
             </div>
             <label for="car">Køretøj</label><br>
-            <input type="text" id="car" class="form-control" name="car" placeholder="Indtast køretøj">
+            <input type="text" v-model="car" @input="emitValue" id="car" class="form-control" name="car" placeholder="Indtast køretøj">
             <label for="framenumber">Stelnummer</label><br>
-            <input type="number" id="framenumber" class="form-control" name="framenumber" placeholder="Indtast stelnummer">
+            <input type="number" v-model="framenumber" @input="emitValue" id="framenumber" class="form-control" name="framenumber" placeholder="Indtast stelnummer">
             <label for="firstRegistrationDate">1. indregistreringsdato</label><br>
-            <input type="date" id="firstRegistrationDate" name="firstRegistrationDate" value="2018-07-22" min="2018-01-01"
+            <input type="date" v-model="firstRegistrationDate" @input="emitValue" id="firstRegistrationDate" name="firstRegistrationDate" value="2018-07-22" min="2018-01-01"
                 max="2018-12-31" /><br>
             <label for="mileage">Kilometerstand</label><br>
-            <input type="number" id="mileage" class="form-control" name="mileage" placeholder="Indtast kilometerstand">
+            <input type="number" v-model="mileage" @input="emitValue" id="mileage" class="form-control" name="mileage" placeholder="Indtast kilometerstand">
             <div class="contract-checkbox">
                 <label for="afgiftCheckbox">Fuld afgift betalt</label>
-                <input type="checkbox" id="afgiftCheckbox" name="afgiftcheckbox" value="1">
+                <input type="checkbox" v-model="afgiftCheckbox" @input="emitValue" id="afgiftCheckbox" name="afgiftcheckbox" :value="afgiftCheckbox ? 1 : 0">
             </div>
             <div class="contract-checkbox">
-                <label for="demoCheckbox">Momsdød</label>
-                <input type="checkbox" id="demoCheckbox" name="checkbox" value="1">
+                <label for="momsdødCheckbox">Momsdød</label>
+                <input type="checkbox" v-model="momsdødCheckbox" @input="emitValue" id="momsdødCheckbox" name="momsdødCheckbox" :value="momsdødCheckbox ? 1 : 0">
             </div>
             <label for="retailPrice">Udsalgspris</label><br>
             <input type="number" v-model="retailPrice" @input="emitValue" id="retailPrice" class="form-control" name="retailPrice" placeholder="Indtast Udsalgspris">
@@ -81,7 +81,7 @@
             <input type="number" v-model="estimatedRegistrationFee" @input="emitValue" id="estimatedRegistrationFee" class="form-control" name="estimatedRegistrationFee"
                 placeholder="Indtast anslået registreringsafgift">
             <label for="newPrice">Nypris inkl. moms og afgift</label><br>
-            <input type="number" id="newPrice" class="form-control" name="newPrice"
+            <input type="number" v-model="estimatedRegistrationFee" id="newPrice" class="form-control" name="newPrice"
                 placeholder="Indtast nypris inkl. moms og afgift">
         </section>
         <section>
@@ -153,41 +153,104 @@ export default {
       deposit: null,
       depreciation: null,
       privateShare: null,
-      estimatedRegistrationFee: null
-      // Add more properties if needed
+      estimatedTaxTrade: null,
+      //køretøj data
+      //framenumber: null,
+      car: null,
+      NyBilCheckbox: null,
+      firstRegistrationDate: null,
+      estimatedRegistrationFee: null,
+      momsdødCheckbox: null,
+      afgiftCheckbox: null,
+      mileage: null,
+      //leasingtager data
+      Kundename: null,
+      FemOgTyveCheckbox: null,
+      selectCustomerType: null,
+      selectContractType: null,  
+      expectedStartDate: null,
+      checkboxSeason: null,
+      checkboxImport: null,
     };
   },
-  methods: {
-    emitValue() {
-      const propertyToColumnMapping = {
-        // Map your component property names to database column names
-        //inputValue: 'inputValue',
-        retailPrice: 'Udsalgspris',
-        costPrice: 'Kostpris',
-        estimatedTradeValue: 'Handelsværdi_DK',
-        residualValueStart: 'Restværdihæftelse',
-        cashPrice: 'Kontantpris',
-        runningTime: 'Løbetid',
-        activeRunningTime: 'Kontraktens_Løbetid',
-        interestRate: 'Rente',
-        contractCreation: 'Kontraktoprettelse',
-        oneTimeBenefit: 'Engangsydelse',
-        deposit: 'Depositum',
-        depreciation: 'Afskrivning',
-        privateShare: 'Privat_Andel',
-        estimatedRegistrationFee: 'Registeringsafgift'
-      };
-        const formData = {};
-        for (const property in propertyToColumnMapping) {
-            formData[propertyToColumnMapping[property]] = this[property];
-        }
+    methods: {
+        emitValue() {
+        const propertyToColumnMappingFirstAPI = {
+            // Map your component property names to database column names
+            //inputValue: 'inputValue',
+            retailPrice: 'Udsalgspris',
+            costPrice: 'Kostpris',
+            estimatedTradeValue: 'Handelsværdi_DK',
+            residualValueStart: 'Restværdihæftelse',
+            cashPrice: 'Kontantpris',
+            runningTime: 'Løbetid',
+            activeRunningTime: 'Kontraktens_Løbetid',
+            interestRate: 'Rente',
+            contractCreation: 'Kontraktoprettelse',
+            oneTimeBenefit: 'Engangsydelse',
+            deposit: 'Depositum',
+            depreciation: 'Afskrivning',
+            privateShare: 'Privat_Andel',
+            estimatedTaxTrade: 'Registeringsafgift'
+        };
 
-      console.log('Emitting form data:', formData);
-      this.$emit('input-updated', formData); // Emit the form data
+        const propertyToColumnMappingSecondAPI = {
+            //framenumber: 'Id_Stelnummer',
+            car: 'Køretøj',
+            NyBilCheckbox: 'NytKøretøj',
+            firstRegistrationDate: 'RegDato',
+            estimatedRegistrationFee: 'Nypris',
+            momsdødCheckbox: 'Momsdød',
+            afgiftCheckbox: 'Fuld_Afgift',
+            mileage: 'Kilometerafstand'
+        };
 
-      // Store the form data in the state to be sent to the server
-      //this.$parent.state.formData = formData;
-    },
+        const propertyToColumnMappingThirdAPI = {
+            Kundename: 'Navn',
+            FemOgTyveCheckbox: 'Over_25',
+            selectCustomerType: 'Kundetype',
+            selectContractType: 'Kontrakttype',  
+            expectedStartDate: 'Tilbudsdato',
+            checkboxSeason: 'Sæson',
+            checkboxImport: 'Import'
+        };
+
+        const formDataFirstAPI = {};
+        const formDataSecondAPI = {};
+        const formDataThirdAPI = {};
+
+        for (const property in propertyToColumnMappingFirstAPI) {
+            formDataFirstAPI[propertyToColumnMappingFirstAPI[property]] = this[property];
+            }
+
+        for (const property in propertyToColumnMappingSecondAPI) {
+            formDataSecondAPI[propertyToColumnMappingSecondAPI[property]] = this[property];
+            }
+
+        for (const property in propertyToColumnMappingThirdAPI) {
+            formDataThirdAPI[propertyToColumnMappingThirdAPI[property]] = this[property];
+            }
+
+            // Emit the form data for the first API call
+            this.$emit('input-updated', formDataFirstAPI, formDataSecondAPI, formDataThirdAPI);
+        
+        },
+            // Store the form data in the state to be sent to the server
+            //this.$parent.state.formData = formData;
+
+            selectDropdownValue(type, value) {
+            console.log(`Selected ${type}:`, value);
+            this[type] = value; // Store the selected value
+            },
+
+            selectContractType(value) {
+            this.selectDropdownValue('selectContractType', value);
+            },
+
+            selectCustomerType(value) {
+            this.selectDropdownValue('selectCustomerType', value);
+        },
+    
   },
 };
 </script>

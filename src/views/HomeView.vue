@@ -28,7 +28,7 @@ export default {
   setup() {
     const state = reactive({
       receivedValue: '',
-      formData: {
+        formDataFirstAPI: {
         retailPrice: null, 
         costPrice: null, 
         estimatedTradeValue: null,
@@ -42,33 +42,72 @@ export default {
         deposit: null,
         depreciation: null,
         privateShare: null,
-        estimatedRegistrationFee: null,
+        estimatedTaxTrade: null,
       },
     });
 
-    const updateValue = (value) => {
-      console.log('Updating value in ContractCalculation:', value);
+    const stateVehicle = reactive({
+      receivedVehicleValue: '',
+        formDataSecondAPI: {
+        car: null,
+        NyBilCheckbox: null,
+        firstRegistrationDate: null,
+        estimatedRegistrationFee: null,
+        momsdødCheckbox: null,
+        afgiftCheckbox: null,
+        mileage: null
+      },
+    });
+    const stateCustomer = reactive({
+      receivedCustomerValue: '',
+      formDataThirdAPI: {
+      Kundename: null,
+      FemOgTyveCheckbox: null,
+      selectCustomerType: null,
+      selectContractType: null,  
+      expectedStartDate: null,
+      checkboxSeason: null,
+      checkboxImport: null,
+      },
+    });
+
+    const updateValue = (value, vehicleValue, customerValue) => {
+      console.log('Updating value in ContractCalculation:', value, vehicleValue, customerValue);
       state.receivedValue = value;
-      state.formData = value;
+      state.formDataFirstAPI = value;
+      stateVehicle.receivedVehicleValue = vehicleValue;
+      stateVehicle.formDataSecondAPI = vehicleValue;
+      stateCustomer.receivedCustomerValue = customerValue;
+      stateCustomer.formDataThirdAPI = customerValue; 
     };
 
     const submitForm = async () => {
-      try {
-        // Make API call to addKontraktværdier endpoint
-        const response = await axios.post('http://localhost:5174/api/kontraktVaerdier/add', state.formData);
-        
-        // Handle the response as needed
-        console.log('API Response:', response.data);
+  try {
+    // Make API call to addKontraktværdier endpoint
+    const responseFirstAPI = await axios.post('http://localhost:5174/api/kontraktVaerdier/add', state.formDataFirstAPI);
 
-        // Additional logic if needed based on the response
-        } catch (error) {
-        console.error('Error making API call:', error);
-        // Handle the error, e.g., show an error message to the user
-        }
-    };
+    // Make API call to vehicle/add endpoint
+    const responseSecondAPI = await axios.post('http://localhost:5174/api/vehicle/add', stateVehicle.formDataSecondAPI);
+
+    // Make API call to customer/add endpoint
+    const responseThirdAPI = await axios.post('http://localhost:5174/api/customer/add', stateCustomer.formDataThirdAPI);
+
+    // Handle the responses as needed
+    console.log('API Response for the first API:', responseFirstAPI.data);
+    console.log('API Response for the second API:', responseSecondAPI.data);
+    console.log('API Response for the third API:', responseThirdAPI.data);
+
+    // Additional logic if needed based on the responses
+  } catch (error) {
+    console.error('Error making API call:', error);
+    // Handle the error, e.g., show an error message to the user
+  }
+};
 
     return {
       state,
+      stateVehicle,
+      stateCustomer,
       updateValue,
       submitForm,
     };
