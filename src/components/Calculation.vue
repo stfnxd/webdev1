@@ -98,15 +98,15 @@
                 <td>VÆRDI</td>
             </tr>
 
-            <tr v-show="receivedValue.customerType == 'Erhverv' || receivedValue.customerType == 'Split'">
+            <tr v-show="receivedValue.customerType == 'Erhverv'">
                 <td>Beskatningsgrundlag</td>
-                <td v-show="receivedValue.customerType == 'Privat' || receivedValue.customerType == 'Split'">VÆRDI</td>
+                <td v-show="receivedValue.customerType == 'Privat'">VÆRDI</td>
                 <td>VÆRDI</td>
             </tr>
 
-            <tr v-show="receivedValue.customerType == 'Erhverv' || receivedValue.customerType == 'Split'">
+            <tr v-show="receivedValue.customerType == 'Erhverv'">
                 <td>Momsfradrag pr. måned</td>
-                <td v-show="receivedValue.customerType == 'Privat' || receivedValue.customerType == 'Split'">VÆRDI</td>
+                <td v-show="receivedValue.customerType == 'Privat'">VÆRDI</td>
                 <td>VÆRDI</td>
             </tr>
 
