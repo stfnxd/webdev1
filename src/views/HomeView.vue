@@ -5,14 +5,10 @@ import Calculation from '@/components/Calculation.vue'
 
 <template>
     <main>
-        
-        <section class="josefine">
+        <section class="frontpage">
             <ContractForm @input-updated="updateValue" />
             <Calculation :receivedValue="receivedValue" />
         </section>
-        
-        <button class="makeContract">Lav tilbudskontrakt</button>
-        
     </main>
 </template>
 
@@ -22,30 +18,28 @@ export default {
     components: {
         ContractForm,
         Calculation
-                },
+    },
     data() {
         return {
-                receivedValue: '' // Initialize receivedValue
-                };
-            },
+            receivedValue: '' // Initialize receivedValue
+        };
+    },
     methods: {
         updateValue(value) {
-            console.log('Updating value in ContractCalculation:', value);
             this.receivedValue = value; // Update receivedValue with input value from ContractForm
-                            }
-            }
-    };
+        }
+    }
+};
 
 </script>
 
 <style>
-
 main {
     max-width: 75vw;
     margin: auto;
 }
 
-main section.josefine {
+main section.frontpage {
     display: flex;
     justify-content: space-between;
     gap: 50px;
@@ -59,7 +53,5 @@ main button.makeContract {
     background-color: var(--black-color);
     color: var(--white-color);
     border: none;
-    width: 40%;
 }
-
 </style>
