@@ -1,265 +1,324 @@
 <template>
-    <section class="contractForm col-7">
+    <section class="contractForm col-5">
         <h1>Kontrakt</h1>
-        <input v-model="inputValue" @input="emitValue" placeholder="bip bip" id="bipbip" type="text">
-        <section></section>
-        <p>Kundetype</p>
-        <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-                {{ selectCustomerType ? selectCustomerType : 'Vælg kundetype' }}
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" @click="selectCustomerType('Privat')">Privat</a>
-                <a class="dropdown-item" @click="selectCustomerType('Erhverv')">Erhverv</a>
-                <a class="dropdown-item" @click="selectCustomerType('Split')">Split</a>
-            </div>
-        </div>
-
-        <p>Kontrakttype</p>
-        <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-                {{ selectedContractType ? selectedContractType : 'Vælg kontrakttype' }}
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" @click="selectContractType('Nytegning')">Nytegning</a>
-                <a class="dropdown-item" @click="selectContractType('Genleasing')">Genleasing</a>
-            </div>
-        </div>
-
-        <div class="contract-checkbox">
-            <label for="checkboxSeason">Sæson</label>
-            <input type="checkbox" v-model="checkboxSeason" @input="emitValue" id="checkboxSeason" name="checkboxSeason" :value="checkboxSeason ? 1 : 0">
-        </div>
-
-        <div class="contract-checkbox">
-            <label for="checkboxImport">Import</label>
-            <input type="checkbox" v-model="checkboxImport" @input="emitValue" id="checkboxImport" name="checkboxImport" :value="checkboxImport ? 1 : 0">
-        </div>
 
         <section>
-            <h2>Leasingtager</h2>
-            <label for="Kundename">Navn</label><br>
-            <input type="text" v-model="Kundename" @input="emitValue" id="Kundename" class="form-control" name="Kundename" placeholder="Indtast kundens navn">
-            <div class="contract-checkbox">
-                <label for="25Checkbox">Kunden er under 25 år</label>
-                <input type="checkbox" v-model="FemOgTyveCheckbox" @input="emitValue" id="FemOgTyveCheckbox" name="FemOgTyveCheckbox" :value="FemOgTyveCheckbox ? 1 : 0">
+            <label for="customerType">Kundetype</label>
+            <select name="customerType" v-model="formData.customerType" @input="emitValue">
+                <option value="" disabled selected hidden>Vælg kundetype</option>
+                <option value="Privat">Privat</option>
+                <option value="Erhverv">Erhverv</option>
+                <option value="Split">Split</option>
+            </select>
+            <label for="contractType">Kontrakttype</label>
+            <select name="contractType" v-model="formData.contractType" @input="emitValue">
+                <option value="" disabled selected hidden>Vælg kontrakttype</option>
+                <option value="Nytegning">Nytegning</option>
+                <option value="Genleasing">Genleasing</option>
+                <option value="Pristjek">Pristjek</option>
+                <option value="Stilstand">Stilstand</option>
+            </select>
+
+            <div
+                v-show="formData.customerType == 'Privat' || formData.customerType == 'Erhverv' || formData.contractType == 'Nytegning' || formData.contractType == 'Genleasing' || formData.contractType == 'Pristjek'">
+                <div v-show="formData.customerType != 'Split' && formData.contractType != 'Stilstand'"
+                    class="contract-checkbox">
+                    <label for="checkboxSeason">Sæson</label>
+                    <input v-model="formData.season" @input="emitValue" type="checkbox" id="checkboxSeason" name="checkbox">
+                </div>
             </div>
-            <label for="expectedStartDate">Forventet startdato</label><br>
-            <input type="date" v-model="expectedStartDate" @input="emitValue" id="expectedStartDate" name="expectedStartDate" value="2018-07-22" min="2018-01-01"
-                max="2018-12-31" /><br>
-        </section>
-        <section>
-            <h2>Bildata</h2>
-            <div class="contract-checkbox">
-                <label for="NyBilCheckbox">Ny bil</label>
-                <input type="checkbox" v-model="NyBilCheckbox" @input="emitValue" id="NyBilCheckbox" name="NyBilCheckbox" :value="NyBilCheckbox ? 1 : 0">
+
+            <div v-show="formData.contractType == 'Nytegning'" class="contract-checkbox">
+                <label for="checkboxImport">Import</label>
+                <input v-model="formData.import" @input="emitValue" type="checkbox" id="checkboxImport" name="checkbox">
             </div>
-            <label for="car">Køretøj</label><br>
-            <input type="text" v-model="car" @input="emitValue" id="car" class="form-control" name="car" placeholder="Indtast køretøj">
-            <label for="framenumber">Stelnummer</label><br>
-            <input type="number" v-model="framenumber" @input="emitValue" id="framenumber" class="form-control" name="framenumber" placeholder="Indtast stelnummer">
-            <label for="firstRegistrationDate">1. indregistreringsdato</label><br>
-            <input type="date" v-model="firstRegistrationDate" @input="emitValue" id="firstRegistrationDate" name="firstRegistrationDate" value="2018-07-22" min="2018-01-01"
-                max="2018-12-31" /><br>
-            <label for="mileage">Kilometerstand</label><br>
-            <input type="number" v-model="mileage" @input="emitValue" id="mileage" class="form-control" name="mileage" placeholder="Indtast kilometerstand">
+        </section>
+
+        <section>
+            <h3>Leasingtager</h3>
+
+            <label for="name">Navn</label>
+            <input v-model="formData.name" @input="emitValue" type="text" id="name" class="form-control" name="name"
+                placeholder="Indtast kundens navn">
+
+            <label for="email">Email</label>
+            <input v-model="formData.email" @input="emitValue" type="email" id="email" class="form-control" name="email"
+                placeholder="Indtast kundens email adresse">
+
+
             <div class="contract-checkbox">
-                <label for="afgiftCheckbox">Fuld afgift betalt</label>
-                <input type="checkbox" v-model="afgiftCheckbox" @input="emitValue" id="afgiftCheckbox" name="afgiftcheckbox" :value="afgiftCheckbox ? 1 : 0">
+                <label for="checkboxAge">Kunden er under 25 år</label>
+                <input v-model="formData.under25" type="checkbox" id="checkboxAge" name="checkbox" value="1">
             </div>
+
+            <label for="expectedStartDate">Forventet startdato</label>
+            <input v-model="formData.startDate" @input="emitValue" type="date" id="expectedStartDate"
+                name="expectedStartDate" />
+
+        </section>
+
+        <section>
+
+            <h3>Køretøjsdata</h3>
+
             <div class="contract-checkbox">
-                <label for="momsdødCheckbox">Momsdød</label>
-                <input type="checkbox" v-model="momsdødCheckbox" @input="emitValue" id="momsdødCheckbox" name="momsdødCheckbox" :value="momsdødCheckbox ? 1 : 0">
+                <label for="checkboxNewVehicle">Nyt køretøj</label>
+                <input v-model="formData.newVehicle" @input="emitValue" type="checkbox" id="checkboxNewVehicle"
+                    name="checkbox" value="1">
             </div>
-            <label for="retailPrice">Udsalgspris</label><br>
-            <input type="number" v-model="retailPrice" @input="emitValue" id="retailPrice" class="form-control" name="retailPrice" placeholder="Indtast Udsalgspris">
-            <label for="costPrice">Kostpris</label><br>
-            <input type="number" v-model="costPrice" @input="emitValue" id="costPrice" class="form-control" name="costPrice" placeholder="Indtast kostpris">
-            <label for="estimatedRegistrationFee">Anslået registreringsafgift</label><br>
-            <input type="number" v-model="estimatedRegistrationFee" @input="emitValue" id="estimatedRegistrationFee" class="form-control" name="estimatedRegistrationFee"
-                placeholder="Indtast anslået registreringsafgift">
-            <label for="newPrice">Nypris inkl. moms og afgift</label><br>
-            <input type="number" v-model="estimatedRegistrationFee" id="newPrice" class="form-control" name="newPrice"
-                placeholder="Indtast nypris inkl. moms og afgift">
+
+            <div v-show="formData.contractType != 'Stilstand' && formData.contractType != ''" class="contract-checkbox">
+                <label for="checkboxLevyPaid">Fuld afgift betalt</label>
+                <input v-model="formData.levyPaid" @input="emitValue" type="checkbox" id="checkboxLevyPaid" name="checkbox"
+                    value="1">
+
+            </div>
+
+            <div class="contract-checkbox">
+
+                <label for="checkboxVATDeath">Momsdød</label>
+                <input v-model="formData.vatDeath" @input="emitValue" type="checkbox" id="checkboxVATDeath" name="checkbox"
+                    value="1">
+            </div>
+
+            <label for="vehicleType">Type af køretøj</label>
+            <select name="vehicleType" v-model="formData.vehicleType">
+                <option value="" disabled selected hidden>Vælg type af køretøj</option>
+                <option value="Bil">Bil</option>
+                <option value="Motorcykel">Motorcykel</option>
+            </select>
+
+            <label for="car">Køretøj</label>
+            <input v-model="formData.car" @input="emitValue" type="text" id="car" class="form-control" name="car"
+                placeholder="Indtast køretøj">
+
+            <label for="framenumber">Stelnummer</label>
+            <input v-model="formData.frameNumber" @input="emitValue" type="number" id="framenumber" class="form-control"
+                name="framenumber" placeholder="Indtast stelnummer">
+
+            <div v-show="!formData.newVehicle">
+                <label for="firstRegistrationDate">1. Indregistreringsdato</label>
+                <input v-model="formData.firstRegistrationDate" @input="checkDate" type="date" id="firstRegistrationDate"
+                    name="firstRegistrationDate" />
+            </div>
+
+            <label for="mileage">Kilometerstand</label>
+            <input v-model="formData.mileage" @input="emitValue" type="number" id="mileage" class="form-control"
+                name="mileage" placeholder="Indtast kilometerstand">
+
+            <div v-show="formData.contractType != 'Stilstand'">
+                <div v-if="formData.contractType == 'Nytegning' && formData.import">
+                    <label for="salePrice">Udsalgspris i €</label>
+                    <input v-model="formData.salePrice" @input="emitValue" type="number" id="salePrice" class="form-control"
+                        name="salePrice" placeholder="Indtast udsalgspris i €">
+                </div>
+                <div v-else>
+                    <label for="salePrice">Udsalgspris</label>
+                    <input v-model="formData.salePrice" @input="emitValue" type="number" id="salePrice" class="form-control"
+                        name="salePrice" placeholder="Indtast udsalgspris">
+                </div>
+            </div>
+            <div v-show="formData.customerType == 'Split' || formData.contractType == 'Nytegning'">
+                <div v-if="formData.import">
+                    <label for="cost">Kostpris i €</label>
+                    <input v-model="formData.cost" @input="emitValue" type="number" id="cost" class="form-control"
+                        name="cost" placeholder="Indtast kostpris i €">
+                </div>
+                <div v-else>
+                    <label for="cost">Kostpris</label>
+                    <input v-model="formData.cost" @input="emitValue" type="number" id="cost" class="form-control"
+                        name="cost" placeholder="Indtast kostpris">
+                </div>
+            </div>
+
+            <div v-show="formData.contractType == 'Genleasing'">
+                <label for="estimatedMarketValue">Skønnet handelsværdi i DK</label>
+                <input v-model="formData.estimatedMarketValue" @input="emitValue" type="number" id="estimatedMarketValue"
+                    class="form-control" name="estimatedMarketValue"
+                    placeholder="Indtast handelsværdi inkl. moms og afgift">
+            </div>
+
+            <div v-show="formData.contractType == 'Genleasing' || formData.contractType == 'Stilstand'">
+                <label for="residualValue">Restværdihæftelse ved kontraktstart</label>
+                <input v-model="formData.residualValue" @input="emitValue" type="number" id="residualValue"
+                    class="form-control" name="residualValue" placeholder="Indtast restværdihæftelse">
+            </div>
+
+            <div v-show="formData.contractType == 'Pristjek'">
+                <label for="cashPrice">Kontantpris (i stedet for udsalgspris)</label>
+                <input v-model="formData.cashPrice" @input="emitValue" type="number" id="cashPrice" class="form-control"
+                    name="cashPrice" placeholder="Indtast kontantpris">
+            </div>
+
+            <div v-show="formData.contractType != 'Stilstand' && formData.contractType != '' && !formData.levyPaid">
+                <label for="registrationFee">Anslået registreringsafgift</label>
+                <input v-model="formData.registrationFee" @input="emitValue" type="number" id="registrationFee"
+                    class="form-control" name="registrationFee" placeholder="Indtast anslået registreringsafgift">
+            </div>
+
+            <div v-show="showInitialPrice && formData.customerType != 'Split' && formData.contractType != 'Stilstand'">
+                <label for="initialPrice">Nypris inkl. moms og afgift</label>
+                <input v-model="formData.initialPrice" @input="emitValue" type="number" id="initialPrice"
+                    class="form-control" name="initialPrice" placeholder="Indtast nypris">
+            </div>
+
         </section>
+
         <section>
-            <h2>Kontraktoplysninger</h2>
-            <label for="running-time">Løbetid (i måneder)</label><br>
-            <input type="number" v-model="runningTime" @input="emitValue" id="running-time" class="form-control" name="run-time"
-                placeholder="Indtast løbetid i måneder">
-            <label for="active-running-time">Aktiv periode i kontraktens løbetid (i måneder)</label><br>
-            <input type="number" v-model="activeRunningTime" @input="emitValue" id="active-running-time" class="form-control" name="active-running-time"
-                placeholder="Indtast aktiv periode i kontraktens løbetid i måneder">
-            <label for="interest-rate">Rente</label><br>
-            <input type="number" v-model="interestRate" @input="emitValue" id="interest-rate" class="form-control" name="interest-rate" placeholder="Indtast rente">
-            <label for="contract-creation">Kontraktoprettelse</label><br>
-            <input type="number" v-model="contractCreation" @input="emitValue" id="contract-creation" class="form-control" name="contract-creation"
-                placeholder="Her skal der stå et eller andet beløb">
-            <label for="one-time-benefit">Engangsydelse, ex. moms (min. 20% - max. 30%)</label><br>
-            <input type="number" v-model="oneTimeBenefit" @input="emitValue" id="one-time-benefit" class="form-control" name="one-time-benefit"
-                placeholder="Her skal der stå 20% af en eller anden pris af bilen">
-                <label for="deposit">Depositum ex. moms</label><br>
-                <input type="number" v-model="deposit" @input="emitValue" id="deposit" class="form-control" name="deposit"
-                placeholder="0">
-                <label for="depreciation">Afskrivning (anbefalet min. 15% p.a.)</label><br>
-            <input type="number" v-model="depreciation" @input="emitValue" id="depreciation" class="form-control" name="depreciation"
-                placeholder="0">
-                <label for="private-share">Privat andel</label><br>
-            <input type="number" v-model="privateShare" @input="emitValue" id="private-share" class="form-control" name="private-share"
-                placeholder="Indtast privat andel">
-       
+
+            <h3>Kontraktoplysninger</h3>
+
+            <label for="running-time">Løbetid (i måneder)</label>
+            <input v-model="formData.runningTime" @input="emitValue" type="number" id="running-time" class="form-control"
+                name="run-time" placeholder="Indtast løbetid i måneder">
+
+            <div v-show="formData.season && formData.customerType != 'Split' && formData.contractType != 'Stilstand'">
+                <label for="active-running-time">Aktiv periode i kontraktens løbetid (i måneder)</label>
+                <input v-model="formData.activeRunningTime" @input="emitValue" type="number" id="active-running-time"
+                    class="form-control" name="active-running-time"
+                    placeholder="Indtast aktiv periode i kontraktens løbetid i måneder">
+            </div>
+
+            <label for="interest-rate">Rente</label>
+            <input v-model="formData.interestRate" @input="emitValue" type="number" id="interest-rate" class="form-control"
+                name="interest-rate" placeholder="8.5%" min="0" max="100">
+
+            <!-- <label for="contract-creation">Kontraktoprettelse</label>
+            <input v-model="formData.contractCreation" @input="emitValue" type="number" id="contract-creation"
+                class="form-control" name="contract-creation" placeholder="0"> -->
+
+            <div v-if="formData.contractType != 'Stilstand'">
+                <label for="one-time-benefit">Engangsydelse i procent, ex. moms (min. 20% - max. 30%)</label>
+                <input v-model="formData.oneTimeBenefit" @input="emitValue" type="number" id="one-time-benefit"
+                    class="form-control" name="one-time-benefit" placeholder="20%" min="20" max="30">
+            </div>
+            <div v-else>
+                <label for="one-time-benefit">Engangsydelse i procent, ex. moms</label>
+                <input v-model="formData.oneTimeBenefit" @input="emitValue" type="number" id="one-time-benefit"
+                    class="form-control" name="one-time-benefit" placeholder="0%">
+            </div>
+
+            <label for="deposit">Depositum ex. moms (i procent)</label>
+            <input v-model="formData.deposit" @input="emitValue" type="number" id="deposit" class="form-control"
+                name="deposit" placeholder="0">
+
+            <label for="depreciation">Afskrivning (anbefalet min. 15% p.a.)</label>
+            <input v-model="formData.depreciation" @input="emitValue" type="number" id="depreciation" class="form-control"
+                name="depreciation" placeholder="Indtast afskrivning i procent">
+
+            <label for="commission">Provision</label>
+            <input v-model="formData.commision" @input="emitValue" type="number" id="commission" class="form-control"
+                name="commission" placeholder="Indtast provision i kroner">
+
+            <div v-show="formData.customerType == 'Split'">
+                <label for="private-share">Privat andel</label>
+                <input v-model="formData.privateShare" @input="emitValue" type="number" id="private-share"
+                    class="form-control" name="private-share" placeholder="Indtast privat andel i procent">
+            </div>
+
         </section>
-        <section>
-            <h2>Genleasing</h2>
-            <label for="residual-value-start">Restværdihæftelse ved kontraktstart</label><br>
-            <input type="number" v-model="residualValueStart" @input="emitValue" id="residual-value-start" class="form-control" name="residual-value-start"
-                placeholder="Indtast restværdihæftelse">
-            <label for="estimated-tax-trade">Skønnet afgiftsmæssig handelspris inkl. moms og afgift</label><br>
-            <input type="number" v-model="estimatedTaxTrade" @input="emitValue" id="estimated-tax-trade" class="form-control" name="estimated-tax-trade"
-                placeholder="Indtast handelspris inkl. moms og afgift">
-        </section>
-        <section>
-            <h2>Pristjek</h2>
-            <label for="cash-price">Kontantpris (istedet for udsalgspris)</label><br>
-            <input type="number" v-model="cashPrice" @input="emitValue" id="cash-price" class="form-control" name="cash-price"
-                placeholder="Indtast restværdihæftelse">
-            <label for="estimated-trade-value">Skønnet handelsværdi i DK (i stedet for kostpris)</label><br>
-            <input type="number"  v-model="estimatedTradeValue" @input="emitValue" id="estimated-trade-value" class="form-control" name="estimated-trade-value"
-                placeholder="Indtast handelspris inkl. moms og afgift">
-        </section>
-        
+        <router-link :to="{ path: '/contract-preview' }"><button @click="sendData" class="makeContract">Lav
+                tilbudskontrakt</button></router-link>
     </section>
 </template>
 
 <script>
 
-export default {
-  name: 'ContractForm',
-  data() {
-    return {
-      //inputValue: '',  
-      retailPrice: null,
-      costPrice: null,
-      estimatedTradeValue: null,
-      residualValueStart: null,
-      cashPrice: null,
-      runningTime: null,
-      activeRunningTime: null,
-      interestRate: null,
-      contractCreation: null,
-      oneTimeBenefit: null,
-      deposit: null,
-      depreciation: null,
-      privateShare: null,
-      estimatedTaxTrade: null,
-      //køretøj data
-      //framenumber: null,
-      car: null,
-      NyBilCheckbox: null,
-      firstRegistrationDate: null,
-      estimatedRegistrationFee: null,
-      momsdødCheckbox: null,
-      afgiftCheckbox: null,
-      mileage: null,
-      //leasingtager data
-      Kundename: null,
-      FemOgTyveCheckbox: null,
-      selectCustomerType: null,
-      selectContractType: null,  
-      expectedStartDate: null,
-      checkboxSeason: null,
-      checkboxImport: null,
-    };
-  },
+import { defineComponent, ref } from 'vue';
+import { useMyStore } from '@/store/myStore';
+
+export default defineComponent({
+    setup() {
+        const myStore = useMyStore();
+        const formData = ref({
+            customerType: '',
+            contractType: '',
+            season: '',
+            import: '',
+            name: '',
+            email: '',
+            under25: '',
+            startDate: '',
+            newVehicle: '',
+            levyPaid: '',
+            vatDeath: '',
+            vehicleType: '',
+            car: '',
+            frameNumber: '',
+            firstRegistrationDate: '',
+            mileage: '',
+            salePrice: '',
+            cost: '',
+            estimatedMarketValue: '',
+            residualValue: '',
+            cashPrice: '',
+            registrationFee: '',
+            initialPrice: '',
+            runningTime: '',
+            activeRunningTime: '',
+            contractCreation: '',
+            oneTimeBenefit: '',
+            deposit: '',
+            depreciation: '',
+            commision: '',
+            privateShare: ''
+        });
+
+        const showInitialPrice = ref(false); // Use ref for reactive properties
+
+        // checks if first registration date is more than 36 months ago 
+        const checkDate = () => {
+            const date = new Date(formData.value.firstRegistrationDate);
+            const today = new Date();
+
+            const thirtySixMonthsAgo = new Date(today);
+            thirtySixMonthsAgo.setMonth(thirtySixMonthsAgo.getMonth() - 36);
+
+            if (date < thirtySixMonthsAgo) {
+                showInitialPrice.value = false;
+            } else {
+                showInitialPrice.value = true;
+            }
+        };
+
+        const sendData = () => {
+            myStore.setData(formData);
+        };
+
+        return {
+            formData,
+            sendData,
+            checkDate,
+            showInitialPrice,
+        };
+    },
+    name: 'ContractForm',
     methods: {
         emitValue() {
-        const propertyToColumnMappingFirstAPI = {
-            // Map your component property names to database column names
-            //inputValue: 'inputValue',
-            retailPrice: 'Udsalgspris',
-            costPrice: 'Kostpris',
-            estimatedTradeValue: 'Handelsværdi_DK',
-            residualValueStart: 'Restværdihæftelse',
-            cashPrice: 'Kontantpris',
-            runningTime: 'Løbetid',
-            activeRunningTime: 'Kontraktens_Løbetid',
-            interestRate: 'Rente',
-            contractCreation: 'Kontraktoprettelse',
-            oneTimeBenefit: 'Engangsydelse',
-            deposit: 'Depositum',
-            depreciation: 'Afskrivning',
-            privateShare: 'Privat_Andel',
-            estimatedTaxTrade: 'Registeringsafgift'
-        };
-
-        const propertyToColumnMappingSecondAPI = {
-            //framenumber: 'Id_Stelnummer',
-            car: 'Køretøj',
-            NyBilCheckbox: 'NytKøretøj',
-            firstRegistrationDate: 'RegDato',
-            estimatedRegistrationFee: 'Nypris',
-            momsdødCheckbox: 'Momsdød',
-            afgiftCheckbox: 'Fuld_Afgift',
-            mileage: 'Kilometerafstand'
-        };
-
-        const propertyToColumnMappingThirdAPI = {
-            Kundename: 'Navn',
-            FemOgTyveCheckbox: 'Over_25',
-            selectCustomerType: 'Kundetype',
-            selectContractType: 'Kontrakttype',  
-            expectedStartDate: 'Tilbudsdato',
-            checkboxSeason: 'Sæson',
-            checkboxImport: 'Import'
-        };
-
-        const formDataFirstAPI = {};
-        const formDataSecondAPI = {};
-        const formDataThirdAPI = {};
-
-        for (const property in propertyToColumnMappingFirstAPI) {
-            formDataFirstAPI[propertyToColumnMappingFirstAPI[property]] = this[property];
-            }
-
-        for (const property in propertyToColumnMappingSecondAPI) {
-            formDataSecondAPI[propertyToColumnMappingSecondAPI[property]] = this[property];
-            }
-
-        for (const property in propertyToColumnMappingThirdAPI) {
-            formDataThirdAPI[propertyToColumnMappingThirdAPI[property]] = this[property];
-            }
-
-            // Emit the form data for the first API call
-            this.$emit('input-updated', formDataFirstAPI, formDataSecondAPI, formDataThirdAPI);
-        
+            this.$emit('input-updated', this.formData); // Emit the input value
         },
-            // Store the form data in the state to be sent to the server
-            //this.$parent.state.formData = formData;
+    }
+});
 
-            selectDropdownValue(type, value) {
-            console.log(`Selected ${type}:`, value);
-            this[type] = value; // Store the selected value
-            },
+/*export default {
+    name: 'ContractForm',
 
-            selectContractType(value) {
-            this.selectDropdownValue('selectContractType', value);
-            },
+    data() {
+        return {
+            inputValue: ''
+        };
+    },
+    methods: {
+        emitValue() {
+            console.log('Emitting value:', this.inputValue);
+            this.$emit('input-updated', this.inputValue); // Emit the input value
+        }
+    }
+} */
 
-            selectCustomerType(value) {
-            this.selectDropdownValue('selectCustomerType', value);
-        },
-    
-  },
-};
 </script>
 
 <style>
-.contractForm .dropdown {
-    margin-bottom: 30px;
-}
-
 .contractForm #dropdownMenuButton {
     background-color: var(--light-grey);
     color: var(--dark-grey);
@@ -268,31 +327,24 @@ export default {
     border: 1px var(--medium-grey) solid;
 }
 
-.contractForm .dropdown-toggle::after {
-    position: absolute;
-    right: 2%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.contractForm .dropdown-menu {
-    width: 100%;
-}
-
 .contractForm h1,
-h2 {
-    padding-top: 30px;
+.contractForm h2,
+.contractForm h3 {
+    margin-top: 30px;
 }
 
 .contractForm label,
 .contractForm p {
-    padding-top: 20px;
+    padding-top: 25px;
     margin-bottom: 5px;
+    display: block;
 }
 
 .contractForm input[type="text"],
-.contractForm input[type="number"], 
-.contractForm input[type="date"] {
+.contractForm input[type="number"],
+.contractForm input[type="date"],
+.contractForm input[type="email"],
+.contractForm select {
     background-color: var(--light-grey);
     color: var(--dark-grey);
     padding: .375rem .75rem;
@@ -304,13 +356,31 @@ h2 {
     display: flex;
     justify-content: space-between;
     align-content: center;
-    padding-top: 15px;
-    margin-bottom: 5px;
+    padding-top: 20px;
 }
 
 .contract-checkbox label {
-    margin: 0; 
-    padding: 0; 
+    margin: 0;
+    padding: 0;
 }
 
+.contractForm select {
+    width: 100%;
+}
+
+/* select {
+  border: 0;
+  vertical-align: middle;
+  background: transparent;
+  -webkit-appearance: none;
+  appearance: none;
+  padding-left: 5px;
+}
+
+select option:after {
+  content: '\2304';
+  font-size: 30px;
+  line-height: 23px;
+  padding-right: 2px;
+} */
 </style>

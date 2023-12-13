@@ -1,16 +1,11 @@
 
 <template>
     <main>
-        <form @submit.prevent="submitForm" id="myForm">
-        
-            <section class="josefine">
-                <ContractForm @input-updated = "updateValue" />
-                <Calculation :receivedValue = "receivedValue" />
-            </section>
-        
-            <button type="submit" class="makeContract">Lav tilbudskontrakt</button>
-        
-        </form>
+        <section class="frontpage">
+            <ContractForm @input-updated="updateValue" />
+            <Calculation :receivedValue="receivedValue" />
+        </section>
+
     </main>
 </template>
 
@@ -21,65 +16,23 @@ import Calculation from '@/components/Calculation.vue';
 import axios from 'axios';
 
 export default {
-  components: {
-    ContractForm,
-    Calculation,
-  },
-  setup() {
-    const state = reactive({
-      receivedValue: '',
-        formDataFirstAPI: {
-        retailPrice: null, 
-        costPrice: null, 
-        estimatedTradeValue: null,
-        residualValueStart: null, 
-        cashPrice: null, 
-        runningTime: null, 
-        activeRunningTime: null,
-        interestRate: null,
-        contractCreation: null,
-        oneTimeBenefit: null,
-        deposit: null,
-        depreciation: null,
-        privateShare: null,
-        estimatedTaxTrade: null,
-      },
-    });
 
-    const stateVehicle = reactive({
-      receivedVehicleValue: '',
-        formDataSecondAPI: {
-        car: null,
-        NyBilCheckbox: null,
-        firstRegistrationDate: null,
-        estimatedRegistrationFee: null,
-        momsdødCheckbox: null,
-        afgiftCheckbox: null,
-        mileage: null
-      },
-    });
-    const stateCustomer = reactive({
-      receivedCustomerValue: '',
-      formDataThirdAPI: {
-      Kundename: null,
-      FemOgTyveCheckbox: null,
-      selectCustomerType: null,
-      selectContractType: null,  
-      expectedStartDate: null,
-      checkboxSeason: null,
-      checkboxImport: null,
-      },
-    });
+    components: {
+        ContractForm,
+        Calculation
+    },
+    data() {
+        return {
+            receivedValue: '' // Initialize receivedValue
+        };
+    },
+    methods: {
+        updateValue(value) {
+            this.receivedValue = value; // Update receivedValue with input value from ContractForm
+        }
+    }
+};
 
-    const updateValue = (value, vehicleValue, customerValue) => {
-      console.log('Updating value in ContractCalculation:', value, vehicleValue, customerValue);
-      state.receivedValue = value;
-      state.formDataFirstAPI = value;
-      stateVehicle.receivedVehicleValue = vehicleValue;
-      stateVehicle.formDataSecondAPI = vehicleValue;
-      stateCustomer.receivedCustomerValue = customerValue;
-      stateCustomer.formDataThirdAPI = customerValue; 
-    };
 
     const submitForm = async () => {
   try {
@@ -116,15 +69,15 @@ export default {
 </script>
 
 <style>
-
 main {
     max-width: 75vw;
     margin: auto;
 }
 
-main section.josefine {
+main section.frontpage {
     display: flex;
     justify-content: space-between;
+    gap: 50px;
 }
 
 main button.makeContract {
@@ -135,7 +88,5 @@ main button.makeContract {
     background-color: var(--black-color);
     color: var(--white-color);
     border: none;
-    width: 40%;
 }
-
 </style>
