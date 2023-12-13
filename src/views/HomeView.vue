@@ -34,7 +34,7 @@ export default {
 };
 
 
-    const submitForm = async () => {
+    /*const submitForm = async () => {  
   try {
     // Make API call to addKontraktværdier endpoint
     const responseFirstAPI = await axios.post('http://localhost:5174/api/kontraktVaerdier/add', state.formDataFirstAPI);
@@ -55,7 +55,7 @@ export default {
     console.error('Error making API call:', error);
     // Handle the error, e.g., show an error message to the user
   }
-};
+  };
 
     return {
       state,
@@ -65,7 +65,7 @@ export default {
       submitForm,
     };
   },
-};
+};*/
 </script>
 
 <style>
