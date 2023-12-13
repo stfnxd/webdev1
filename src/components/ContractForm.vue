@@ -307,6 +307,9 @@ export default defineComponent({
             this.$emit('input-updated', this.formData); // Emit the input value
             console.log(typeof(this.formData))
         },
+    },
+    mounted() {
+        this.emitValue(); // Call emitValue method when the component is mounted
     }
 });
 
