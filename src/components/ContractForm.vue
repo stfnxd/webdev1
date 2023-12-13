@@ -1,6 +1,7 @@
 <template>
     <section class="contractForm col-5">
         <h1>Kontrakt</h1>
+
         <section>
             <label for="customerType">Kundetype</label>
             <select name="customerType" v-model="formData.customerType" @input="emitValue">
@@ -53,9 +54,11 @@
             <label for="expectedStartDate">Forventet startdato</label>
             <input v-model="formData.startDate" @input="emitValue" type="date" id="expectedStartDate"
                 name="expectedStartDate" />
+
         </section>
 
         <section>
+
             <h3>Køretøjsdata</h3>
 
             <div class="contract-checkbox">
@@ -68,9 +71,11 @@
                 <label for="checkboxLevyPaid">Fuld afgift betalt</label>
                 <input v-model="formData.levyPaid" @input="emitValue" type="checkbox" id="checkboxLevyPaid" name="checkbox"
                     value="1">
+
             </div>
 
             <div class="contract-checkbox">
+
                 <label for="checkboxVATDeath">Momsdød</label>
                 <input v-model="formData.vatDeath" @input="emitValue" type="checkbox" id="checkboxVATDeath" name="checkbox"
                     value="1">
@@ -156,9 +161,11 @@
                 <input v-model="formData.initialPrice" @input="emitValue" type="number" id="initialPrice"
                     class="form-control" name="initialPrice" placeholder="Indtast nypris">
             </div>
+
         </section>
 
         <section>
+
             <h3>Kontraktoplysninger</h3>
 
             <label for="running-time">Løbetid (i måneder)</label>
@@ -208,6 +215,7 @@
                 <input v-model="formData.privateShare" @input="emitValue" type="number" id="private-share"
                     class="form-control" name="private-share" placeholder="Indtast privat andel i procent">
             </div>
+
         </section>
         <router-link :to="{ path: '/contract-preview' }"><button @click="sendData" class="makeContract">Lav
                 tilbudskontrakt</button></router-link>
@@ -215,6 +223,7 @@
 </template>
 
 <script>
+
 import { defineComponent, ref } from 'vue';
 import { useMyStore } from '@/store/myStore';
 
@@ -306,6 +315,7 @@ export default defineComponent({
         }
     }
 } */
+
 </script>
 
 <style>
