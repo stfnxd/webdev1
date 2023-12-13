@@ -10,10 +10,9 @@
 </template>
 
 <script>
-import { reactive } from 'vue';
 import ContractForm from '@/components/ContractForm.vue';
 import Calculation from '@/components/Calculation.vue';
-import axios from 'axios';
+
 
 export default {
 
@@ -37,7 +36,7 @@ export default {
     /*const submitForm = async () => {
   try {
     // Make API call to addKontraktværdier endpoint
-    const responseFirstAPI = await axios.post('http://localhost:5174/api/kontraktVaerdier/add', state.formDataFirstAPI);
+    const responseFirstAPI = await axios.post('http://localhost:5174/api/contractValues/add', state.formDataFirstAPI);
 
     // Make API call to vehicle/add endpoint
     const responseSecondAPI = await axios.post('http://localhost:5174/api/vehicle/add', stateVehicle.formDataSecondAPI);

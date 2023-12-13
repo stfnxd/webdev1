@@ -1,8 +1,8 @@
-// kontraktVærdierService.js
+// contractValuesService.js
 const { execute } = require('../../Database/database.js');
 
 module.exports = {
-  addKontraktværdier: async (data) => {
+  addContractValues: async (data) => {
     const excludedFields = ['Id'];
     const values = [];
 
@@ -23,10 +23,10 @@ module.exports = {
 //return valuesArray;
     try {
         const response = await execute(query, valuesArray);
-        console.log('Data kontraktVærdier saved successfully', response);
+        console.log('Data contractValues saved successfully', response);
         return response;
       } catch (error) {
-        console.error('Error saving kontraktVærdier data:', error);
+        console.error('Error saving contractValues data:', error);
         throw error;
       }
   },
