@@ -15,8 +15,8 @@ module.exports = {
     // Use parameterized queries to prevent SQL injection
     var query = `
     INSERT INTO køretøjdata
-    (Køretøj, NytKøretøj, RegDato, Nypris, Momsdød, Fuld_Afgift, Kilometerafstand )
-    VALUES (?, ?, ?, ?, ?, ?, ?)`;
+    (Køretøj, NytKøretøj, RegDato, Nypris, Momsdød, Type, Fuld_Afgift, Kilometerafstand )
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
 
     // Use an array to pass values securely
     var valuesArray = [...values];
