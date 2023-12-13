@@ -65,7 +65,7 @@ export default {
       state,
       stateVehicle,
       stateCustomer,
-      statecalculations,
+      stateCalculations,
       updateValue,
       submitForm,
     };
