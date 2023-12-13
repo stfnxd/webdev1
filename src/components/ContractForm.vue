@@ -207,7 +207,7 @@
                 name="depreciation" placeholder="Indtast afskrivning i procent">
 
             <label for="commission">Provision</label>
-            <input v-model="formData.contractValues.commision" @input="emitValue" type="number" id="commission" class="form-control"
+            <input v-model="formData.contractValues.commission" @input="emitValue" type="number" id="commission" class="form-control"
                 name="commission" placeholder="Indtast provision i kroner">
 
             <div v-show="formData.customer.customerType == 'Split'">
@@ -244,7 +244,7 @@ export default defineComponent({
                 oneTimeBenefit: '',
                 deposit: '',
                 depreciation: '',
-                commision: '',
+                commission: '',
                 privateShare: '',
                 registrationFee: ''
             },
@@ -304,7 +304,8 @@ export default defineComponent({
     name: 'ContractForm',
     methods: {
         emitValue() {
-            this.$emit('input-updated', this.formData.contractValues); // Emit the input value
+            this.$emit('input-updated', this.formData); // Emit the input value
+            console.log(typeof(this.formData))
         },
     }
 });

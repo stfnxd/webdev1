@@ -18,7 +18,7 @@
             </div>
             <div>
                 <h4>Leasingtager</h4>
-                <p>{{ receivedData.name }}</p>
+                <p>{{ receivedData.customer.name }}</p>
                 <p>Tilbudsdato: {{ correctStartDate }}</p>
             </div>
         </section>
@@ -28,7 +28,7 @@
             <table>
                 <tr>
                     <td>Mærke/model</td>
-                    <td>{{ receivedData.car }}</td>
+                    <td>{{ receivedData.vehicle.vehicle }}</td>
                 </tr>
 
                 <tr>
@@ -41,14 +41,14 @@
                 </tr>
                 <tr>
                     <td>Kilometerstand</td>
-                    <td>{{ receivedData.mileage }}</td>
+                    <td>{{ receivedData.vehicle.mileage }}</td>
                 </tr>
             </table>
             <h4>Leasingperiode</h4>
             <table>
                 <tr>
                     <td>Kontraktlængde</td>
-                    <td>{{ receivedData.runningTime }} måneder</td>
+                    <td>{{ receivedData.contractValues.runningTime }} måneder</td>
                 </tr>
 
                 <tr>
@@ -66,13 +66,13 @@
                 <tr>
                     <td>Engangsydelse <span>inkl. moms<br><span class="smallFont">Import af køretøj, kontraktoprettelse og
                                 45-pkt. uvildigt autotjek inkluderet</span></span></td>
-                    <td>{{ receivedData.oneTimeBenefit }}</td>
+                    <td>{{ receivedData.contractValues.oneTimeBenefit }}</td>
                 </tr>
             </table>
             <table class="mt-3 mb-4">
                 <tr>
                     <td>Månedlig leasingydelse <span>inkl. moms</span></td>
-                    <td>{{ receivedData.depreciation }} {{ receivedData.runningTime }}</td>
+                    <td>{{ receivedData.contractValues.depreciation }} {{ receivedData.contractValues.runningTime }}</td>
                 </tr>
             </table>
 
@@ -81,7 +81,7 @@
             <table>
                 <tr>
                     <td>Sikkerhedsstillelse <span>inkl. moms - tilbagebetales efter endt aftaleperiode</span></td>
-                    <td>{{ receivedData.name }}</td>
+                    <td>{{ receivedData.customer.name }}</td>
                 </tr>
             </table>
 
@@ -92,7 +92,7 @@
                                 leasingtager på anfordring forpligtet til at anvise CVR-registreret tredjemand som køber.
                                 Såfremt restværdien de facto ikke kan opnås er leasingtager forpligtet til at indbetale
                                 differencen tillagt moms.</span></span></td>
-                    <td>{{ receivedData.name }}</td>
+                    <td>{{ receivedData.customer.name }}</td>
                 </tr>
             </table>
 
@@ -100,14 +100,14 @@
             <table>
                 <tr>
                     <td>Forsikringspræmie pr. måned <span>v/ tilladt kørsel inkl. vejhjælp</span></td>
-                    <td>{{ receivedData.name }}</td>
+                    <td>{{ receivedData.customer.name }}</td>
                 </tr>
 
                 <tr>
                     <td>Forsikringspræmie pr. måned <span>v/ stilstand</span><br><span class="smallFont">Mekanisk
                             garantiforsikring kan tilvælges. Kontakt os for individuelt tilbud<br><span>*Indtegningskrav:
                                 Minimum 25 år og 3 års skadefri kørsel. Friskadedækning kan tilvælges.</span></span></td>
-                    <td>{{ receivedData.name }}</td>
+                    <td>{{ receivedData.customer.name }}</td>
                 </tr>
             </table>
 
@@ -116,7 +116,7 @@
                 <tr>
                     <td>GPS-tracker og abbonement i leasingperiodenb <span>inkl. moms</span><br><span
                             class="smallFont"><span>*Forudsat accept af forsikringstilbud</span></span></td>
-                    <td>{{ receivedData.name }}</td>
+                    <td>{{ receivedData.customer.name }}</td>
                 </tr>
             </table>
         </div>
@@ -141,7 +141,7 @@ export default defineComponent({
 
         // Use computed property to automatically update when data changes
         const receivedData = computed(() => myStore.data);
-        let wrongStartDate = receivedData.value.startDate;
+        let wrongStartDate = receivedData.value.customer.startDate;
         let wrongStartDateSplit = wrongStartDate.split('-');
         let correctStartDate = `${wrongStartDateSplit[2]}.${wrongStartDateSplit[1]}.${wrongStartDateSplit[0]}`;
 

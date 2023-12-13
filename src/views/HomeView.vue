@@ -28,6 +28,7 @@ export default {
     methods: {
         updateValue(value) {
             this.receivedValue = value; // Update receivedValue with input value from ContractForm
+            console.log(this.receivedValue)
         }
     }
 };
