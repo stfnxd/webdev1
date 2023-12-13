@@ -2,10 +2,10 @@
     <section class="calculation col-7">
         <h2>Beregning</h2>
         <div>
-            <p>Input value for calculation: {{ receivedValue }}</p>
+            <p>Input value for calculation: {{ receivedValue}}</p>
         </div>
 
-        <table>
+       <table>
             <tr>
                 <th>Overblik leasingtilbud</th>
                 <th v-show="receivedValue && receivedValue.customer && (receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split')">Inkl. moms</th>
@@ -18,13 +18,14 @@
                 <td></td>
             </tr>
 
-            <tr v-show="receivedValue.customer.customerType == 'Split'">
+            <tr v-show="receivedValue && receivedValue.customer && (receivedValue.customer.customerType == 'Split')">
                 <td>Engangsydelse inkl. kontraktoprettelse</td>
-                <td v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">VÆRDI</td>
-                <td>{{ receivedValue.contractValues.oneTimeBenefit }}</td>
+                <td v-show="receivedValue && receivedValue.customer && (receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split')">VÆRDI</td>
+                <td v-show="receivedValue && receivedValue.contractValues && receivedValue.contractValues.oneTimeBenefit">{{ receivedValue.contractValues.oneTimeBenefit }}</td>
             </tr>
 
-            <tr v-show="receivedValue.customer.customerType == 'Split'">
+             <!-- 
+            <tr v-show="receivedValue && receivedValue.customer && receivedValue.customer.customerType == 'Split'">
                 <td>Månedlig leasing</td>
                 <td v-show="receivedValue.customer.customerType == 'Privat'  || receivedValue.customer.customerType == 'Split'">VÆRDI</td>
                 <td>VÆRDI</td>
@@ -215,14 +216,18 @@
                 <td><b>Forholdsmæssig afgift i alt</b></td>
                 <td></td>
                 <td><b>VÆRDI</b></td>
-            </tr>
+            </tr>-->
 
-        </table>
+        </table>  
 
     </section>
 </template>
   
 <script>
+
+
+import { defineComponent, computed } from 'vue';
+
 // export default {
 //     name: 'Calculation',
 //     props: {
@@ -233,8 +238,6 @@
 //     }
 // };
 
-import { defineComponent, computed } from 'vue';
-
 export default defineComponent( {
   name: 'Calculation',
     props: {
@@ -244,7 +247,6 @@ export default defineComponent( {
         }
     },
 });
-
 
 
 </script>
