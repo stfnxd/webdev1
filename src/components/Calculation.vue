@@ -131,7 +131,8 @@
 
             <tr>
                 <td>Kontraktoprettelse</td>
-                <td v-if="receivedValue.customerType == 'Split' && receivedValue.import">{{ 10500 + 12500 + 2500 + (700 * receivedValue.runningTime)}}</td>
+                <td v-if="receivedValue.contractCreation">{{ receivedValue.contractCreation }}</td>
+                <td v-else-if="receivedValue.customerType == 'Split' && receivedValue.import">{{ 10500 + 12500 + 2500 + (700 * receivedValue.runningTime)}}</td>
                 <td v-else-if="receivedValue.customerType == 'Split'">{{ 12500 + 2500 + (700 * receivedValue.runningTime)}}</td>
                 <td v-else-if="receivedValue.import">{{ 10500 + 2500 }}</td>
                 <td v-else>2500</td>
@@ -233,19 +234,8 @@
 // };
 
 import { defineComponent, computed } from 'vue';
-import { useMyStore } from '@/store/myStore';
 
 export default defineComponent( {
-    setup() {
-    const myStore = useMyStore();
-
-    // Use computed property to automatically update when data changes
-    const receivedData = computed(() => myStore.data);
-
-    return {
-      receivedData,
-    };
-  },
   name: 'Calculation',
     props: {
         receivedValue: {
