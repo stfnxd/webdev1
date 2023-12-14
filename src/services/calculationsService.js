@@ -20,7 +20,7 @@ module.exports = {
 
     // Use an array to pass values securely
     var valuesArray = [...values];
-//return valuesArray;
+
     try {
         const response = await execute(query, valuesArray);
         console.log('Data calculations saved successfully', response);

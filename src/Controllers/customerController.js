@@ -11,5 +11,17 @@ module.exports = {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   },
-  // Add other controller functions if needed...
+
+  // Logic to handle getting  customer, contractValues and vehicle data, by customer Id
+  getAllByCustomerId: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const result = await customerService.getAllByCustomerId(id);
+      res.json(result);
+    } catch (error) {
+      console.error('Error getting customer, contractValues and vehicle data, by customer Id:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  },
+
 };

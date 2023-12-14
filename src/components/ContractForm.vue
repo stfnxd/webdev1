@@ -52,7 +52,7 @@
             </div>
 
             <label for="expectedStartDate">Forventet startdato</label>
-            <input v-model="formData.startDate" @input="emitValue" type="date" id="expectedStartDate"
+            <input v-model="formData.customer.startDate" @input="emitValue" type="date" id="expectedStartDate"
                 name="expectedStartDate" />
 
         </section>
@@ -226,49 +226,50 @@
 
 import { defineComponent, ref } from 'vue';
 import { useMyStore } from '@/store/myStore';
+import axios from 'axios';
 
 export default defineComponent({
     setup() {
         const myStore = useMyStore();
         const formData = ref({
             contractValues: {
-                salePrice: '',
-                cost: '',
-                estimatedMarketValue: '',
-                residualValue: '',
-                cashPrice: '',
-                runningTime: '',
-                activeRunningTime: '',
-                interestRate: '',
-                contractCreation: '',
-                oneTimeBenefit: '',
-                deposit: '',
-                depreciation: '',
-                commission: '',
-                privateShare: '',
-                registrationFee: ''
+                salePrice: null,
+                cost: null,
+                estimatedMarketValue: null,
+                residualValue: null,
+                cashPrice: null,
+                runningTime: null,
+                activeRunningTime: null,
+                interestRate: null,
+                contractCreation: null,
+                oneTimeBenefit: null,
+                deposit: null,
+                depreciation: null,
+                commission: null,
+                privateShare: null,
+                registrationFee: null
             },
             customer: {
-                name: '',
-                email: '',
-                under25: '',
+                name: null,
+                email: null,
+                under25: '0',
                 customerType: '',
                 contractType: '',
-                startDate: '',
-                season: '',
-                import: '',
+                startDate: null,
+                season: '0',
+                import: '0',
             },
             vehicle: {
-                vehicle: '',
-                newVehicle: '',
-                firstRegistrationDate: '',
-                initialPrice: '',
-                vatDeath: '',
+                vehicle: null,
+                newVehicle: '0',
+                firstRegistrationDate: null,
+                initialPrice: null,
+                vatDeath: '0',
                 vehicleType: '',
-                levyPaid: '',
-                mileage: '',
+                levyPaid: '0',
+                mileage: null,
             },
-            frameNumber: '',
+            frameNumber: null,
            
         });
 
@@ -290,8 +291,33 @@ export default defineComponent({
             }
         };
 
-        const sendData = () => {
+        /*const sendData = () => {
             myStore.setData(formData);
+        };*/
+
+        const sendData = async () => {
+            try {
+                
+                // Send customer to the second API endpoint
+                const responseSecondAPI = await axios.post('http://localhost:5174/api/vehicle/add', formData.value.vehicle);
+
+                const generatedVehicleId = responseSecondAPI.data.insertId;
+                // Send contractValues to the first API endpoint
+                const responseFirstAPI = await axios.post('http://localhost:5174/api/contractValues/add', formData.value.contractValues);
+                
+                // Send vehicle to the third API endpoint
+                const responseThirdAPI = await axios.post('http://localhost:5174/api/customer/add', formData.value.customer);
+            
+                // Optionally, update your store or handle other logic based on the responses
+                myStore.setData(formData.value);
+
+                // Log the responses (you might want to handle these responses according to your needs)
+                console.log('Response from API 1:', responseFirstAPI.data);
+                console.log('Response from API 2:', responseSecondAPI.data);
+                console.log('Response from API 3:', responseThirdAPI.data);
+            } catch (error) {
+                console.error('Error sending data:', error);
+            }
         };
 
         return {
