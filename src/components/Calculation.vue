@@ -2,7 +2,7 @@
     <section class="calculation col-7">
         <h2>Beregning</h2>
         <div>
-            <p>Input value for calculation: {{ receivedValue }}</p>
+            <p>Input value for calculation: {{ carPrice }}</p>
         </div>
 
         <table>
@@ -235,17 +235,27 @@
 
 import { defineComponent, computed } from 'vue';
 
-export default defineComponent( {
-  name: 'Calculation',
+export default defineComponent({
+    name: 'Calculation',
     props: {
         receivedValue: {
             type: Object,
-            default: () => ({}) // Provide an empty object as the default value
+            default: () => ({})
+        }
+    },
+    computed: {
+        carPrice() {
+            const contractType = this.receivedValue.customer.contractType;
+            if (contractType === 'Pristjek') {
+                return this.receivedValue.contractValues.cashPrice;
+            } else if (contractType === 'Genleasing') {
+                return this.receivedValue.contractValues.residualValue;
+            } else {
+                return this.receivedValue.contractValues.salePrice;
+            }
         }
     },
 });
-
-
 
 </script>
 
