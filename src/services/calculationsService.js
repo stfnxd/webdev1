@@ -18,7 +18,6 @@ module.exports = {
     (Restværdi, MånedligLeasing_Privat, Aktivperiode, Bekastingsgrundlag, Privatandel, Forsinkring, Engangsydelse_Privat, Depositum, Afskrivning, Engangsydelse_Erhverv, MånedligLeasing_Erhverv, Friskadedækning, GPS, Kontraktoprettelse, Finasering, Indtægter_Ialt, Dækningsbidrag, Stålgevinst/Valutakursgevinst, Samlet_Dækningsbidrag, Forholdsmæssig_Afgift_under3, Forholdsmæssig_Afgift_4-36, Forholdsmæssig_Afgift_+36, Forholdsmæssig_Rente, Forholdsmæssig_Ialt )
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
-    // Use an array to pass values securely
     var valuesArray = [...values];
 
     try {

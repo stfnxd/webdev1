@@ -1,7 +1,5 @@
 // contractValuesService.js
 const { execute } = require('../../Database/database.js');
-const customerService = require('./customerService.js');
-
 module.exports = {
   // Function to add contractValues
   addContractValues: async (data) => {
@@ -17,10 +15,9 @@ module.exports = {
     // Use parameterized queries to prevent SQL injection
     var query = `
     INSERT INTO kontrakt_værdier
-    (Udsalgspris, Kostpris, Handelsværdi_DK, Restværdihæftelse, Kontantpris, Løbetid, Kontraktens_Løbetid, Rente, Kontraktoprettelse, Engangsydelse, Depositum, Afskrivning, Provision, Privat_Andel, Registeringsafgift )
-    VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-
-    // Use an array to pass values securely
+    (Id_Køretøjdata, Udsalgspris, Kostpris, Handelsværdi_DK, Restværdihæftelse, Kontantpris, Løbetid, Kontraktens_Løbetid, Rente, Kontraktoprettelse, Engangsydelse, Depositum, Afskrivning, Provision, Privat_Andel, Registeringsafgift )
+    VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+  
     var valuesArray = [...values];
 
     try {

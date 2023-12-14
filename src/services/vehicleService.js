@@ -19,7 +19,6 @@ module.exports = {
     (Køretøj, NytKøretøj, RegDato, Nypris, Momsdød, Type, Fuld_Afgift, Kilometerafstand )
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
 
-    // Use an array to pass values securely
     var valuesArray = [...values];
 
     try {

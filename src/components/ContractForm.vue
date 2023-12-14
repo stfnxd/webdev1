@@ -233,6 +233,7 @@ export default defineComponent({
         const myStore = useMyStore();
         const formData = ref({
             contractValues: {
+                Id_Køretøjdata: null,
                 salePrice: null,
                 cost: null,
                 estimatedMarketValue: null,
@@ -250,6 +251,7 @@ export default defineComponent({
                 registrationFee: null
             },
             customer: {
+                Id_Kontraktværdier: null,
                 name: null,
                 email: null,
                 under25: '0',
@@ -298,14 +300,17 @@ export default defineComponent({
         const sendData = async () => {
             try {
                 
-                // Send customer to the second API endpoint
-                const responseSecondAPI = await axios.post('http://localhost:5174/api/vehicle/add', formData.value.vehicle);
+                // Send customer to the first API endpoint and store the auto-incremented ID from the response
+                const responseFirstAPI = await axios.post('http://localhost:5174/api/vehicle/add', formData.value.vehicle);
+                const vehicleId = responseFirstAPI.data.insertId;
 
-                const generatedVehicleId = responseSecondAPI.data.insertId;
-                // Send contractValues to the first API endpoint
-                const responseFirstAPI = await axios.post('http://localhost:5174/api/contractValues/add', formData.value.contractValues);
+                // Update formData contractValues with the obtained vehicle ID, send contractValues to second API and store the auto-incremented ID from the response
+                formData.value.contractValues.Id_Køretøjdata = vehicleId;
+                const responseSecondAPI = await axios.post('http://localhost:5174/api/contractValues/add', formData.value.contractValues);
+                const contractValuesId = responseSecondAPI.data.insertId;
                 
-                // Send vehicle to the third API endpoint
+                // Update formData customer with the obtained contractValues ID, send vehicle to the third API endpoint
+                formData.value.customer.Id_Kontraktværdier = contractValuesId;
                 const responseThirdAPI = await axios.post('http://localhost:5174/api/customer/add', formData.value.customer);
             
                 // Optionally, update your store or handle other logic based on the responses
