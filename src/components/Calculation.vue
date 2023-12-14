@@ -240,7 +240,46 @@ export default defineComponent({
     props: {
         receivedValue: {
             type: Object,
-            default: () => ({})
+            default: () => ({
+                contractValues: {
+                salePrice: '',
+                cost: '',
+                estimatedMarketValue: '',
+                residualValue: '',
+                cashPrice: '',
+                runningTime: '',
+                activeRunningTime: '',
+                interestRate: '',
+                contractCreation: '',
+                oneTimeBenefit: '',
+                deposit: '',
+                depreciation: '',
+                commission: '',
+                privateShare: '',
+                registrationFee: ''
+            },
+            customer: {
+                name: '',
+                email: '',
+                under25: '',
+                customerType: '',
+                contractType: '',
+                startDate: '',
+                season: '',
+                import: '',
+            },
+            vehicle: {
+                vehicle: '',
+                newVehicle: '',
+                firstRegistrationDate: '',
+                initialPrice: '',
+                vatDeath: '',
+                vehicleType: '',
+                levyPaid: '',
+                mileage: '',
+            },
+            frameNumber: '',
+            })
         }
     },
     computed: {
@@ -254,7 +293,7 @@ export default defineComponent({
                 return this.receivedValue.contractValues.salePrice;
             }
         }
-    },
+    }
 });
 
 </script>
