@@ -93,7 +93,7 @@
                 placeholder="Indtast køretøj">
 
             <label for="framenumber">Stelnummer</label>
-            <input v-model="formData.frameNumber" @input="emitValue" type="number" id="framenumber" class="form-control"
+            <input v-model="formData.vehicle.frameNumber" @input="emitValue" type="number" id="framenumber" class="form-control"
                 name="framenumber" placeholder="Indtast stelnummer">
 
             <div v-show="!formData.vehicle.newVehicle">
@@ -262,6 +262,7 @@ export default defineComponent({
                 import: '0',
             },
             vehicle: {
+                frameNumber: null,
                 vehicle: null,
                 newVehicle: '0',
                 firstRegistrationDate: null,
@@ -271,8 +272,7 @@ export default defineComponent({
                 levyPaid: '0',
                 mileage: null,
             },
-            frameNumber: null,
-           
+            
         });
 
 
