@@ -20,8 +20,15 @@
 
             <tr v-show="receivedValue.customer.customerType == 'Split'">
                 <td>Engangsydelse inkl. kontraktoprettelse</td>
-                <td v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">VÆRDI</td>
-                <td v-if="receivedValue.contractValues.oneTimeBenefit">{{ receivedValue.contractValues.oneTimeBenefit }}</td>
+                <td v-if="oneTimeBenefit && contractCreation" v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
+                    {{ oneTimeBenefit + contractCreation }}
+                </td>
+                <td v-else v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
+                    VÆRDI
+                </td>
+                <td v-if="oneTimeBenefit && contractCreation">
+                    {{ oneTimeBenefit + contractCreation }}
+                </td>
                 <td v-else>VÆRDI</td>
             </tr>
 
@@ -39,8 +46,15 @@
 
             <tr>
                 <td>Engangsydelse inkl. kontraktoprettelse</td>
-                <td v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">VÆRDI</td>
-                <td v-if="oneTimeBenefit && contractCreation">{{ oneTimeBenefit + contractCreation }}</td>
+                <td v-if="oneTimeBenefit && contractCreation" v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
+                    {{ oneTimeBenefit + contractCreation }}
+                </td>
+                <td v-else v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
+                    VÆRDI
+                </td>
+                <td v-if="oneTimeBenefit && contractCreation">
+                    {{ oneTimeBenefit + contractCreation }}
+                </td>
                 <td v-else>VÆRDI</td>
             </tr>
 
@@ -58,18 +72,45 @@
 
             <tr>
                 <td>Bilens afskrivning i leasingperioden</td>
-                <td v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">VÆRDI</td>
-                <td>VÆRDI</td>
+                <td v-if="carPrice && receivedValue.contractValues.depreciation" v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
+                    {{ carPrice * (receivedValue.contractValues.depreciation / 100) }}
+                </td>
+                <td v-else-if="carPrice" v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
+                    {{ carPrice * 0.15 }}
+                </td>
+                <td v-else v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
+                    VÆRDI
+                </td>
+                <td v-if="carPrice && receivedValue.contractValues.depreciationn">
+                    {{ carPrice * (receivedValue.contractValues.depreciation / 100) }}
+                </td>
+                <td v-else-if="carPrice">
+                    {{ carPrice * 0.15 }}
+                </td>
+                <td v-else>
+                    VÆRDI
+                </td>
             </tr>
 
             <tr>
                 <td>Restværdi ved udløb</td>
-                <td v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">VÆRDI</td>
-                <td v-if="receivedValue.contractValues.depreciation">
+                <td v-if="carPrice && receivedValue.contractValues.depreciation" v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
+                    {{ carPrice * ((100 - receivedValue.contractValues.depreciation) / 100) }}
+                </td>
+                <td v-else-if="carPrice" v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
+                    {{ carPrice * 0.85 }}
+                </td>
+                <td v-else v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
+                    VÆRDI
+                </td>
+                <td v-if="carPrice && receivedValue.contractValues.depreciation">
                     {{ carPrice * ((100 - receivedValue.contractValues.depreciation) / 100) }} 
                 </td>
-                <td v-else>
+                <td v-else-if="carPrice">
                     {{ carPrice * 0.85 }}
+                </td>
+                <td v-else>
+                    VÆRDI
                 </td>
             </tr>
  
