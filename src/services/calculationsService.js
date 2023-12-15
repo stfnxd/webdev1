@@ -6,11 +6,11 @@ module.exports = {
     const excludedFields = ['Id'];
     const values = [];
 
-    for (const key in data) {
-    if (!excludedFields.includes(key)) {
-    values.push(data[key]);
-  }
-} 
+        for (const key in data) {
+        if (!excludedFields.includes(key)) {
+        values.push(data[key]);
+      }
+    } 
 
     // Use parameterized queries to prevent SQL injection
     var query = `

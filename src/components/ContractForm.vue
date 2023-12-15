@@ -35,6 +35,12 @@
 
         <section>
             <h3>Leasingtager</h3>
+            
+            <div v-show="formData.customer.contractType == 'Genleasing'">
+            <label for="customerId">Kunde Id</label>
+            <input v-model="formData.customerId" @input="emitValue" type="text" id="customerId" class="form-control" name="customerId" placeholder="Indtast kundens id">
+            <button @click="fetchCustomerData">Search</button>
+            </div>
 
             <label for="name">Navn</label>
             <input v-model="formData.customer.name" @input="emitValue" type="text" id="name" class="form-control" name="name"
@@ -74,8 +80,7 @@
 
             <div class="contract-checkbox">
                 <label for="checkboxVATDeath">Momsdød</label>
-                <input v-model="formData.vehicle.vatDeath" @input="emitValue" type="checkbox" id="checkboxVATDeath" name="checkbox"
-                    value="1">
+                <input v-model="formData.vehicle.vatDeath" @input="emitValue" type="checkbox" id="checkboxVATDeath" name="checkbox" value="1">
             </div>
 
             <label for="vehicleType">Type af køretøj</label>
@@ -269,9 +274,8 @@ export default defineComponent({
                 levyPaid: '0',
                 mileage: null,
             },
-            
+            customerId: '', 
         });
-
 
         const showInitialPrice = ref(false); // Use ref for reactive properties
 
@@ -290,34 +294,118 @@ export default defineComponent({
             }
         };
 
-        /*const sendData = () => {
-            myStore.setData(formData);
-        };*/
+
 
         const sendData = async () => {
-             // update  store
             myStore.setData(formData.value);
             try {
+                    // Perform update operations
+                    if (formData.value.contractValues.Id_Køretøjdata) {
+                        const responseVehicle = await axios.put(`http://localhost:5174/api/vehicle/update/${formData.value.contractValues.Id_Køretøjdata}`, formData.value.vehicle);
+                        console.log('Updated vehicle data:', responseVehicle.data);
+                    
                 
-                // Send customer to the first API endpoint and store the auto-incremented ID from the response
-                const responseFirstAPI = await axios.post('http://localhost:5174/api/vehicle/add', formData.value.vehicle);
-                const vehicleId = responseFirstAPI.data.insertId;
+                        if (formData.value.customer.Id_Kontraktværdier) {
+                            const responseContractValues = await axios.put(`http://localhost:5174/api/contractValues/update/${formData.value.customer.Id_Kontraktværdier}`, formData.value.contractValues);
+                            console.log('Updated data:', responseContractValues.data);
+                        }
 
-                // Update formData contractValues with the obtained vehicle ID, send contractValues to second API and store the auto-incremented ID from the response
-                formData.value.contractValues.Id_Køretøjdata = vehicleId;
-                const responseSecondAPI = await axios.post('http://localhost:5174/api/contractValues/add', formData.value.contractValues);
-                const contractValuesId = responseSecondAPI.data.insertId;
+                        if (formData.value.customerId) {
+                            const responseCustomer = await axios.put(`http://localhost:5174/api/customer/update/${formData.value.customerId}`, formData.value.customer);
+                            console.log('Updated customer data:', responseCustomer.data);
+                    }
+
+                    } else {
+
+                        // Send customer to the first API endpoint and store the auto-incremented ID from the response
+                        const responseFirstAPI = await axios.post('http://localhost:5174/api/vehicle/add', formData.value.vehicle);
+                        const vehicleId = responseFirstAPI.data.insertId;
+
+                        // Update formData contractValues with the obtained vehicle ID, send contractValues to second API and store the auto-incremented ID from the response
+                        formData.value.contractValues.Id_Køretøjdata = vehicleId;
+                        const responseSecondAPI = await axios.post('http://localhost:5174/api/contractValues/add', formData.value.contractValues);
+                        const contractValuesId = responseSecondAPI.data.insertId;
+                        
+                        // Update formData customer with the obtained contractValues ID, send vehicle to the third API endpoint
+                        formData.value.customer.Id_Kontraktværdier = contractValuesId;
+                        const responseThirdAPI = await axios.post('http://localhost:5174/api/customer/add', formData.value.customer);
                 
-                // Update formData customer with the obtained contractValues ID, send vehicle to the third API endpoint
-                formData.value.customer.Id_Kontraktværdier = contractValuesId;
-                const responseThirdAPI = await axios.post('http://localhost:5174/api/customer/add', formData.value.customer);
+                    }
 
-                // Log the responses (you might want to handle these responses according to your needs)
-                console.log('Response from API 1:', responseFirstAPI.data);
-                console.log('Response from API 2:', responseSecondAPI.data);
-                console.log('Response from API 3:', responseThirdAPI.data);
+                    // Log the responses (you might want to handle these responses according to your needs)
+                    console.log('Response from API 1:', responseFirstAPI.data);
+                    console.log('Response from API 2:', responseSecondAPI.data);
+                    console.log('Response from API 3:', responseThirdAPI.data);
+                } catch (error) {
+                    console.error('Error sending data:', error);
+                }
+            };
+
+        // New method to fetch customer data based on ID
+        const fetchCustomerData = async () => {
+        try {
+                // Validate if searchCustomerId is not empty
+                if (!formData.value.customerId) {
+                    console.error('Please enter a Customer ID');
+                    return;
+                }
+
+                // Send a request to the server to fetch data based on the entered customer ID
+                const response = await axios.get(`http://localhost:5174/api/customer/${customerId.value}`);
+            
+                // Check if there's data in the response
+                if (response.data.length > 0) {
+                    const fetchedData = response.data[0];
+
+                    formData.value.customerId = formData.value.customerId;
+                    // Update the formData with the fetched data from 'leasingtager' table
+                    formData.value.customer.Id_Kontraktværdier = fetchedData.Id_Kontraktværdier;
+                    formData.value.customer.name = fetchedData.Navn;
+                    formData.value.customer.email = fetchedData.Email;
+                    formData.value.customer.under25 = Boolean(fetchedData.Under_25);
+                    formData.value.customer.customerType = fetchedData.Kundetype;
+                    formData.value.customer.contractType = 'Genleasing';
+                    formData.value.customer.startDate = null,
+                    formData.value.customer.season = Boolean(fetchedData.Sæson);
+                    formData.value.customer.import = '0',
+
+                    formData.value.contractValues = {
+                        Id_Køretøjdata: fetchedData.Id_Køretøjdata,
+                        salePrice: fetchedData.Udsalgspris,
+                        cost: fetchedData.Kostpris,
+                        estimatedMarketValue: fetchedData.Handelsværdi_DK,       
+                        residualValue: fetchedData.Restværdihæftelse,
+                        cashPrice: fetchedData.Kontantpris,
+                        runningTime: fetchedData.Løbetid,
+                        activeRunningTime: fetchedData.Kontraktens_Løbetid,
+                        interestRate: fetchedData.Rente,
+                        contractCreation: fetchedData.Kontraktoprettelse,
+                        oneTimeBenefit: fetchedData.Engangsydelse,
+                        deposit: fetchedData.Depositum,
+                        depreciation: fetchedData.Afskrivning,
+                        commission: fetchedData.Provision,
+                        privateShare: fetchedData.Privat_Andel,
+                        registrationFee: fetchedData.Registeringsafgift
+                    };
+
+                    formData.value.vehicle = {
+                        frameNumber: fetchedData.Id_Stelnummer,
+                        vehicle: fetchedData.Køretøj,
+                        newVehicle: '0',
+                        firstRegistrationDate: null,
+                        initialPrice: fetchedData.Nypris,
+                        vatDeath: Boolean(fetchedData.Momsdød),
+                        vehicleType: fetchedData.Type,
+                        levyPaid: Boolean(fetchedData.Fuld_Afgift),
+                        mileage: fetchedData.Kilometerafstand,
+                    };
+                    
+                    console.log('Fetched customer data:', formData.value);
+                } else {
+                    console.error('No data found for customer');
+                }
             } catch (error) {
-                console.error('Error sending data:', error);
+                console.error('Error fetching customer data:', error);
             }
         };
 
@@ -326,34 +414,20 @@ export default defineComponent({
             sendData,
             checkDate,
             showInitialPrice,
+            fetchCustomerData,
         };
     },
+
     name: 'ContractForm',
     methods: {
         emitValue() {
-            this.$emit('input-updated', this.formData); // Emit the input value
+                this.$emit('input-updated', this.formData); // Emit the input value
         },
     },
     mounted() {
         this.emitValue(); // Call emitValue method when the component is mounted
     }
 });
-
-/*export default {
-    name: 'ContractForm',
-
-    data() {
-        return {
-            inputValue: ''
-        };
-    },
-    methods: {
-        emitValue() {
-            console.log('Emitting value:', this.inputValue);
-            this.$emit('input-updated', this.inputValue); // Emit the input value
-        }
-    }
-} */
 
 </script>
 

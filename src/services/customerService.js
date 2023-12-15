@@ -48,4 +48,25 @@ module.exports = {
       throw error;
     }
   },
+
+  // Function to update customer data, customer Id
+  updateCustomerData: async (id, updatedValues) => {
+
+    var query = `
+    UPDATE leasingtager
+    SET Id_Kontraktværdier = ?, Navn = ?, Email = ?, Under_25 = ?, Kundetype = ?, Kontrakttype = ?, Tilbudsdato = ?, Sæson = ?, Import = ?
+    WHERE Id = ?`;
+
+    const valuesArray = [...Object.values(updatedValues), id];
+
+    try {
+      const response = await execute(query, valuesArray);
+      console.log('Customer data updated successfully', response);
+
+      return response;
+    } catch (error) {
+      console.error('Error updating customer data:', error);
+      throw error;
+    }
+  },
 };

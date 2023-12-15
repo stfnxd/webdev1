@@ -1,5 +1,6 @@
 // contractValuesService.js
 const { execute } = require('../../Database/database.js');
+
 module.exports = {
   // Function to add contractValues
   addContractValues: async (data) => {
@@ -32,4 +33,24 @@ module.exports = {
     }
   },
 
+  // Logic to update contractValues by ID
+  updateContractValues: async (id, updatedValues) => {
+
+    var query = `
+    UPDATE kontrakt_værdier
+    SET Id_Køretøjdata = ?, Udsalgspris = ?, Kostpris = ?, Handelsværdi_DK = ?, Restværdihæftelse = ?, Kontantpris = ?, Løbetid = ?, Kontraktens_Løbetid = ?, Rente = ?, Kontraktoprettelse = ?, Engangsydelse = ?, Depositum = ?, Afskrivning = ?, Provision = ?, Privat_Andel = ?, Registeringsafgift = ?
+    WHERE Id = ?`;
+
+    const valuesArray = [...Object.values(updatedValues), id];
+
+    try {
+      const response = await execute(query, valuesArray);
+      console.log('ContractValues data updated successfully', response);
+
+      return response;
+    } catch (error) {
+      console.error('Error updating contractValues data:', error);
+      throw error;
+    }
+  }
 };
