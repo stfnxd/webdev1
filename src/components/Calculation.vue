@@ -291,11 +291,11 @@ export default defineComponent({
         oneTimeBenefit() {
             const oneTimeBenefitPercent = this.receivedValue.contractValues.oneTimeBenefit;
             const contractType = this.receivedValue.customer.contractType;
-            if (contractType != 'Stilstand' && !oneTimeBenefitPercent) {
+            if (contractType != 'Stilstand' && oneTimeBenefitPercent == null || oneTimeBenefitPercent == '') {
                 return this.carPrice * 0.20;
-            } else if (contractType == 'Stilstand' & !oneTimeBenefitPercent) {
+            } else if (contractType == 'Stilstand') {
                 return this.carPrice * 0;
-            } else if (contractType != 'Stilstand' && oneTimeBenefitPercent) {
+            } else if (contractType != 'Stilstand' && oneTimeBenefitPercent != null || oneTimeBenefitPercent != '') {
                 return this.carPrice * (oneTimeBenefitPercent / 100);
             }
         },
