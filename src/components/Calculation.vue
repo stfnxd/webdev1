@@ -2,7 +2,7 @@
     <section class="calculation col-7">
         <h2>Beregning</h2>
         <div>
-            <p>Input value for calculation: {{ receivedValue }}</p>
+            <p>Input value for calculation: {{ oneTimeBenefit }}</p>
         </div>
 
         <table>
@@ -40,9 +40,8 @@
             <tr>
                 <td>Engangsydelse inkl. kontraktoprettelse</td>
                 <td v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">VÆRDI</td>
-                <td v-if="!receivedValue.contractValues.oneTimeBenefit && receivedValue.customer.contractType == 'Stilstand'">Engangsydelse er 0%</td>
-                <td v-else-if="!receivedValue.contractValues.oneTimeBenefit && receivedValue.customer.contractType != 'Stilstand'">Engangsydelse er 20%</td>
-                <td v-else>{{ carPrice * (receivedValue.contractValues.oneTimeBenefit / 100) + ' KONTRaktoprettelse' }}</td>
+                <td v-if="oneTimeBenefit && contractCreation">{{ oneTimeBenefit + contractCreation }}</td>
+                <td v-else>VÆRDI</td>
             </tr>
 
             <tr>
@@ -132,10 +131,7 @@
             <tr>
                 <td>Kontraktoprettelse</td>
                 <td v-if="receivedValue.contractValues.contractCreation">{{ receivedValue.contractValues.contractCreation }}</td>
-                <td v-else-if="receivedValue.customer.customerType == 'Split' && receivedValue.customer.import">{{ 10500 + 12500 + 2500 + (700 * receivedValue.contractValues.runningTime)}}</td>
-                <td v-else-if="receivedValue.customer.customerType == 'Split'">{{ 12500 + 2500 + (700 * receivedValue.contractValues.runningTime)}}</td>
-                <td v-else-if="receivedValue.customer.import != false">{{ 10500 + 2500 }}</td>
-                <td v-else>2500</td>
+                <td v-else>{{ contractCreation }}</td>
             </tr>
 
             <tr>
@@ -291,6 +287,31 @@ export default defineComponent({
             } else {
                 return this.receivedValue.contractValues.salePrice;
             }
+        },
+        oneTimeBenefit() {
+            const oneTimeBenefitPercent = this.receivedValue.contractValues.oneTimeBenefit;
+            const contractType = this.receivedValue.customer.contractType;
+            if (contractType != 'Stilstand' && !oneTimeBenefitPercent) {
+                return this.carPrice * 0.20;
+            } else if (contractType == 'Stilstand' & !oneTimeBenefitPercent) {
+                return this.carPrice * 0;
+            } else if (contractType != 'Stilstand' && oneTimeBenefitPercent) {
+                return this.carPrice * (oneTimeBenefitPercent / 100);
+            }
+        },
+        contractCreation() {
+            const customerType = this.receivedValue.customer.customerType;
+            const isImport = this.receivedValue.customer.import;
+            if (customerType == 'Split' && isImport == true) {
+                return 10500 + 12500 + 2500 + (700 * this.receivedValue.contractValues.runningTime);
+            } else if (customerType == 'Split') {
+                return 12500 + 2500 + (700 * this.receivedValue.contractValues.runningTime);
+            } else if (isImport == true){
+                return 10500 + 2500;
+            } else {
+                return 2500;
+            }
+
         }
     }
 });
@@ -341,4 +362,3 @@ export default defineComponent({
 
 
 </style>
-   90
