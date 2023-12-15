@@ -7,4 +7,7 @@ const router = express.Router();
 // ContractValues add API route
 router.post('/add', contractValuesController.addContractValues);
 
+// ContractValues update API route
+router.put('/update/:id', contractValuesController.updateContractValues);
+
 module.exports = router;

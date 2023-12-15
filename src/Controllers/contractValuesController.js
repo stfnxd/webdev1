@@ -13,4 +13,18 @@ module.exports = {
     }
   },
 
+  updateContractValues: async (req, res) => {
+    try {
+      const id = req.params.id;
+      const updatedValues = req.body;
+
+      // Logic to handle updating contractValues
+      const result = await contractValuesService.updateContractValues(id, updatedValues);
+      res.json(result);
+    } catch (error) {
+      console.error('Error updating contractValues:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  },
+
 };

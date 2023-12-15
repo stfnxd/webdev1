@@ -12,4 +12,18 @@ module.exports = {
     }
   },
   
+  updateVehicleData: async (req, res) => {
+    try {
+      const id = req.params.id;
+      const updatedValues = req.body;
+
+      // Logic to handle updating vehicle data
+      const result = await vehicleService.updateVehicleData(id, updatedValues);
+      res.json(result);
+    } catch (error) {
+      console.error('Error updating vehicle data:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  },
+
 };

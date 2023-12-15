@@ -1,6 +1,5 @@
 // vehicleService.js
 const { execute } = require('../../Database/database.js');
-const contractValuesService = require('./contractValuesService.js');
 
 module.exports = {
   addVehicleData: async (data) => {
@@ -30,5 +29,26 @@ module.exports = {
           console.error('Error saving vehicle data:', error);
           throw error;
         }
+  },
+
+  // Function to update vehicle data, vehicle Id
+  updateVehicleData: async (id, updatedValues) => {
+
+    var query = `
+    UPDATE køretøjdata
+    SET Id_Stelnummer = ?, Køretøj = ?, NytKøretøj = ?, RegDato = ?, Nypris = ?, Momsdød = ?, Type = ?, Fuld_Afgift = ?, Kilometerafstand = ?
+    WHERE Id = ?`;
+
+    const valuesArray = [...Object.values(updatedValues), id];
+
+    try {
+      const response = await execute(query, valuesArray);
+      console.log('Vehicle data updated successfully', response);
+
+      return response;
+    } catch (error) {
+      console.error('Error updating vehicle data:', error);
+      throw error;
+    }
   },
 };
