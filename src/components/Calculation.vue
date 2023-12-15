@@ -2,26 +2,27 @@
     <section class="calculation col-7">
         <h2>Beregning</h2>
         <div>
-            <p>Input value for calculation: {{ carPrice }}</p>
+            <p>Input value for calculation: {{ receivedValue }}</p>
         </div>
 
         <table>
             <tr>
                 <th>Overblik leasingtilbud</th>
-                <th v-show="receivedValue && receivedValue.customer && (receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split')">Inkl. moms</th>
+                <th v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">Inkl. moms</th>
                 <th>Ekskl. moms</th>
             </tr>
 
-            <tr v-show="receivedValue && receivedValue.customer && (receivedValue.customer.customerType == 'Split')">
+            <tr v-show="receivedValue.customer.customerType == 'Split'">
                 <td><b>Leasingydelse - erhverv</b></td>
-                <td v-show="receivedValue && receivedValue.customer && (receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split')"></td>
+                <td v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'"></td>
                 <td></td>
             </tr>
 
             <tr v-show="receivedValue.customer.customerType == 'Split'">
                 <td>Engangsydelse inkl. kontraktoprettelse</td>
                 <td v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">VÆRDI</td>
-                <td>{{ receivedValue.contractValues.oneTimeBenefit }}</td>
+                <td v-if="receivedValue.contractValues.oneTimeBenefit">{{ receivedValue.contractValues.oneTimeBenefit }}</td>
+                <td v-else>VÆRDI</td>
             </tr>
 
             <tr v-show="receivedValue.customer.customerType == 'Split'">
@@ -41,7 +42,7 @@
                 <td v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">VÆRDI</td>
                 <td v-if="!receivedValue.contractValues.oneTimeBenefit && receivedValue.customer.contractType == 'Stilstand'">Engangsydelse er 0%</td>
                 <td v-else-if="!receivedValue.contractValues.oneTimeBenefit && receivedValue.customer.contractType != 'Stilstand'">Engangsydelse er 20%</td>
-                <td v-else>{{ receivedValue.contractValues.oneTimeBenefit }}</td>
+                <td v-else>{{ carPrice * (receivedValue.contractValues.oneTimeBenefit / 100) + ' KONTRaktoprettelse' }}</td>
             </tr>
 
             <tr>
@@ -65,13 +66,12 @@
             <tr>
                 <td>Restværdi ved udløb</td>
                 <td v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">VÆRDI</td>
-                <td v-if="receivedValue.contractValues.depreciation && receivedValue.contractValues.salePrice">
-                    {{ receivedValue.contractValues.salePrice * ((100 - receivedValue.contractValues.depreciation) / 100) }} 
+                <td v-if="receivedValue.contractValues.depreciation">
+                    {{ carPrice * ((100 - receivedValue.contractValues.depreciation) / 100) }} 
                 </td>
-                <td v-else-if="receivedValue.contractValues.salePrice && receivedValue.contractValues.runningTime">
-                    {{ receivedValue.contractValues.salePrice * (0.85 / 12 * receivedValue.contractValues.runningTime) }}
+                <td v-else>
+                    {{ carPrice * 0.85 }}
                 </td>
-                <td v-else>VÆRDI</td>
             </tr>
  
             <tr>
@@ -134,7 +134,7 @@
                 <td v-if="receivedValue.contractValues.contractCreation">{{ receivedValue.contractValues.contractCreation }}</td>
                 <td v-else-if="receivedValue.customer.customerType == 'Split' && receivedValue.customer.import">{{ 10500 + 12500 + 2500 + (700 * receivedValue.contractValues.runningTime)}}</td>
                 <td v-else-if="receivedValue.customer.customerType == 'Split'">{{ 12500 + 2500 + (700 * receivedValue.contractValues.runningTime)}}</td>
-                <td v-else-if="receivedValue.customer.import">{{ 10500 + 2500 }}</td>
+                <td v-else-if="receivedValue.customer.import != false">{{ 10500 + 2500 }}</td>
                 <td v-else>2500</td>
             </tr>
 
@@ -167,9 +167,8 @@
             
             <tr v-show="receivedValue.customer.contractType == 'Nytegning' || receivedValue.customer.import == true">
                 <td>Stålgevinst/valutakursgevinst</td>
-                <td v-if="receivedValue.customer.import">{{ (receivedValue.contractValues.salePrice * 7.46) - (receivedValue.contractValues.cost * 7.46) }}</td>
-                <td v-else-if="!receivedValue.customer.import">{{ receivedValue.contractValues.salePrice - receivedValue.contractValues.cost }}</td>
-                <td v-else>VÆRDI</td>
+                <td v-if="receivedValue.customer.import == true">{{ (receivedValue.contractValues.salePrice * 7.46) - (receivedValue.contractValues.cost * 7.46) }}</td>
+                <td v-else>{{ receivedValue.contractValues.salePrice - receivedValue.contractValues.cost }}</td>
             </tr>
 
             <tr v-show="receivedValue.customer.contractType == 'Nytegning' || receivedValue.customer.import == true">
@@ -242,43 +241,43 @@ export default defineComponent({
             type: Object,
             default: () => ({
                 contractValues: {
-                salePrice: '',
-                cost: '',
-                estimatedMarketValue: '',
-                residualValue: '',
-                cashPrice: '',
-                runningTime: '',
-                activeRunningTime: '',
-                interestRate: '',
-                contractCreation: '',
-                oneTimeBenefit: '',
-                deposit: '',
-                depreciation: '',
-                commission: '',
-                privateShare: '',
-                registrationFee: ''
-            },
-            customer: {
-                name: '',
-                email: '',
-                under25: '',
-                customerType: '',
-                contractType: '',
-                startDate: '',
-                season: '',
-                import: '',
-            },
-            vehicle: {
-                vehicle: '',
-                newVehicle: '',
-                firstRegistrationDate: '',
-                initialPrice: '',
-                vatDeath: '',
-                vehicleType: '',
-                levyPaid: '',
-                mileage: '',
-            },
-            frameNumber: '',
+                    salePrice: '',
+                    cost: '',
+                    estimatedMarketValue: '',
+                    residualValue: '',
+                    cashPrice: '',
+                    runningTime: '',
+                    activeRunningTime: '',
+                    interestRate: '',
+                    contractCreation: '',
+                    oneTimeBenefit: '',
+                    deposit: '',
+                    depreciation: '',
+                    commission: '',
+                    privateShare: '',
+                    registrationFee: ''
+                },
+                customer: {
+                    name: '',
+                    email: '',
+                    under25: '',
+                    customerType: '',
+                    contractType: '',
+                    startDate: '',
+                    season: '',
+                    import: '',
+                },
+                vehicle: {
+                    frameNumber: '',
+                    vehicle: '',
+                    newVehicle: '',
+                    firstRegistrationDate: '',
+                    initialPrice: '',
+                    vatDeath: '',
+                    vehicleType: '',
+                    levyPaid: '',
+                    mileage: '',
+                }
             })
         }
     },

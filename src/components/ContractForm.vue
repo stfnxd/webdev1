@@ -71,11 +71,9 @@
                 <label for="checkboxLevyPaid">Fuld afgift betalt</label>
                 <input v-model="formData.vehicle.levyPaid" @input="emitValue" type="checkbox" id="checkboxLevyPaid" name="checkbox"
                     value="1">
-
             </div>
 
             <div class="contract-checkbox">
-
                 <label for="checkboxVATDeath">Momsdød</label>
                 <input v-model="formData.vehicle.vatDeath" @input="emitValue" type="checkbox" id="checkboxVATDeath" name="checkbox"
                     value="1">
@@ -96,7 +94,7 @@
             <input v-model="formData.vehicle.frameNumber" @input="emitValue" type="number" id="framenumber" class="form-control"
                 name="framenumber" placeholder="Indtast stelnummer">
 
-            <div v-show="!formData.vehicle.newVehicle">
+            <div v-show="formData.vehicle.newVehicle == false">
                 <label for="firstRegistrationDate">1. Indregistreringsdato</label>
                 <input v-model="formData.vehicle.firstRegistrationDate" @input="checkDate" type="date" id="firstRegistrationDate"
                     name="firstRegistrationDate" />
@@ -107,7 +105,7 @@
                 name="mileage" placeholder="Indtast kilometerstand">
 
             <div v-show="formData.customer.contractType != 'Stilstand'">
-                <div v-if="formData.customer.contractType == 'Nytegning' && formData.customer.import">
+                <div v-if="formData.customer.contractType == 'Nytegning' && formData.customer.import == true">
                     <label for="salePrice">Udsalgspris i €</label>
                     <input v-model="formData.contractValues.salePrice" @input="emitValue" type="number" id="salePrice" class="form-control"
                         name="salePrice" placeholder="Indtast udsalgspris i €">
@@ -119,7 +117,7 @@
                 </div>
             </div>
             <div v-show="formData.customer.customerType == 'Split' || formData.customer.contractType == 'Nytegning'">
-                <div v-if="formData.customer.import">
+                <div v-if="formData.customer.import == true">
                     <label for="cost">Kostpris i €</label>
                     <input v-model="formData.contractValues.cost" @input="emitValue" type="number" id="cost" class="form-control"
                         name="cost" placeholder="Indtast kostpris i €">
@@ -150,7 +148,7 @@
                     name="cashPrice" placeholder="Indtast kontantpris">
             </div>
 
-            <div v-show="formData.customer.contractType != 'Stilstand' && formData.customer.contractType != '' && !formData.vehicle.levyPaid">
+            <div v-show="formData.customer.contractType != 'Stilstand' && formData.customer.contractType != '' && formData.vehicle.levyPaid == false">
                 <label for="registrationFee">Anslået registreringsafgift</label>
                 <input v-model="formData.contractValues.registrationFee" @input="emitValue" type="number" id="registrationFee"
                     class="form-control" name="registrationFee" placeholder="Indtast anslået registreringsafgift">
@@ -172,7 +170,7 @@
             <input v-model="formData.contractValues.runningTime" @input="emitValue" type="number" id="running-time" class="form-control"
                 name="run-time" placeholder="Indtast løbetid i måneder">
 
-            <div v-show="formData.customer.season && formData.customer.customerType != 'Split' && formData.customer.contractType != 'Stilstand'">
+            <div v-show="formData.customer.season != false && formData.customer.customerType != 'Split' && formData.customer.contractType != 'Stilstand'">
                 <label for="active-running-time">Aktiv periode i kontraktens løbetid (i måneder)</label>
                 <input v-model="formData.contractValues.activeRunningTime" @input="emitValue" type="number" id="active-running-time"
                     class="form-control" name="active-running-time"
@@ -189,7 +187,7 @@
 
             <div v-if="formData.customer.contractType != 'Stilstand'">
                 <label for="one-time-benefit">Engangsydelse i procent, ex. moms (min. 20% - max. 30%)</label>
-                <input v-model="formData.oneTimeBenefit" @input="emitValue" type="number" id="one-time-benefit"
+                <input v-model="formData.contractValues.oneTimeBenefit" @input="emitValue" type="number" id="one-time-benefit"
                     class="form-control" name="one-time-benefit" placeholder="20%" min="20" max="30">
             </div>
             <div v-else>
@@ -298,6 +296,8 @@ export default defineComponent({
         };*/
 
         const sendData = async () => {
+             // update  store
+            myStore.setData(formData.value);
             try {
                 
                 // Send customer to the first API endpoint and store the auto-incremented ID from the response
@@ -312,9 +312,6 @@ export default defineComponent({
                 // Update formData customer with the obtained contractValues ID, send vehicle to the third API endpoint
                 formData.value.customer.Id_Kontraktværdier = contractValuesId;
                 const responseThirdAPI = await axios.post('http://localhost:5174/api/customer/add', formData.value.customer);
-            
-                // Optionally, update your store or handle other logic based on the responses
-                myStore.setData(formData.value);
 
                 // Log the responses (you might want to handle these responses according to your needs)
                 console.log('Response from API 1:', responseFirstAPI.data);

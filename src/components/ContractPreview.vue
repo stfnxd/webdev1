@@ -145,7 +145,7 @@ export default defineComponent({
         let wrongStartDateSplit = wrongStartDate.split('-');
         let correctStartDate = `${wrongStartDateSplit[2]}.${wrongStartDateSplit[1]}.${wrongStartDateSplit[0]}`;
 
-        let wrongFirstRegistrationDate = receivedData.value.firstRegistrationDate;
+        let wrongFirstRegistrationDate = receivedData.value.vehicle.firstRegistrationDate;
         let wrongFirstRegistrationDateSplit = wrongFirstRegistrationDate.split('-');
         let correctFirstRegistrationDate = `${wrongFirstRegistrationDateSplit[2]}.${wrongFirstRegistrationDateSplit[1]}.${wrongFirstRegistrationDateSplit[0]}`;
 
