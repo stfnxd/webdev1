@@ -2,7 +2,7 @@
     <section class="calculation col-7">
         <h2>Beregning</h2>
         <div>
-            <p>Input value for calculation: {{ oneTimeBenefit }}</p>
+            <p>Input value for calculation: {{ staalGevinstValutaKursGevinst }}</p>
         </div>
 
         <table>
@@ -20,14 +20,14 @@
 
             <tr v-show="receivedValue.customer.customerType == 'Split'">
                 <td>Engangsydelse inkl. kontraktoprettelse</td>
-                <td v-if="oneTimeBenefit && contractCreation" v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
-                    {{ oneTimeBenefit + contractCreation }}
+                <td v-if="engangsYdelseInklKontraktOprettelse" v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
+                    {{ engangsYdelseInklKontraktOprettelse }}
                 </td>
                 <td v-else v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
                     VÆRDI
                 </td>
-                <td v-if="oneTimeBenefit && contractCreation">
-                    {{ oneTimeBenefit + contractCreation }}
+                <td v-if="engangsYdelseInklKontraktOprettelse">
+                    {{ engangsYdelseInklKontraktOprettelse }}
                 </td>
                 <td v-else>VÆRDI</td>
             </tr>
@@ -46,14 +46,14 @@
 
             <tr>
                 <td>Engangsydelse inkl. kontraktoprettelse</td>
-                <td v-if="oneTimeBenefit && contractCreation" v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
-                    {{ oneTimeBenefit + contractCreation }}
+                <td v-if="engangsYdelseInklKontraktOprettelse" v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
+                    {{ engangsYdelseInklKontraktOprettelse }}
                 </td>
                 <td v-else v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
                     VÆRDI
                 </td>
-                <td v-if="oneTimeBenefit && contractCreation">
-                    {{ oneTimeBenefit + contractCreation }}
+                <td v-if="engangsYdelseInklKontraktOprettelse">
+                    {{ engangsYdelseInklKontraktOprettelse }}
                 </td>
                 <td v-else>VÆRDI</td>
             </tr>
@@ -72,20 +72,14 @@
 
             <tr>
                 <td>Bilens afskrivning i leasingperioden</td>
-                <td v-if="carPrice && receivedValue.contractValues.depreciation" v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
-                    {{ carPrice * (receivedValue.contractValues.depreciation / 100) }}
-                </td>
-                <td v-else-if="carPrice" v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
-                    {{ carPrice * 0.15 }}
+                <td v-if="bilensAfskrivning" v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
+                    {{ bilensAfskrivning }}
                 </td>
                 <td v-else v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
                     VÆRDI
                 </td>
-                <td v-if="carPrice && receivedValue.contractValues.depreciationn">
-                    {{ carPrice * (receivedValue.contractValues.depreciation / 100) }}
-                </td>
-                <td v-else-if="carPrice">
-                    {{ carPrice * 0.15 }}
+                <td v-if="bilensAfskrivning">
+                    {{ bilensAfskrivning }}
                 </td>
                 <td v-else>
                     VÆRDI
@@ -94,20 +88,14 @@
 
             <tr>
                 <td>Restværdi ved udløb</td>
-                <td v-if="carPrice && receivedValue.contractValues.depreciation" v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
-                    {{ carPrice * ((100 - receivedValue.contractValues.depreciation) / 100) }}
-                </td>
-                <td v-else-if="carPrice" v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
-                    {{ carPrice * 0.85 }}
+                <td v-if="restVaerdi" v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
+                    {{ restVaerdi }}
                 </td>
                 <td v-else v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
                     VÆRDI
                 </td>
-                <td v-if="carPrice && receivedValue.contractValues.depreciation">
-                    {{ carPrice * ((100 - receivedValue.contractValues.depreciation) / 100) }} 
-                </td>
-                <td v-else-if="carPrice">
-                    {{ carPrice * 0.85 }}
+                <td v-if="restVaerdi">
+                    {{ restVaerdi }} 
                 </td>
                 <td v-else>
                     VÆRDI
@@ -204,8 +192,8 @@
             
             <tr v-show="receivedValue.customer.contractType == 'Nytegning' || receivedValue.customer.import == true">
                 <td>Stålgevinst/valutakursgevinst</td>
-                <td v-if="receivedValue.customer.import == true">{{ (receivedValue.contractValues.salePrice * 7.46) - (receivedValue.contractValues.cost * 7.46) }}</td>
-                <td v-else>{{ receivedValue.contractValues.salePrice - receivedValue.contractValues.cost }}</td>
+                <td v-if="staalGevinstValutaKursGevinst">{{ staalGevinstValutaKursGevinst }}</td>
+                <td v-else>VÆRDI</td>
             </tr>
 
             <tr v-show="receivedValue.customer.contractType == 'Nytegning' || receivedValue.customer.import == true">
@@ -352,7 +340,34 @@ export default defineComponent({
             } else {
                 return 2500;
             }
-
+        },
+        engangsYdelseInklKontraktOprettelse() {
+            if (this.oneTimeBenefit && this.contractCreation) {
+                return this.oneTimeBenefit + this.contractCreation;
+            }
+        },
+        bilensAfskrivning() {
+            const depreciation = this.receivedValue.contractValues.depreciation;
+            if (this.carPrice && depreciation) {
+                return this.carPrice * (depreciation / 100)
+            } else if (this.carPrice) {
+                return this.carPrice * 0.15;
+            }
+        },
+        restVaerdi() {
+            if (this.carPrice && this.bilensAfskrivning) {
+                return this.carPrice - this.bilensAfskrivning;
+            }
+        },
+        staalGevinstValutaKursGevinst() {
+            const isImport = this.receivedValue.customer.import;
+            const salePrice = this.receivedValue.contractValues.salePrice;
+            const cost = this.receivedValue.contractValues.cost;
+            if (isImport == true && salePrice && cost) {
+                return (salePrice * 7.46) - (cost * 7.46);
+            } else if (isImport == false && salePrice && cost) {
+                return salePrice - cost;
+            }
         }
     }
 });
