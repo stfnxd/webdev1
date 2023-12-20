@@ -1,5 +1,6 @@
 <template>
     <section class="calculation col-7">
+        <!-- TODO: Gennemgå navne og computed properties. -->
         <h2>Beregning</h2>
         <div>
             <p>Input value for calculation: {{ staalGevinstValutaKursGevinst }}</p>
@@ -306,7 +307,41 @@ export default defineComponent({
             })
         }
     },
+
+
+
     computed: {
+        // Bruges til at udregne måneder mellem start og slut dato
+        monthsBetweenDates() {
+            const startDate = new Date(this.receivedValue.vehicle.firstRegistrationDate);
+            const endDate = this.currentDate;
+            // TODO: Kig på om endDate er current date?
+
+            const start = new Date(startDate);
+            const end = new Date(endDate);
+
+            // Beregn antal måneder
+            return (end.getFullYear() - start.getFullYear()) * 12 + end.getMonth() - start.getMonth();
+        },
+               //Moms fradrag i måneden 
+        // Momsfradrag pr. måned = 0.25 * Anslået registreringsafgift * (0.02 * Antal måneder under 36 måneder + 0.01 * Antal måneder over eller lig med 36 måneder)
+        momsMonth() {
+            const registrationFee = this.receivedValue.contractValues.registrationFee;
+
+            if (registrationFee) {
+            const monthsUnder36 = Math.min(this.monthsBetweenDates, 36);
+            const monthsOver36 = Math.max(this.monthsBetweenDates - 36, 0);
+
+            const momsWithin36Months = 0.25 * registrationFee * 0.02 * monthsUnder36;
+            const momsOver36Months = 0.25 * registrationFee * 0.01 * monthsOver36;
+
+            return (momsWithin36Months + momsOver36Months).toFixed(2);
+            } else {
+            return 0;
+            }
+        },
+
+        // Bilens pris
         carPrice() {
             const contractType = this.receivedValue.customer.contractType;
             if (contractType === 'Pristjek') {
@@ -317,6 +352,8 @@ export default defineComponent({
                 return this.receivedValue.contractValues.salePrice;
             }
         },
+
+        // Engangsydelse
         oneTimeBenefit() {
             const oneTimeBenefitPercent = this.receivedValue.contractValues.oneTimeBenefit;
             const contractType = this.receivedValue.customer.contractType;
@@ -328,25 +365,31 @@ export default defineComponent({
                 return this.carPrice * (oneTimeBenefitPercent / 100);
             }
         },
+
+        // Kontrakt oprettelse
         contractCreation() {
             const customerType = this.receivedValue.customer.customerType;
             const isImport = this.receivedValue.customer.import;
             if (customerType == 'Split' && isImport == true) {
-                return 10500 + 12500 + 2500 + (700 * this.receivedValue.contractValues.runningTime);
+                return 10500 + 12500 + 2500 + (700 * this.contractRunTime);
             } else if (customerType == 'Split') {
-                return 12500 + 2500 + (700 * this.receivedValue.contractValues.runningTime);
+                return 12500 + 2500 + (700 * this.contractRunTime);
             } else if (isImport == true){
                 return 10500 + 2500;
             } else {
                 return 2500;
             }
         },
-        engangsYdelseInklKontraktOprettelse() {
+
+        // Engangsydelse + kontrakt oprettelse
+        oneTimeBenefitWithContractCreation() {
             if (this.oneTimeBenefit && this.contractCreation) {
                 return this.oneTimeBenefit + this.contractCreation;
             }
         },
-        bilensAfskrivning() {
+
+        // Bilens afskrivning
+        carDepreciation() {
             const depreciation = this.receivedValue.contractValues.depreciation;
             if (this.carPrice && depreciation) {
                 return this.carPrice * (depreciation / 100)
@@ -354,11 +397,14 @@ export default defineComponent({
                 return this.carPrice * 0.15;
             }
         },
-        restVaerdi() {
-            if (this.carPrice && this.bilensAfskrivning) {
-                return this.carPrice - this.bilensAfskrivning;
+
+        // Restværdi
+        resValue() {
+            if (this.carPrice && this.carDepreciation) {
+                return this.carPrice - this.carDepreciation;
             }
         },
+
         staalGevinstValutaKursGevinst() {
             const isImport = this.receivedValue.customer.import;
             const salePrice = this.receivedValue.contractValues.salePrice;
@@ -368,7 +414,60 @@ export default defineComponent({
             } else if (isImport == false && salePrice && cost) {
                 return salePrice - cost;
             }
-        }
+        },
+
+        // Forholdsmæssig afgift
+        // TODO: kig på at lave udregning af forholdsmæssig afgift
+        proportionateTax() {
+            return 0;
+        },
+ 
+        // Finansering
+        financing() {
+            return ((this.carPrice + this.proportionateTax - this.oneTimeBenefit - this.deposit) *
+          (this.receivedValue.contractValues.interestRate / 100) / 12 /this.contractRunTime).toFixed(2);
+        },
+
+        // Månedeligleasing ydelse
+        monthlyLease() {
+            return (this.proportionateTax + this.contractCreation + this.financing + this.carDepreciation)/this.contractRunTime
+        },
+
+        // Depositum
+        deposit() {
+            return  (this.carPrice + this.proportionateTax) * (this.receivedValue.contractValues.deposit/100)
+        },
+
+        // Total prisen
+        totalPrice(){
+            return this.oneTimeBenefit + (this.monthlyLease * this.contractRunTime)
+        },
+
+        // Kontraktens løbetid (Lavet for at gøre koden kortere, da den bruges flere gange)
+        contractRunTime(){
+            return this.receivedValue.contractValues.runningTime
+        },
+
+ 
+
+        // Beskatningsgrundlag
+        taxBase() {
+//             Beskatningsgrundlag:
+// Beskatningsgrundlag = Nypris (hvis bilen er under 36 måneder) eller Skønnet handelspris (hvis bilen er over 36 måneder og det er en genleasing) eller (Udsalgspris * 1.25 + Anslået registreringsafgift) (hvis bilen er over 36 måneder og det er en nytegning)
+// TODO: Jeg er lidt lost her, ngl
+        },
+
+        // Omkostning - Finansiering
+        // Finansieringsomkostning = (Bilens totalpris * Finansieringsrente / 12) * Kontraktens løbetid
+        // TODO: Finanseringsrente????????
+        finansCost() {
+            return (this.carPrice * finanseringsrente / 12) * this.contractRunTime
+        },
+        
+
+
+
+
     }
 });
 
