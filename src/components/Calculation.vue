@@ -3,7 +3,7 @@
         <!-- TODO: Gennemgå navne og computed properties. -->
         <h2>Beregning</h2>
         <div>
-            <p>Input value for calculation: {{ momsMonth }}</p>
+            <p>Input value for calculation: {{ financing }}</p>
         </div>
 
         <table>
@@ -469,22 +469,22 @@ export default defineComponent({
 
         // Månedeligleasing ydelse
         monthlyLease() {
-            return (this.proportionateTax + this.contractCreation + this.financing + this.carDepreciation)/this.contractRunTime
+            return (this.proportionateTax + this.contractCreation + this.financing + this.carDepreciation)/this.contractRunTime;
         },
 
         // Depositum
         deposit() {
-            return  (this.carPrice + this.proportionateTax) * (this.receivedValue.contractValues.deposit/100)
+            return  (this.carPrice + this.proportionateTax) * (this.receivedValue.contractValues.deposit/100).toFixed(1);
         },
 
         // Total prisen
         totalPrice(){
-            return this.oneTimeBenefit + (this.monthlyLease * this.contractRunTime)
+            return this.oneTimeBenefit + (this.monthlyLease * this.contractRunTime);
         },
 
         // Kontraktens løbetid (Lavet for at gøre koden kortere, da den bruges flere gange)
         contractRunTime(){
-            return this.receivedValue.contractValues.runningTime
+            return this.receivedValue.contractValues.runningTime;
         },
         // Beskatningsgrundlag
         taxBase() {
