@@ -45,6 +45,7 @@
             <label for="name">Navn</label>
             <input v-model="formData.customer.name" @input="emitValue" type="text" id="name" class="form-control" name="name"
                 placeholder="Indtast kundens navn">
+                <span v-if="!isFormValid().customerName" class="warning"><font-awesome-icon icon="circle-exclamation" /> Kunde navn skal udfyldes</span>
 
             <label for="email">Email</label>
             <input v-model="formData.customer.email" @input="emitValue" type="email" id="email" class="form-control" name="email"
@@ -93,6 +94,7 @@
             <label for="vehicle">Køretøj</label>
             <input v-model="formData.vehicle.vehicle" @input="emitValue" type="text" id="vehicle" class="form-control" name="vehicle"
                 placeholder="Indtast køretøj">
+                <span v-if="!isFormValid().vehicle" class="warning"><font-awesome-icon icon="circle-exclamation" /> Køretøj skal udfyldes</span>
 
             <label for="framenumber">Stelnummer</label>
             <input v-model="formData.vehicle.frameNumber" @input="emitValue" type="number" id="framenumber" class="form-control"
@@ -219,19 +221,21 @@
             </div>
 
         </section>
-        <router-link :to="{ path: '/contract-preview' }"><button @click="sendData" class="makeContract">Lav
-                tilbudskontrakt</button></router-link>
+        <button @click.prevent="sendData" class="makeContract" :disabled="!isFormValid()">Lav tilbudskontrakt</button>
     </section>
 </template>
 
 <script>
 
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, computed } from 'vue';
 import { useMyStore } from '@/store/myStore';
+import { useRouter } from 'vue-router';
 import axios from 'axios';
 
 export default defineComponent({
     setup() {
+        const formValidationResults = computed(() => isFormValid());
+        const router = useRouter();
         const myStore = useMyStore();
         const formData = ref({
             contractValues: {
@@ -277,7 +281,20 @@ export default defineComponent({
             customerId: '', 
         });
 
+        const buttonClicked = ref(false);
         const showInitialPrice = ref(false); // Use ref for reactive properties
+
+        const isFormValid = () => {
+            const customerNameValid = formData.value.customer.name && formData.value.customer.name.length >= 3;
+            const vehicleValid = formData.value.vehicle.vehicle && formData.value.vehicle.vehicle.length >= 3;
+
+            const validationResults = {
+                customerName: customerNameValid,
+                vehicle: vehicleValid,
+            };
+
+        return buttonClicked.value ? validationResults : { customerName: true, vehicle: true };
+        };
 
         // checks if first registration date is more than 36 months ago 
         const checkDate = () => {
@@ -298,6 +315,18 @@ export default defineComponent({
 
         const sendData = async () => {
             myStore.setData(formData.value);
+            buttonClicked.value = true;
+            const validationResults = isFormValid();
+            if (!validationResults.customerName) {
+                console.error('Feltet "Navn" skal udfyldes korrekt');
+            
+
+                if (!validationResults.vehicle) {
+                    console.error('Feltet "Køretøj" skal udfyldes korrekt');
+                }
+
+                return;
+            }
             try {
                     // Perform update operations
                     if (formData.value.contractValues.Id_Køretøjdata) {
@@ -329,13 +358,17 @@ export default defineComponent({
                         // Update formData customer with the obtained contractValues ID, send vehicle to the third API endpoint
                         formData.value.customer.Id_Kontraktværdier = contractValuesId;
                         const responseThirdAPI = await axios.post('http://localhost:5174/api/customer/add', formData.value.customer);
-                
+                       
+                        // Log the responses (you might want to handle these responses according to your needs)
+                        console.log('Response from API 1:', responseFirstAPI.data);
+                        console.log('Response from API 2:', responseSecondAPI.data);
+                        console.log('Response from API 3:', responseThirdAPI.data);
                     }
 
-                    // Log the responses (you might want to handle these responses according to your needs)
-                    console.log('Response from API 1:', responseFirstAPI.data);
-                    console.log('Response from API 2:', responseSecondAPI.data);
-                    console.log('Response from API 3:', responseThirdAPI.data);
+                    if (isFormValid()) {
+                        router.push('/contract-preview');
+                    }
+
                 } catch (error) {
                     console.error('Error sending data:', error);
                 }
@@ -415,6 +448,10 @@ export default defineComponent({
             checkDate,
             showInitialPrice,
             fetchCustomerData,
+            isFormValid,
+            formValidationResults,
+            buttonClicked,
+            router,
         };
     },
 
@@ -481,6 +518,15 @@ export default defineComponent({
     width: 100%;
 }
 
+.warning {
+  display: block;
+  background-color: #ffdddd; /* Rød baggrundsfarve */
+  color: #8b0000; /* Mørkerød tekstfarve */
+  padding: 10px; /* Øget polstring for bedre synlighed */
+  border-radius: 5px; /* Afrundede hjørner */
+  margin-top: 5px; /* Afstand fra det tilknyttede inputfelt */
+}
+
 /* select {
   border: 0;
   vertical-align: middle;
@@ -496,4 +542,5 @@ select option:after {
   line-height: 23px;
   padding-right: 2px;
 } */
+
 </style>

@@ -3,7 +3,7 @@
         <!-- TODO: Gennemgå navne og computed properties. -->
         <h2>Beregning</h2>
         <div>
-            <p>Input value for calculation: {{ financing }}</p>
+            <p>Input value for calculation: {{ monthlyLease }}</p>
         </div>
 
         <table>
@@ -32,7 +32,7 @@
                 </td>
                 <td v-else>VÆRDI</td>
             </tr>
-
+            
             <tr v-show="receivedValue.customer.customerType == 'Split'">
                 <td>Månedlig leasing</td>
                 <td v-show="receivedValue.customer.customerType == 'Privat'  || receivedValue.customer.customerType == 'Split'">VÆRDI</td>
@@ -48,39 +48,44 @@
             <tr>
                 <td>Engangsydelse inkl. kontraktoprettelse</td>
                 <td v-if="oneTimeBenefitWithContractCreation" v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
-                    {{ oneTimeBenefitWithContractCreation }}
+                    {{ oneTimeBenefitWithContractCreation }} kr.
                 </td>
                 <td v-else v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
                     VÆRDI
                 </td>
                 <td v-if="oneTimeBenefitWithContractCreation">
-                    {{ oneTimeBenefitWithContractCreation }}
+                    {{ oneTimeBenefitWithContractCreation }} kr.
                 </td>
                 <td v-else>VÆRDI</td>
             </tr>
 
             <tr>
                 <td>Månedlig leasing</td>
-                <td v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">VÆRDI</td>
-                <td>VÆRDI</td>
+                <td v-if="monthlyLease" v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">{{ monthlyLease }} kr.</td>
+                <td v-else v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">VÆRDI</td>
+                <td v-if="monthlyLease">{{ monthlyLease }} kr.</td>
+                <td v-else>VÆRDI</td>
             </tr>
 
             <tr>
                 <td><b>Totalpris i leasingperiode</b></td>
-                <td v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">VÆRDI</td>
-                <td>VÆRDI</td>
+                <td v-if="totalPrice" v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">{{ totalPrice }} kr.</td>
+                <td v-else v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">VÆRDI</td>
+                <td v-if="totalPrice">{{ totalPrice }} kr.</td>
+                <td v-else>VÆRDI</td>
+
             </tr>
 
             <tr>
                 <td>Bilens afskrivning i leasingperioden</td>
                 <td v-if="carDepreciation" v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
-                    {{ carDepreciation }}
+                    {{ carDepreciation }} kr.
                 </td>
                 <td v-else v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
                     VÆRDI
                 </td>
                 <td v-if="carDepreciation">
-                    {{ carDepreciation }}
+                    {{ carDepreciation }} kr.
                 </td>
                 <td v-else>
                     VÆRDI
@@ -90,13 +95,13 @@
             <tr>
                 <td>Restværdi ved udløb</td>
                 <td v-if="resValue" v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
-                    {{ resValue }}
+                    {{ resValue }} kr.
                 </td>
                 <td v-else v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
                     VÆRDI
                 </td>
                 <td v-if="resValue">
-                    {{ resValue }} 
+                    {{ resValue }} kr.
                 </td>
                 <td v-else>
                     VÆRDI
@@ -105,8 +110,10 @@
  
             <tr>
                 <td>Depositum</td>
-                <td v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">VÆRDI</td>
-                <td>VÆRDI</td>
+                <td v-if="deposit" v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">{{ deposit }} kr.</td>
+                <td v-else v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">VÆRDI</td>
+                <td v-if="deposit">{{ deposit }} kr.</td>
+                <td v-else>VÆRDI</td>
             </tr>
 
             <tr>
@@ -140,7 +147,7 @@
             </tr>
 
             <tr>
-                <td>GPS-tracker inkl. abonnoment og montering</td>
+                <td>GPS-tracker inkl. abonnement og montering</td>
                 <td v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">VÆRDI</td>
                 <td>VÆRDI</td>
             </tr>
@@ -161,7 +168,7 @@
             <tr>
                 <td>Kontraktoprettelse</td>
                 <td v-if="receivedValue.contractValues.contractCreation">{{ receivedValue.contractValues.contractCreation }}</td>
-                <td v-else>{{ contractCreation }}</td>
+                <td v-else>{{ contractCreation }} kr.</td>
             </tr>
 
             <tr>
@@ -193,7 +200,7 @@
             
             <tr v-show="receivedValue.customer.contractType == 'Nytegning' || receivedValue.customer.import == true">
                 <td>Stålgevinst/valutakursgevinst</td>
-                <td v-if="staalGevinstValutaKursGevinst">{{ staalGevinstValutaKursGevinst }}</td>
+                <td v-if="steelGainValutaGain">{{ steelGainValutaGain }}</td>
                 <td v-else>VÆRDI</td>
             </tr>
 
@@ -248,16 +255,6 @@
 </template>
   
 <script>
-// export default {
-//     name: 'Calculation',
-//     props: {
-//         receivedValue: {
-//             type: String,
-//             default: ''
-//         }
-//     }
-// };
-
 import { defineComponent, computed } from 'vue';
 
 export default defineComponent({
@@ -308,8 +305,6 @@ export default defineComponent({
         }
     },
 
-
-
     computed: {
         // Bruges til at udregne måneder mellem start og slut dato
         startDateComp() {
@@ -319,14 +314,14 @@ export default defineComponent({
             return contractStartDate;
 
         },
-        contractEndDate() {
-            const contractEndDate = new Date(this.startDateComp);
+        // contractEndDate() {
+        //     const contractEndDate = new Date(this.startDateComp);
 
-            contractEndDate.setMonth(contractEndDate.getMonth() + this.contractRunTime);
-            const formattedDate = contractEndDate.toLocaleDateString();
+        //     contractEndDate.setMonth(contractEndDate.getMonth() + this.contractRunTime);
+        //     const formattedDate = contractEndDate.toLocaleDateString();
 
-            return formattedDate;
-        },
+        //     return formattedDate;
+        // },
         carMonths() {
             const start = new Date(this.receivedValue.vehicle.firstRegistrationDate);
 
@@ -422,29 +417,27 @@ export default defineComponent({
 
         // Engangsydelse + kontrakt oprettelse
         oneTimeBenefitWithContractCreation() {
-            if (this.oneTimeBenefit && this.contractCreation) {
-                return this.oneTimeBenefit + this.contractCreation;
-            }
+            return (this.oneTimeBenefit + this.contractCreation).toFixed();
+
         },
 
         // Bilens afskrivning
         carDepreciation() {
             const depreciation = this.receivedValue.contractValues.depreciation;
             if (this.carPrice && depreciation) {
-                return this.carPrice * (depreciation / 100)
+                return parseIn(this.carPrice * (depreciation / 100)).toFixed(2);
             } else if (this.carPrice) {
-                return this.carPrice * 0.15;
+                return parseInt((this.carPrice * 0.15)).toFixed(2);
             }
         },
 
         // Restværdi
         resValue() {
-            if (this.carPrice && this.carDepreciation) {
-                return this.carPrice - this.carDepreciation;
-            }
-        },
+                return parseInt((this.carPrice - this.carDepreciation).toFixed(2));
 
-        staalGevinstValutaKursGevinst() {
+        },
+        // Stål gevinst og Valuta gevinst
+        steelGainValutaGain() {
             const isImport = this.receivedValue.customer.import;
             const salePrice = this.receivedValue.contractValues.salePrice;
             const cost = this.receivedValue.contractValues.cost;
@@ -463,28 +456,40 @@ export default defineComponent({
  
         // Finansering
         financing() {
-            return ((this.carPrice + this.proportionateTax - this.oneTimeBenefit - this.deposit) *
-          (this.receivedValue.contractValues.interestRate / 100) / 12 /this.contractRunTime).toFixed(2);
+                return parseInt(((this.carPrice + this.proportionateTax - this.oneTimeBenefit - this.deposit) *
+          (this.receivedValue.contractValues.interestRate / 100) / 12 /this.contractRunTime).toFixed(2));
+
         },
 
         // Månedeligleasing ydelse
         monthlyLease() {
-            return (this.proportionateTax + this.contractCreation + this.financing + this.carDepreciation)/this.contractRunTime;
+                return parseInt((this.proportionateTax + this.contractCreation + this.financing + this.carDepreciation)/this.contractRunTime);
+            
         },
 
         // Depositum
         deposit() {
-            return  (this.carPrice + this.proportionateTax) * (this.receivedValue.contractValues.deposit/100).toFixed(1);
+            let deposit = (this.carPrice + this.proportionateTax) * (this.receivedValue.contractValues.deposit/100)
+
+            if(this.carPrice && this.receivedValue.contractValues.deposit){
+                return  deposit.toFixed(2);
+            }else{
+                return deposit;
+            }
+            
         },
 
         // Total prisen
         totalPrice(){
-            return this.oneTimeBenefit + (this.monthlyLease * this.contractRunTime);
+                return this.oneTimeBenefit + (this.monthlyLease * this.contractRunTime);
+            
         },
 
         // Kontraktens løbetid (Lavet for at gøre koden kortere, da den bruges flere gange)
         contractRunTime(){
-            return this.receivedValue.contractValues.runningTime;
+            const runningTime = this.receivedValue.contractValues.runningTime;
+            return runningTime;
+                
         },
         // Beskatningsgrundlag
         taxBase() {
@@ -506,7 +511,7 @@ export default defineComponent({
         // Finansieringsomkostning = (Bilens totalpris * Finansieringsrente / 12) * Kontraktens løbetid
         // TODO: Finanseringsrente????????
         finansCost() {
-            return (this.carPrice * finanseringsrente / 12) * this.contractRunTime
+            return (this.carPrice * finanseringsrente / 12) * this.contractRunTime;
         },
         
     }
