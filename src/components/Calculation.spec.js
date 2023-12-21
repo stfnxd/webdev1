@@ -46,43 +46,6 @@ let mockData = {
         }
 }
 
-describe('carPrice', () => {
-    test('should have an h2 with text "Beregning"', () => {
-        // Assert that the h2 element exists
-        expect(wrapper.find('h2').exists()).toBe(true);
-    
-        // Assert that the text content of the h2 element is "Beregning"
-        expect(wrapper.find('h2').text()).toBe('Beregning');
-    });
-
-    test('is calculated correctly for Genleasing contract type', () => {
-        mockData.receivedValue.customer.contractType = 'Genleasing';
-
-        const wrapper = mount(Calculation, { data: () => mockData });
-        const computedValue = wrapper.vm.carPrice;
-      
-        expect(computedValue).toBe(15000);
-    });
-
-    test('is calculated correctly for Pristjek contract type', () => {
-        mockData.receivedValue.customer.contractType = 'Pristjek';
-      
-        const wrapper = mount(Calculation, { data: () => mockData });
-        const computedValue = wrapper.vm.carPrice;
-      
-        expect(computedValue).toBe(30000);
-    });
-
-    test('is calculated correctly for Nytegning contract type', () => {
-        mockData.receivedValue.customer.contractType = 'Nytegning';
-      
-        const wrapper = mount(Calculation, { data: () => mockData });
-        const computedValue = wrapper.vm.carPrice;
-      
-        expect(computedValue).toBe(25000);
-    });
-});
-
 describe('startDateComp', () => {
     test('should return an Date object', () => {
         mockData.receivedValue.customer.startDate = '2023-12-24';
@@ -151,5 +114,42 @@ describe('momsMonth', () => {
         const computedValue = wrapper.vm.momsMonth;
 
         expect(computedValue).toBe((6000).toFixed(2));
+    });
+});
+
+describe('carPrice', () => {
+    test('should have an h2 with text "Beregning"', () => {
+        // Assert that the h2 element exists
+        expect(wrapper.find('h2').exists()).toBe(true);
+    
+        // Assert that the text content of the h2 element is "Beregning"
+        expect(wrapper.find('h2').text()).toBe('Beregning');
+    });
+
+    test('is calculated correctly for Genleasing contract type', () => {
+        mockData.receivedValue.customer.contractType = 'Genleasing';
+
+        const wrapper = mount(Calculation, { data: () => mockData });
+        const computedValue = wrapper.vm.carPrice;
+      
+        expect(computedValue).toBe(15000);
+    });
+
+    test('is calculated correctly for Pristjek contract type', () => {
+        mockData.receivedValue.customer.contractType = 'Pristjek';
+      
+        const wrapper = mount(Calculation, { data: () => mockData });
+        const computedValue = wrapper.vm.carPrice;
+      
+        expect(computedValue).toBe(30000);
+    });
+
+    test('is calculated correctly for Nytegning contract type', () => {
+        mockData.receivedValue.customer.contractType = 'Nytegning';
+      
+        const wrapper = mount(Calculation, { data: () => mockData });
+        const computedValue = wrapper.vm.carPrice;
+      
+        expect(computedValue).toBe(25000);
     });
 });
