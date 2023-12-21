@@ -4,14 +4,14 @@
 
         <section>
             <label for="customerType">Kundetype</label>
-            <select name="customerType" v-model="formData.customer.customerType" @input="emitValue" required>
+            <select name="customerType" v-model="formData.customer.customerType" @input="emitValue">
                 <option value="" disabled selected hidden>Vælg kundetype</option>
                 <option value="Privat">Privat</option>
                 <option value="Erhverv">Erhverv</option>
                 <option value="Split">Split</option>
             </select>
             <label for="contractType">Kontrakttype</label>
-            <select name="contractType" v-model="formData.customer.contractType" @input="emitValue" required>
+            <select name="contractType" v-model="formData.customer.contractType" @input="emitValue">
                 <option value="" disabled selected hidden>Vælg kontrakttype</option>
                 <option value="Nytegning">Nytegning</option>
                 <option value="Genleasing">Genleasing</option>
@@ -44,11 +44,12 @@
 
             <label for="name">Navn</label>
             <input v-model="formData.customer.name" @input="emitValue" type="text" id="name" class="form-control" name="name"
-                placeholder="Indtast kundens navn" required>
+                placeholder="Indtast kundens navn">
+                <span v-if="!isFormValid().customerName" class="warning"><font-awesome-icon icon="circle-exclamation" /> Kunde navn skal udfyldes</span>
 
             <label for="email">Email</label>
             <input v-model="formData.customer.email" @input="emitValue" type="email" id="email" class="form-control" name="email"
-                placeholder="Indtast kundens email adresse" required>
+                placeholder="Indtast kundens email adresse">
 
 
             <div class="contract-checkbox">
@@ -58,7 +59,7 @@
 
             <label for="expectedStartDate">Forventet startdato</label>
             <input v-model="formData.customer.startDate" @input="emitValue" type="date" id="expectedStartDate"
-                name="expectedStartDate" required />
+                name="expectedStartDate" />
 
         </section>
 
@@ -84,7 +85,7 @@
             </div>
 
             <label for="vehicleType">Type af køretøj</label>
-            <select name="vehicleType" v-model="formData.vehicle.vehicleType" required>
+            <select name="vehicleType" v-model="formData.vehicle.vehicleType">
                 <option value="" disabled selected hidden>Vælg type af køretøj</option>
                 <option value="Bil">Bil</option>
                 <option value="Motorcykel">Motorcykel</option>
@@ -92,44 +93,45 @@
 
             <label for="vehicle">Køretøj</label>
             <input v-model="formData.vehicle.vehicle" @input="emitValue" type="text" id="vehicle" class="form-control" name="vehicle"
-                placeholder="Indtast køretøj" required>
+                placeholder="Indtast køretøj">
+                <span v-if="!isFormValid().vehicle" class="warning"><font-awesome-icon icon="circle-exclamation" /> Køretøj skal udfyldes</span>
 
             <label for="framenumber">Stelnummer</label>
             <input v-model="formData.vehicle.frameNumber" @input="emitValue" type="number" id="framenumber" class="form-control"
-                name="framenumber" placeholder="Indtast stelnummer" required>
+                name="framenumber" placeholder="Indtast stelnummer">
 
             <div v-show="formData.vehicle.newVehicle == false">
                 <label for="firstRegistrationDate">1. Indregistreringsdato</label>
                 <input v-model="formData.vehicle.firstRegistrationDate" @input="checkDate" type="date" id="firstRegistrationDate"
-                    name="firstRegistrationDate" required/>
+                    name="firstRegistrationDate"/>
             </div>
 
             <label for="mileage">Kilometerstand</label>
             <input v-model="formData.vehicle.mileage" @input="emitValue" type="number" id="mileage" class="form-control"
-                name="mileage" placeholder="Indtast kilometerstand" required>
+                name="mileage" placeholder="Indtast kilometerstand">
 
             <div v-show="formData.customer.contractType != 'Stilstand'">
                 <div v-if="formData.customer.contractType == 'Nytegning' && formData.customer.import == true">
                     <label for="salePrice">Udsalgspris i €</label>
                     <input v-model="formData.contractValues.salePrice" @input="emitValue" type="number" id="salePrice" class="form-control"
-                        name="salePrice" placeholder="Indtast udsalgspris i €" required>
+                        name="salePrice" placeholder="Indtast udsalgspris i €">
                 </div>
                 <div v-else>
                     <label for="salePrice">Udsalgspris</label>
                     <input v-model="formData.contractValues.salePrice" @input="emitValue" type="number" id="salePrice" class="form-control"
-                        name="salePrice" placeholder="Indtast udsalgspris" required>
+                        name="salePrice" placeholder="Indtast udsalgspris">
                 </div>
             </div>
             <div v-show="formData.customer.customerType == 'Split' || formData.customer.contractType == 'Nytegning'">
                 <div v-if="formData.customer.import == true">
                     <label for="cost">Kostpris i €</label>
                     <input v-model="formData.contractValues.cost" @input="emitValue" type="number" id="cost" class="form-control"
-                        name="cost" placeholder="Indtast kostpris i €" required>
+                        name="cost" placeholder="Indtast kostpris i €">
                 </div>
                 <div v-else>
                     <label for="cost">Kostpris</label>
                     <input v-model="formData.contractValues.cost" @input="emitValue" type="number" id="cost" class="form-control"
-                        name="cost" placeholder="Indtast kostpris" required>
+                        name="cost" placeholder="Indtast kostpris">
                 </div>
             </div>
 
@@ -137,31 +139,31 @@
                 <label for="estimatedMarketValue">Skønnet handelsværdi i DK</label>
                 <input v-model="formData.contractValues.estimatedMarketValue" @input="emitValue" type="number" id="estimatedMarketValue"
                     class="form-control" name="estimatedMarketValue"
-                    placeholder="Indtast handelsværdi inkl. moms og afgift" required>
+                    placeholder="Indtast handelsværdi inkl. moms og afgift">
             </div>
 
             <div v-show="formData.customer.contractType == 'Genleasing' || formData.customer.contractType == 'Stilstand'">
                 <label for="residualValue">Restværdihæftelse ved kontraktstart</label>
                 <input v-model="formData.contractValues.residualValue" @input="emitValue" type="number" id="residualValue"
-                    class="form-control" name="residualValue" placeholder="Indtast restværdihæftelse" required>
+                    class="form-control" name="residualValue" placeholder="Indtast restværdihæftelse">
             </div>
 
             <div v-show="formData.customer.contractType == 'Pristjek'">
                 <label for="cashPrice">Kontantpris (i stedet for udsalgspris)</label>
                 <input v-model="formData.contractValues.cashPrice" @input="emitValue" type="number" id="cashPrice" class="form-control"
-                    name="cashPrice" placeholder="Indtast kontantpris" required>
+                    name="cashPrice" placeholder="Indtast kontantpris">
             </div>
 
             <div v-show="formData.customer.contractType != 'Stilstand' && formData.customer.contractType != '' && formData.vehicle.levyPaid == false">
                 <label for="registrationFee">Anslået registreringsafgift</label>
                 <input v-model="formData.contractValues.registrationFee" @input="emitValue" type="number" id="registrationFee"
-                    class="form-control" name="registrationFee" placeholder="Indtast anslået registreringsafgift" required>
+                    class="form-control" name="registrationFee" placeholder="Indtast anslået registreringsafgift">
             </div>
 
             <div v-show="showInitialPrice && formData.customer.customerType != 'Split' && formData.customer.contractType != 'Stilstand'">
                 <label for="initialPrice">Nypris inkl. moms og afgift</label>
                 <input v-model="formData.vehicle.initialPrice" @input="emitValue" type="number" id="initialPrice"
-                    class="form-control" name="initialPrice" placeholder="Indtast nypris" required>
+                    class="form-control" name="initialPrice" placeholder="Indtast nypris">
             </div>
 
         </section>
@@ -172,18 +174,18 @@
 
             <label for="running-time">Løbetid (i måneder)</label>
             <input v-model="formData.contractValues.runningTime" @input="emitValue" type="number" id="running-time" class="form-control"
-                name="run-time" placeholder="Indtast løbetid i måneder" required>
+                name="run-time" placeholder="Indtast løbetid i måneder">
 
             <div v-show="formData.customer.season != false && formData.customer.customerType != 'Split' && formData.customer.contractType != 'Stilstand'">
                 <label for="active-running-time">Aktiv periode i kontraktens løbetid (i måneder)</label>
                 <input v-model="formData.contractValues.activeRunningTime" @input="emitValue" type="number" id="active-running-time"
                     class="form-control" name="active-running-time"
-                    placeholder="Indtast aktiv periode i kontraktens løbetid i måneder" required>
+                    placeholder="Indtast aktiv periode i kontraktens løbetid i måneder">
             </div>
 
             <label for="interest-rate">Rente</label>
             <input v-model="formData.contractValues.interestRate" @input="emitValue" type="number" id="interest-rate" class="form-control"
-                name="interest-rate" placeholder="8.5%" min="0" max="100" required>
+                name="interest-rate" placeholder="8.5%" min="0" max="100">
 
             <label for="contract-creation">Kontraktoprettelse</label>
             <input v-model="formData.contractValues.contractCreation" @input="emitValue" type="number" id="contract-creation"
@@ -202,7 +204,7 @@
 
             <label for="deposit">Depositum ex. moms (i procent)</label>
             <input v-model="formData.contractValues.deposit" @input="emitValue" type="number" id="deposit" class="form-control"
-                name="deposit" placeholder="0" required>
+                name="deposit" placeholder="0">
 
             <label for="depreciation">Afskrivning (anbefalet min. 15% p.a.)</label>
             <input v-model="formData.contractValues.depreciation" @input="emitValue" type="number" id="depreciation" class="form-control"
@@ -210,28 +212,30 @@
 
             <label for="commission">Provision</label>
             <input v-model="formData.contractValues.commission" @input="emitValue" type="number" id="commission" class="form-control"
-                name="commission" placeholder="Indtast provision i kroner" required>
+                name="commission" placeholder="Indtast provision i kroner">
 
             <div v-show="formData.customer.customerType == 'Split'">
                 <label for="private-share">Privat andel</label>
                 <input v-model="formData.contractValues.privateShare" @input="emitValue" type="number" id="private-share"
-                    class="form-control" name="private-share" placeholder="Indtast privat andel i procent" required>
+                    class="form-control" name="private-share" placeholder="Indtast privat andel i procent">
             </div>
 
         </section>
-        <router-link :to="{ path: '/contract-preview' }"><button @click="sendData" class="makeContract">Lav
-                tilbudskontrakt</button></router-link>
+        <button @click.prevent="sendData" class="makeContract" :disabled="!isFormValid()">Lav tilbudskontrakt</button>
     </section>
 </template>
 
 <script>
 
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, computed } from 'vue';
 import { useMyStore } from '@/store/myStore';
+import { useRouter } from 'vue-router';
 import axios from 'axios';
 
 export default defineComponent({
     setup() {
+        const formValidationResults = computed(() => isFormValid());
+        const router = useRouter();
         const myStore = useMyStore();
         const formData = ref({
             contractValues: {
@@ -277,7 +281,20 @@ export default defineComponent({
             customerId: '', 
         });
 
+        const buttonClicked = ref(false);
         const showInitialPrice = ref(false); // Use ref for reactive properties
+
+        const isFormValid = () => {
+            const customerNameValid = formData.value.customer.name && formData.value.customer.name.length >= 3;
+            const vehicleValid = formData.value.vehicle.vehicle && formData.value.vehicle.vehicle.length >= 3;
+
+            const validationResults = {
+                customerName: customerNameValid,
+                vehicle: vehicleValid,
+            };
+
+        return buttonClicked.value ? validationResults : { customerName: true, vehicle: true };
+        };
 
         // checks if first registration date is more than 36 months ago 
         const checkDate = () => {
@@ -298,6 +315,18 @@ export default defineComponent({
 
         const sendData = async () => {
             myStore.setData(formData.value);
+            buttonClicked.value = true;
+            const validationResults = isFormValid();
+            if (!validationResults.customerName) {
+                console.error('Feltet "Navn" skal udfyldes korrekt');
+            
+
+                if (!validationResults.vehicle) {
+                    console.error('Feltet "Køretøj" skal udfyldes korrekt');
+                }
+
+                return;
+            }
             try {
                     // Perform update operations
                     if (formData.value.contractValues.Id_Køretøjdata) {
@@ -329,13 +358,17 @@ export default defineComponent({
                         // Update formData customer with the obtained contractValues ID, send vehicle to the third API endpoint
                         formData.value.customer.Id_Kontraktværdier = contractValuesId;
                         const responseThirdAPI = await axios.post('http://localhost:5174/api/customer/add', formData.value.customer);
-                
+                       
+                        // Log the responses (you might want to handle these responses according to your needs)
+                        console.log('Response from API 1:', responseFirstAPI.data);
+                        console.log('Response from API 2:', responseSecondAPI.data);
+                        console.log('Response from API 3:', responseThirdAPI.data);
                     }
 
-                    // Log the responses (you might want to handle these responses according to your needs)
-                    console.log('Response from API 1:', responseFirstAPI.data);
-                    console.log('Response from API 2:', responseSecondAPI.data);
-                    console.log('Response from API 3:', responseThirdAPI.data);
+                    if (isFormValid()) {
+                        router.push('/contract-preview');
+                    }
+
                 } catch (error) {
                     console.error('Error sending data:', error);
                 }
@@ -415,6 +448,10 @@ export default defineComponent({
             checkDate,
             showInitialPrice,
             fetchCustomerData,
+            isFormValid,
+            formValidationResults,
+            buttonClicked,
+            router,
         };
     },
 
@@ -481,6 +518,15 @@ export default defineComponent({
     width: 100%;
 }
 
+.warning {
+  display: block;
+  background-color: #ffdddd; /* Rød baggrundsfarve */
+  color: #8b0000; /* Mørkerød tekstfarve */
+  padding: 10px; /* Øget polstring for bedre synlighed */
+  border-radius: 5px; /* Afrundede hjørner */
+  margin-top: 5px; /* Afstand fra det tilknyttede inputfelt */
+}
+
 /* select {
   border: 0;
   vertical-align: middle;
@@ -496,4 +542,5 @@ select option:after {
   line-height: 23px;
   padding-right: 2px;
 } */
+
 </style>
