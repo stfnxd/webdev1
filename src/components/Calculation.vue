@@ -189,7 +189,7 @@
             <!-- Række for kontraktoprettelse -->
             <tr>
                 <td>Kontraktoprettelse</td>
-                <td v-if="receivedValue.contractValues.contractCreation">{{ receivedValue.contractValues.contractCreation }}</td>
+                <td v-if="receivedValue.contractValues.contractCreation">{{ receivedValue.contractValues.contractCreation }} kr.</td>
                 <td v-else>{{ contractCreation }} kr.</td>
             </tr>
 
@@ -495,7 +495,7 @@ export default defineComponent({
  
         // Beregn finansieringsomkostninger
         financing() {
-                return Math.round((this.carPrice + this.proportionateTax - this.oneTimeBenefit - this.deposit) * (this.receivedValue.contractValues.interestRate / 100) / 12 /this.contractRunTime);
+                return Math.round(((this.carPrice + this.proportionateTax - this.oneTimeBenefit - this.deposit) * (this.receivedValue.contractValues.interestRate / 100) / 12) *this.contractRunTime);
         },
 
         // Beregn månedlig leasingafgift
@@ -537,10 +537,8 @@ export default defineComponent({
         },
 
         // Beregn omkostninger ved finansiering
-        // TODO: Finanseringsrente er IKKE RIGTIG, bare opfundet
         finansCost() {
-            let finanseringsrente = 0.001;
-            return Math.round((this.carPrice * finanseringsrente / 12) * this.contractRunTime);
+            return Math.round((this.carPrice * (this.receivedValue.contractValues.interestRate / 100) / 12) * this.contractRunTime);
         },
 
         // Beregn Indtægter i alt
