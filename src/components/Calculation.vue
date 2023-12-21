@@ -312,16 +312,9 @@ export default defineComponent({
             const contractStartDate = new Date(startDate);
             
             return contractStartDate;
-
         },
-        // contractEndDate() {
-        //     const contractEndDate = new Date(this.startDateComp);
 
-        //     contractEndDate.setMonth(contractEndDate.getMonth() + this.contractRunTime);
-        //     const formattedDate = contractEndDate.toLocaleDateString();
-
-        //     return formattedDate;
-        // },
+        // Udregner hvor mange måneder en bil er under 36 måneder og over 36 måneder i kontrakt forløb.
         carMonths() {
             const start = new Date(this.receivedValue.vehicle.firstRegistrationDate);
 
@@ -348,6 +341,8 @@ export default defineComponent({
                 vehicleAgeAtContractEnd
             };
         },
+
+        // Bilens alder.
         carAge() {
             const registrationDate  = new Date(this.receivedValue.vehicle.firstRegistrationDate);
             const today = new Date();
@@ -356,7 +351,6 @@ export default defineComponent({
         },
 
         //Moms fradrag i måneden 
-        // Momsfradrag pr. måned = 0.25 * Anslået registreringsafgift * (0.02 * Antal måneder under 36 måneder + 0.01 * Antal måneder over eller lig med 36 måneder)
         momsMonth() {
             const registrationFee = this.receivedValue.contractValues.registrationFee;
             const carMonths = this.carMonths;
@@ -418,7 +412,6 @@ export default defineComponent({
         // Engangsydelse + kontrakt oprettelse
         oneTimeBenefitWithContractCreation() {
             return (this.oneTimeBenefit + this.contractCreation).toFixed();
-
         },
 
         // Bilens afskrivning
@@ -430,15 +423,15 @@ export default defineComponent({
                 return (this.carPrice * 0.15);
             } else {
                 // Hvis hverken carPrice eller depreciation er til stede, returner 0 eller en standardværdi.
-                return 0; // Du kan ændre dette til en anden standardværdi, hvis det er passende.
+                return 0;
             }
         },
 
         // Restværdi
         resValue() {
                 return parseInt((this.carPrice - this.carDepreciation).toFixed(2));
-
         },
+
         // Stål gevinst og Valuta gevinst
         steelGainValutaGain() {
             const isImport = this.receivedValue.customer.import;
@@ -461,14 +454,11 @@ export default defineComponent({
         financing() {
                 return parseInt(((this.carPrice + this.proportionateTax - this.oneTimeBenefit - this.deposit) *
           (this.receivedValue.contractValues.interestRate / 100) / 12 /this.contractRunTime).toFixed(2));
-
         },
 
         // Månedeligleasing ydelse
         monthlyLease() {
             return parseInt((this.proportionateTax + this.contractCreation + this.financing + this.carDepreciation)/this.contractRunTime);
-                
-            
         },
 
         // Depositum
@@ -480,21 +470,19 @@ export default defineComponent({
             }else{
                 return deposit;
             }
-            
         },
 
         // Total prisen
         totalPrice(){
                 return this.oneTimeBenefit + (this.monthlyLease * this.contractRunTime);
-            
         },
 
         // Kontraktens løbetid (Lavet for at gøre koden kortere, da den bruges flere gange)
         contractRunTime(){
             const runningTime = this.receivedValue.contractValues.runningTime;
-            return runningTime;
-                
+            return runningTime;  
         },
+
         // Beskatningsgrundlag
         taxBase() {
             const customerType = this.receivedValue.customer.customerType;

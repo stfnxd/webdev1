@@ -16,19 +16,19 @@ describe('Calculation', () => {
     test('computed property carPrice is calculated correctly for Genleasing contract type', () => {
         // Create a new Vue instance with the desired data
         const mockData = {
-          receivedValue: {
-            customer: {
-              contractType: 'Genleasing',
+            receivedValue: {
+                customer: {
+                    contractType: 'Genleasing',
+                },
+                contractValues: {
+                    cashPrice: 30000,
+                    residualValue: 15000,
+                    salePrice: 25000,
+                },
+                vehicle: {
+                    levyPaid: true
+                }
             },
-            contractValues: {
-              cashPrice: 30000,
-              residualValue: 15000,
-              salePrice: 25000,
-            },
-            vehicle: {
-                levyPaid: true
-            }
-          },
         };
       
         // Mount the component with the mocked Vue instance
@@ -43,19 +43,19 @@ describe('Calculation', () => {
     test('computed property carPrice is calculated correctly for Pristjek contract type', () => {
         // Create a new Vue instance with the desired data
         const mockData = {
-          receivedValue: {
-            customer: {
-              contractType: 'Pristjek',
+            receivedValue: {
+                customer: {
+                    contractType: 'Pristjek',
+                },
+                contractValues: {
+                    cashPrice: 30000,
+                    residualValue: 15000,
+                    salePrice: 25000,
+                },
+                vehicle: {
+                    levyPaid: true
+                }
             },
-            contractValues: {
-              cashPrice: 30000,
-              residualValue: 15000,
-              salePrice: 25000,
-            },
-            vehicle: {
-                levyPaid: true
-            }
-          },
         };
       
         // Mount the component with the mocked Vue instance
@@ -70,19 +70,19 @@ describe('Calculation', () => {
     test('computed property carPrice is calculated correctly for Nytegning contract type', () => {
         // Create a new Vue instance with the desired data
         const mockData = {
-          receivedValue: {
-            customer: {
-              contractType: 'Nytegning',
+            receivedValue: {
+                customer: {
+                    contractType: 'Nytegning',
+                },
+                contractValues: {
+                    cashPrice: 30000,
+                    residualValue: 15000,
+                    salePrice: 25000,
+                },
+                vehicle: {
+                    levyPaid: true
+                }
             },
-            contractValues: {
-              cashPrice: 30000,
-              residualValue: 15000,
-              salePrice: 25000,
-            },
-            vehicle: {
-                levyPaid: true
-            }
-          },
         };
       
         // Mount the component with the mocked Vue instance
