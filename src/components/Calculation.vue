@@ -425,9 +425,12 @@ export default defineComponent({
         carDepreciation() {
             const depreciation = this.receivedValue.contractValues.depreciation;
             if (this.carPrice && depreciation) {
-                return parseIn(this.carPrice * (depreciation / 100)).toFixed(2);
+                return (this.carPrice * (depreciation / 100));
             } else if (this.carPrice) {
-                return parseInt((this.carPrice * 0.15)).toFixed(2);
+                return (this.carPrice * 0.15);
+            } else {
+                // Hvis hverken carPrice eller depreciation er til stede, returner 0 eller en standardværdi.
+                return 0; // Du kan ændre dette til en anden standardværdi, hvis det er passende.
             }
         },
 
@@ -463,7 +466,8 @@ export default defineComponent({
 
         // Månedeligleasing ydelse
         monthlyLease() {
-                return parseInt((this.proportionateTax + this.contractCreation + this.financing + this.carDepreciation)/this.contractRunTime);
+            return parseInt((this.proportionateTax + this.contractCreation + this.financing + this.carDepreciation)/this.contractRunTime);
+                
             
         },
 
