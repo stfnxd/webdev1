@@ -10,6 +10,8 @@
                 <option value="Erhverv">Erhverv</option>
                 <option value="Split">Split</option>
             </select>
+            <span v-if="!isFormValid().customerType" class="warning"><font-awesome-icon icon="circle-exclamation" /> Kunde typen skal vælges</span>
+
             <label for="contractType">Kontrakttype</label>
             <select name="contractType" v-model="formData.customer.contractType" @input="emitValue">
                 <option value="" disabled selected hidden>Vælg kontrakttype</option>
@@ -18,6 +20,7 @@
                 <option value="Pristjek">Pristjek</option>
                 <option value="Stilstand">Stilstand</option>
             </select>
+            <span v-if="!isFormValid().contractType" class="warning"><font-awesome-icon icon="circle-exclamation" /> Kontrakttypen skal vælges</span>
 
             <div v-show="formData.customer.customerType == 'Privat' || formData.customer.customerType == 'Erhverv' || formData.customer.contractType == 'Nytegning' || formData.customer.contractType == 'Genleasing' || formData.customer.contractType == 'Pristjek'">
                 <div v-show="formData.customer.customerType != 'Split' && formData.customer.contractType != 'Stilstand'"
@@ -39,7 +42,7 @@
             <div v-show="formData.customer.contractType == 'Genleasing'">
             <label for="customerId">Kunde Id</label>
             <input v-model="formData.customerId" @input="emitValue" type="text" id="customerId" class="form-control" name="customerId" placeholder="Indtast kundens id">
-            <button @click="fetchCustomerData">Search</button>
+            <button @click="fetchCustomerData">Søg</button>
             </div>
 
             <label for="name">Navn</label>
@@ -67,10 +70,9 @@
 
             <h3>Køretøjsdata</h3>
 
-            <div class="contract-checkbox">
+            <div v-show="formData.customer.contractType != 'Genleasing'" class="contract-checkbox">
                 <label for="checkboxNewVehicle">Nyt køretøj</label>
-                <input v-model="formData.vehicle.newVehicle" @input="emitValue" type="checkbox" id="checkboxNewVehicle"
-                    name="checkbox" value="1">
+                <input v-model="formData.vehicle.newVehicle" @input="emitValue" type="checkbox" id="checkboxNewVehicle" name="checkbox" value="1">
             </div>
 
             <div v-show="formData.customer.contractType != 'Stilstand' && formData.customer.contractType != ''" class="contract-checkbox">
@@ -90,6 +92,7 @@
                 <option value="Bil">Bil</option>
                 <option value="Motorcykel">Motorcykel</option>
             </select>
+            <span v-if="!isFormValid().vehicleType" class="warning"><font-awesome-icon icon="circle-exclamation" /> Type køretøj skal vælges</span>
 
             <label for="vehicle">Køretøj</label>
             <input v-model="formData.vehicle.vehicle" @input="emitValue" type="text" id="vehicle" class="form-control" name="vehicle"
@@ -115,23 +118,28 @@
                     <label for="salePrice">Udsalgspris i €</label>
                     <input v-model="formData.contractValues.salePrice" @input="emitValue" type="number" id="salePrice" class="form-control"
                         name="salePrice" placeholder="Indtast udsalgspris i €">
+                        <span v-if="!isFormValid().salePrice" class="warning"><font-awesome-icon icon="circle-exclamation" /> Udsalgspris i € skal udfyldes</span>
                 </div>
                 <div v-else>
                     <label for="salePrice">Udsalgspris</label>
                     <input v-model="formData.contractValues.salePrice" @input="emitValue" type="number" id="salePrice" class="form-control"
                         name="salePrice" placeholder="Indtast udsalgspris">
+                        <span v-if="!isFormValid().salePrice" class="warning"><font-awesome-icon icon="circle-exclamation" /> Udsalgspris skal udfyldes</span>
                 </div>
+                
             </div>
             <div v-show="formData.customer.customerType == 'Split' || formData.customer.contractType == 'Nytegning'">
                 <div v-if="formData.customer.import == true">
                     <label for="cost">Kostpris i €</label>
                     <input v-model="formData.contractValues.cost" @input="emitValue" type="number" id="cost" class="form-control"
                         name="cost" placeholder="Indtast kostpris i €">
+                        <span v-if="!isFormValid().cost" class="warning"><font-awesome-icon icon="circle-exclamation" /> Kostpris i € skal udfyldes</span>
                 </div>
                 <div v-else>
                     <label for="cost">Kostpris</label>
                     <input v-model="formData.contractValues.cost" @input="emitValue" type="number" id="cost" class="form-control"
                         name="cost" placeholder="Indtast kostpris">
+                        <span v-if="!isFormValid().cost" class="warning"><font-awesome-icon icon="circle-exclamation" /> Kostpris skal udfyldes</span>
                 </div>
             </div>
 
@@ -146,12 +154,14 @@
                 <label for="residualValue">Restværdihæftelse ved kontraktstart</label>
                 <input v-model="formData.contractValues.residualValue" @input="emitValue" type="number" id="residualValue"
                     class="form-control" name="residualValue" placeholder="Indtast restværdihæftelse">
+                    <span v-if="!isFormValid().residualValue" class="warning"><font-awesome-icon icon="circle-exclamation" /> Restværdihæftelse skal udfyldes</span>
             </div>
 
             <div v-show="formData.customer.contractType == 'Pristjek'">
                 <label for="cashPrice">Kontantpris (i stedet for udsalgspris)</label>
                 <input v-model="formData.contractValues.cashPrice" @input="emitValue" type="number" id="cashPrice" class="form-control"
                     name="cashPrice" placeholder="Indtast kontantpris">
+                    <span v-if="!isFormValid().cashPrice" class="warning"><font-awesome-icon icon="circle-exclamation" /> Kontantpris skal udfyldes</span>
             </div>
 
             <div v-show="formData.customer.contractType != 'Stilstand' && formData.customer.contractType != '' && formData.vehicle.levyPaid == false">
@@ -175,12 +185,14 @@
             <label for="running-time">Løbetid (i måneder)</label>
             <input v-model="formData.contractValues.runningTime" @input="emitValue" type="number" id="running-time" class="form-control"
                 name="run-time" placeholder="Indtast løbetid i måneder">
+                <span v-if="!isFormValid().runningTime" class="warning"><font-awesome-icon icon="circle-exclamation" /> Løbetid skal udfyldes</span>
 
             <div v-show="formData.customer.season != false && formData.customer.customerType != 'Split' && formData.customer.contractType != 'Stilstand'">
                 <label for="active-running-time">Aktiv periode i kontraktens løbetid (i måneder)</label>
                 <input v-model="formData.contractValues.activeRunningTime" @input="emitValue" type="number" id="active-running-time"
                     class="form-control" name="active-running-time"
                     placeholder="Indtast aktiv periode i kontraktens løbetid i måneder">
+                    <span v-if="!isFormValid().activeRunningTime" class="warning"><font-awesome-icon icon="circle-exclamation" /> Aktiv periode skal udfyldes</span>
             </div>
 
             <label for="interest-rate">Rente</label>
@@ -285,15 +297,33 @@ export default defineComponent({
         const showInitialPrice = ref(false); // Use ref for reactive properties
 
         const isFormValid = () => {
+            const customerTypeValid = formData.value.customer.customerType && (formData.value.customer.customerType === 'Privat' || formData.value.customer.customerType === 'Erhverv' || formData.value.customer.customerType === 'Split');
+            const contractTypeValid = formData.value.customer.contractType && (formData.value.customer.contractType === 'Nytegning' || formData.value.customer.contractType === 'Genleasing' || formData.value.customer.contractType === 'Pristjek' || formData.value.customer.contractType === 'Stilstand');
             const customerNameValid = formData.value.customer.name && formData.value.customer.name.length >= 3;
             const vehicleValid = formData.value.vehicle.vehicle && formData.value.vehicle.vehicle.length >= 3;
+            const vehicleTypeValid = formData.value.vehicle.vehicleType && (formData.value.vehicle.vehicleType === 'Motorcykel' || formData.value.vehicle.vehicleType === 'Bil');
+            const salePriceValid = formData.value.contractValues.salePrice;
+            const costValid = formData.value.contractValues.cost;
+            const residualValueValid = formData.value.contractValues.residualValue;
+            const cashPriceValid = formData.value.contractValues.cashPrice;
+            const runningTimeValid = formData.value.contractValues.runningTime;
+            const activeRunningTimeValid = formData.value.contractValues.activeRunningTime;
 
             const validationResults = {
+                customerType: customerTypeValid,
+                contractType: contractTypeValid,
                 customerName: customerNameValid,
                 vehicle: vehicleValid,
+                vehicleType: vehicleTypeValid,
+                salePrice: salePriceValid,
+                cost: costValid,
+                residualValue: residualValueValid,
+                cashPrice: cashPriceValid,
+                runningTime:runningTimeValid,
+                activeRunningTime: activeRunningTimeValid,
             };
 
-        return buttonClicked.value ? validationResults : { customerName: true, vehicle: true };
+        return buttonClicked.value ? validationResults : { customerName: true, vehicle: true, vehicleType: true, customerType: true, contractType: true, salePrice: true, cost: true, residualValue: true, cashPrice: true, runningTime: true, activeRunningTime: true };
         };
 
         // checks if first registration date is more than 36 months ago 
@@ -317,16 +347,13 @@ export default defineComponent({
             myStore.setData(formData.value);
             buttonClicked.value = true;
             const validationResults = isFormValid();
-            if (!validationResults.customerName) {
-                console.error('Feltet "Navn" skal udfyldes korrekt');
-            
-
-                if (!validationResults.vehicle) {
-                    console.error('Feltet "Køretøj" skal udfyldes korrekt');
-                }
-
+            if (!validationResults.customerType || !validationResults.contractType || !validationResults.customerName || !validationResults.vehicle ||
+                !validationResults.vehicleType || !validationResults.salePrice || !validationResults.cost || !validationResults.residualValue ||
+                !validationResults.cashPrice || !validationResults.runningTime || !validationResults.activeRunningTime){
+                console.error('En eller flere felter er ikke udfyldt korrekt!');
                 return;
             }
+
             try {
                     // Perform update operations
                     if (formData.value.contractValues.Id_Køretøjdata) {
