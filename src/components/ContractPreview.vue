@@ -53,7 +53,7 @@
 
                 <tr>
                     <td>Indregistreringsperiode <span>- med ubegrænset antal kilometer</span></td>
-                    <td> dato </td>
+                    <td>VÆRDI</td>
                 </tr>
                 <tr>
                     <td>Forventet startdato</td>
@@ -66,13 +66,13 @@
                 <tr>
                     <td>Engangsydelse <span>inkl. moms<br><span class="smallFont">Import af køretøj, kontraktoprettelse og
                                 45-pkt. uvildigt autotjek inkluderet</span></span></td>
-                    <td>{{ receivedData.contractValues.oneTimeBenefit }}</td>
+                    <td>VÆRDI</td>
                 </tr>
             </table>
             <table class="mt-3 mb-4">
                 <tr>
                     <td>Månedlig leasingydelse <span>inkl. moms</span></td>
-                    <td>{{ receivedData.contractValues.depreciation }} {{ receivedData.contractValues.runningTime }}</td>
+                    <td>VÆRDI</td>
                 </tr>
             </table>
 
@@ -81,7 +81,7 @@
             <table>
                 <tr>
                     <td>Sikkerhedsstillelse <span>inkl. moms - tilbagebetales efter endt aftaleperiode</span></td>
-                    <td>{{ receivedData.customer.name }}</td>
+                    <td>VÆRDI</td>
                 </tr>
             </table>
 
@@ -92,7 +92,7 @@
                                 leasingtager på anfordring forpligtet til at anvise CVR-registreret tredjemand som køber.
                                 Såfremt restværdien de facto ikke kan opnås er leasingtager forpligtet til at indbetale
                                 differencen tillagt moms.</span></span></td>
-                    <td>{{ receivedData.customer.name }}</td>
+                    <td>VÆRDI</td>
                 </tr>
             </table>
 
@@ -100,23 +100,23 @@
             <table>
                 <tr>
                     <td>Forsikringspræmie pr. måned <span>v/ tilladt kørsel inkl. vejhjælp</span></td>
-                    <td>{{ receivedData.customer.name }}</td>
+                    <td>VÆRDI</td>
                 </tr>
 
                 <tr>
                     <td>Forsikringspræmie pr. måned <span>v/ stilstand</span><br><span class="smallFont">Mekanisk
                             garantiforsikring kan tilvælges. Kontakt os for individuelt tilbud<br><span>*Indtegningskrav:
                                 Minimum 25 år og 3 års skadefri kørsel. Friskadedækning kan tilvælges.</span></span></td>
-                    <td>{{ receivedData.customer.name }}</td>
+                    <td>VÆRDI</td>
                 </tr>
             </table>
 
             <h4>GPS-overvågning</h4>
             <table>
                 <tr>
-                    <td>GPS-tracker og abbonement i leasingperiodenb <span>inkl. moms</span><br><span
+                    <td>GPS-tracker og abbonement i leasingperioden <span>inkl. moms</span><br><span
                             class="smallFont"><span>*Forudsat accept af forsikringstilbud</span></span></td>
-                    <td>{{ receivedData.customer.name }}</td>
+                    <td>VÆRDI</td>
                 </tr>
             </table>
         </div>

@@ -1,8 +1,9 @@
 <template>
     <section class="calculation col-7">
+        <!-- TODO: Gennemgå navne og computed properties. -->
         <h2>Beregning</h2>
         <div>
-            <p>Input value for calculation: {{ oneTimeBenefit }}</p>
+            <p>Input value for calculation: {{ monthlyLease }}</p>
         </div>
 
         <table>
@@ -20,18 +21,18 @@
 
             <tr v-show="receivedValue.customer.customerType == 'Split'">
                 <td>Engangsydelse inkl. kontraktoprettelse</td>
-                <td v-if="oneTimeBenefit && contractCreation" v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
-                    {{ oneTimeBenefit + contractCreation }}
+                <td v-if="oneTimeBenefitWithContractCreation" v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
+                    {{ oneTimeBenefitWithContractCreation }}
                 </td>
                 <td v-else v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
                     VÆRDI
                 </td>
-                <td v-if="oneTimeBenefit && contractCreation">
-                    {{ oneTimeBenefit + contractCreation }}
+                <td v-if="oneTimeBenefitWithContractCreation">
+                    {{ oneTimeBenefitWithContractCreation }}
                 </td>
                 <td v-else>VÆRDI</td>
             </tr>
-
+            
             <tr v-show="receivedValue.customer.customerType == 'Split'">
                 <td>Månedlig leasing</td>
                 <td v-show="receivedValue.customer.customerType == 'Privat'  || receivedValue.customer.customerType == 'Split'">VÆRDI</td>
@@ -46,46 +47,45 @@
 
             <tr>
                 <td>Engangsydelse inkl. kontraktoprettelse</td>
-                <td v-if="oneTimeBenefit && contractCreation" v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
-                    {{ oneTimeBenefit + contractCreation }}
+                <td v-if="oneTimeBenefitWithContractCreation" v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
+                    {{ oneTimeBenefitWithContractCreation }} kr.
                 </td>
                 <td v-else v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
                     VÆRDI
                 </td>
-                <td v-if="oneTimeBenefit && contractCreation">
-                    {{ oneTimeBenefit + contractCreation }}
+                <td v-if="oneTimeBenefitWithContractCreation">
+                    {{ oneTimeBenefitWithContractCreation }} kr.
                 </td>
                 <td v-else>VÆRDI</td>
             </tr>
 
             <tr>
                 <td>Månedlig leasing</td>
-                <td v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">VÆRDI</td>
-                <td>VÆRDI</td>
+                <td v-if="monthlyLease" v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">{{ monthlyLease }} kr.</td>
+                <td v-else v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">VÆRDI</td>
+                <td v-if="monthlyLease">{{ monthlyLease }} kr.</td>
+                <td v-else>VÆRDI</td>
             </tr>
 
             <tr>
                 <td><b>Totalpris i leasingperiode</b></td>
-                <td v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">VÆRDI</td>
-                <td>VÆRDI</td>
+                <td v-if="totalPrice" v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">{{ totalPrice }} kr.</td>
+                <td v-else v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">VÆRDI</td>
+                <td v-if="totalPrice">{{ totalPrice }} kr.</td>
+                <td v-else>VÆRDI</td>
+
             </tr>
 
             <tr>
                 <td>Bilens afskrivning i leasingperioden</td>
-                <td v-if="carPrice && receivedValue.contractValues.depreciation" v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
-                    {{ carPrice * (receivedValue.contractValues.depreciation / 100) }}
-                </td>
-                <td v-else-if="carPrice" v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
-                    {{ carPrice * 0.15 }}
+                <td v-if="carDepreciation" v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
+                    {{ carDepreciation }} kr.
                 </td>
                 <td v-else v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
                     VÆRDI
                 </td>
-                <td v-if="carPrice && receivedValue.contractValues.depreciationn">
-                    {{ carPrice * (receivedValue.contractValues.depreciation / 100) }}
-                </td>
-                <td v-else-if="carPrice">
-                    {{ carPrice * 0.15 }}
+                <td v-if="carDepreciation">
+                    {{ carDepreciation }} kr.
                 </td>
                 <td v-else>
                     VÆRDI
@@ -94,20 +94,14 @@
 
             <tr>
                 <td>Restværdi ved udløb</td>
-                <td v-if="carPrice && receivedValue.contractValues.depreciation" v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
-                    {{ carPrice * ((100 - receivedValue.contractValues.depreciation) / 100) }}
-                </td>
-                <td v-else-if="carPrice" v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
-                    {{ carPrice * 0.85 }}
+                <td v-if="resValue" v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
+                    {{ resValue }} kr.
                 </td>
                 <td v-else v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
                     VÆRDI
                 </td>
-                <td v-if="carPrice && receivedValue.contractValues.depreciation">
-                    {{ carPrice * ((100 - receivedValue.contractValues.depreciation) / 100) }} 
-                </td>
-                <td v-else-if="carPrice">
-                    {{ carPrice * 0.85 }}
+                <td v-if="resValue">
+                    {{ resValue }} kr.
                 </td>
                 <td v-else>
                     VÆRDI
@@ -116,8 +110,10 @@
  
             <tr>
                 <td>Depositum</td>
-                <td v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">VÆRDI</td>
-                <td>VÆRDI</td>
+                <td v-if="deposit" v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">{{ deposit }} kr.</td>
+                <td v-else v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">VÆRDI</td>
+                <td v-if="deposit">{{ deposit }} kr.</td>
+                <td v-else>VÆRDI</td>
             </tr>
 
             <tr>
@@ -151,7 +147,7 @@
             </tr>
 
             <tr>
-                <td>GPS-tracker inkl. abonnoment og montering</td>
+                <td>GPS-tracker inkl. abonnement og montering</td>
                 <td v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">VÆRDI</td>
                 <td>VÆRDI</td>
             </tr>
@@ -172,7 +168,7 @@
             <tr>
                 <td>Kontraktoprettelse</td>
                 <td v-if="receivedValue.contractValues.contractCreation">{{ receivedValue.contractValues.contractCreation }}</td>
-                <td v-else>{{ contractCreation }}</td>
+                <td v-else>{{ contractCreation }} kr.</td>
             </tr>
 
             <tr>
@@ -204,8 +200,8 @@
             
             <tr v-show="receivedValue.customer.contractType == 'Nytegning' || receivedValue.customer.import == true">
                 <td>Stålgevinst/valutakursgevinst</td>
-                <td v-if="receivedValue.customer.import == true">{{ (receivedValue.contractValues.salePrice * 7.46) - (receivedValue.contractValues.cost * 7.46) }}</td>
-                <td v-else>{{ receivedValue.contractValues.salePrice - receivedValue.contractValues.cost }}</td>
+                <td v-if="steelGainValutaGain">{{ steelGainValutaGain }}</td>
+                <td v-else>VÆRDI</td>
             </tr>
 
             <tr v-show="receivedValue.customer.contractType == 'Nytegning' || receivedValue.customer.import == true">
@@ -259,16 +255,6 @@
 </template>
   
 <script>
-// export default {
-//     name: 'Calculation',
-//     props: {
-//         receivedValue: {
-//             type: String,
-//             default: ''
-//         }
-//     }
-// };
-
 import { defineComponent, computed } from 'vue';
 
 export default defineComponent({
@@ -318,7 +304,78 @@ export default defineComponent({
             })
         }
     },
+
     computed: {
+        // Bruges til at udregne måneder mellem start og slut dato
+        startDateComp() {
+            const startDate = this.receivedValue.customer.startDate;
+            const contractStartDate = new Date(startDate);
+            
+            return contractStartDate;
+
+        },
+        // contractEndDate() {
+        //     const contractEndDate = new Date(this.startDateComp);
+
+        //     contractEndDate.setMonth(contractEndDate.getMonth() + this.contractRunTime);
+        //     const formattedDate = contractEndDate.toLocaleDateString();
+
+        //     return formattedDate;
+        // },
+        carMonths() {
+            const start = new Date(this.receivedValue.vehicle.firstRegistrationDate);
+
+            const contractStart = new Date(this.startDateComp);
+
+            // Calculate the number of months from the vehicle's first registration date to the contract start date
+            const monthsBeforeContract = (contractStart.getFullYear() - start.getFullYear()) * 12 + contractStart.getMonth() - start.getMonth();
+
+            // Calculate the contract end date
+            const end = new Date(contractStart);
+            end.setMonth(end.getMonth() + this.contractRunTime);
+
+            // Calculate the number of months from the vehicle's first registration date to the contract end date
+            const vehicleAgeAtContractEnd = (end.getFullYear() - start.getFullYear()) * 12 + end.getMonth() - start.getMonth();
+
+            // Calculate the number of months over and under 36 months during the contract
+            const monthsOver36 = Math.max(0, vehicleAgeAtContractEnd - Math.min(vehicleAgeAtContractEnd, 36));
+            const monthsUnder36 = Math.max(0, Math.min(vehicleAgeAtContractEnd, 36 - monthsBeforeContract));
+
+            return {
+                monthsBeforeContract,
+                monthsOver36,
+                monthsUnder36,
+                vehicleAgeAtContractEnd
+            };
+        },
+        carAge() {
+            const registrationDate  = new Date(this.receivedValue.vehicle.firstRegistrationDate);
+            const today = new Date();
+
+            return (today.getFullYear() - registrationDate.getFullYear()) * 12 + today.getMonth() - registrationDate.getMonth();
+        },
+
+        //Moms fradrag i måneden 
+        // Momsfradrag pr. måned = 0.25 * Anslået registreringsafgift * (0.02 * Antal måneder under 36 måneder + 0.01 * Antal måneder over eller lig med 36 måneder)
+        momsMonth() {
+            const registrationFee = this.receivedValue.contractValues.registrationFee;
+            const carMonths = this.carMonths;
+
+            if (registrationFee && carMonths) {
+                const monthsUnder36 = carMonths.monthsUnder36 || 0;
+                const monthsOver36 = carMonths.monthsOver36 || 0;
+
+                const momsWithin36Months = 0.25 * registrationFee * 0.02 * monthsUnder36;
+                const momsOver36Months = 0.25 * registrationFee * 0.01 * monthsOver36;
+
+                const totalMoms = momsWithin36Months + momsOver36Months;
+                return totalMoms.toFixed(2);
+            } else {
+                return 0;
+            } 
+        },
+
+        // Bilens pris
         carPrice() {
             const contractType = this.receivedValue.customer.contractType;
             if (contractType === 'Pristjek') {
@@ -329,6 +386,8 @@ export default defineComponent({
                 return this.receivedValue.contractValues.salePrice;
             }
         },
+
+        // Engangsydelse
         oneTimeBenefit() {
             const oneTimeBenefitPercent = this.receivedValue.contractValues.oneTimeBenefit;
             const contractType = this.receivedValue.customer.contractType;
@@ -340,20 +399,124 @@ export default defineComponent({
                 return this.carPrice * (oneTimeBenefitPercent / 100);
             }
         },
+
+        // Kontrakt oprettelse
         contractCreation() {
             const customerType = this.receivedValue.customer.customerType;
             const isImport = this.receivedValue.customer.import;
             if (customerType == 'Split' && isImport == true) {
-                return 10500 + 12500 + 2500 + (700 * this.receivedValue.contractValues.runningTime);
+                return 10500 + 12500 + 2500 + (700 * this.contractRunTime);
             } else if (customerType == 'Split') {
-                return 12500 + 2500 + (700 * this.receivedValue.contractValues.runningTime);
+                return 12500 + 2500 + (700 * this.contractRunTime);
             } else if (isImport == true){
                 return 10500 + 2500;
             } else {
                 return 2500;
             }
+        },
 
-        }
+        // Engangsydelse + kontrakt oprettelse
+        oneTimeBenefitWithContractCreation() {
+            return this.oneTimeBenefit + this.contractCreation;
+
+        },
+
+        // Bilens afskrivning
+        carDepreciation() {
+            const depreciation = this.receivedValue.contractValues.depreciation;
+            if (this.carPrice && depreciation) {
+                return parseIn(this.carPrice * (depreciation / 100)).toFixed(2);
+            } else if (this.carPrice) {
+                return parseInt((this.carPrice * 0.15)).toFixed(2);
+            }
+        },
+
+        // Restværdi
+        resValue() {
+                return parseInt((this.carPrice - this.carDepreciation).toFixed(2));
+
+        },
+        // Stål gevinst og Valuta gevinst
+        steelGainValutaGain() {
+            const isImport = this.receivedValue.customer.import;
+            const salePrice = this.receivedValue.contractValues.salePrice;
+            const cost = this.receivedValue.contractValues.cost;
+            if (isImport == true && salePrice && cost) {
+                return (salePrice * 7.46) - (cost * 7.46);
+            } else if (isImport == false && salePrice && cost) {
+                return salePrice - cost;
+            }
+        },
+
+        // Forholdsmæssig afgift
+        // TODO: kig på at lave udregning af forholdsmæssig afgift
+        proportionateTax() {
+            return 0;
+        },
+ 
+        // Finansering
+        financing() {
+                return parseInt(((this.carPrice + this.proportionateTax - this.oneTimeBenefit - this.deposit) *
+          (this.receivedValue.contractValues.interestRate / 100) / 12 /this.contractRunTime).toFixed(2));
+
+        },
+
+        // Månedeligleasing ydelse
+        monthlyLease() {
+                return parseInt((this.proportionateTax + this.contractCreation + this.financing + this.carDepreciation)/this.contractRunTime);
+            
+        },
+
+        // Depositum
+        deposit() {
+            let deposit = (this.carPrice + this.proportionateTax) * (this.receivedValue.contractValues.deposit/100)
+
+            if(this.carPrice && this.receivedValue.contractValues.deposit){
+                return  deposit.toFixed(2);
+            }else{
+                return deposit;
+            }
+            
+
+        },
+
+        // Total prisen
+        totalPrice(){
+                return this.oneTimeBenefit + (this.monthlyLease * this.contractRunTime);
+            
+        },
+
+        // Kontraktens løbetid (Lavet for at gøre koden kortere, da den bruges flere gange)
+        contractRunTime(){
+            const runningTime = this.receivedValue.contractValues.runningTime;
+            return runningTime;
+
+                
+               
+        },
+        // Beskatningsgrundlag
+        taxBase() {
+            const customerType = this.receivedValue.customer.customerType;
+            const contractType = this.receivedValue.customer.contractType;
+
+            if (customerType == 'Erhverv') {
+                if (this.carAge <= 36) {
+                    return this.receivedValue.vehicle.initialPrice;
+                } else if (this.carAge > 36 && contractType == 'Genleasing') {
+                    return this.receivedValue.contractValues.estimatedMarketValue;
+                } else if (this.carAge > 36 && contractType == 'Nytegning') {
+                    return this.receivedValue.contractValues.salePrice;
+                }
+            }
+        },
+
+        // Omkostning - Finansiering
+        // Finansieringsomkostning = (Bilens totalpris * Finansieringsrente / 12) * Kontraktens løbetid
+        // TODO: Finanseringsrente????????
+        finansCost() {
+            return (this.carPrice * finanseringsrente / 12) * this.contractRunTime;
+        },
+        
     }
 });
 
