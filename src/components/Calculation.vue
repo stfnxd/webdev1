@@ -1,24 +1,31 @@
 <template>
+    <!-- Beregningssektionen -->
     <section class="calculation col-7">
-        <!-- TODO: Gennemgå navne og computed properties. -->
+        <!-- Overskrift -->
         <h2>Beregning</h2>
+
+        <!-- Inputværdi for beregning -->
         <div>
             <p>Input value for calculation: {{ monthlyLease }}</p>
         </div>
 
+        <!-- Tabel til leasingtilbud -->
         <table>
+            <!-- Overskriftsrække med momsinformation afhængig af kundetype -->
             <tr>
                 <th>Overblik leasingtilbud</th>
                 <th v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">Inkl. moms</th>
                 <th>Ekskl. moms</th>
             </tr>
 
+            <!-- Række for leasingydelse (erhverv) -->
             <tr v-show="receivedValue.customer.customerType == 'Split'">
                 <td><b>Leasingydelse - erhverv</b></td>
                 <td v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'"></td>
                 <td></td>
             </tr>
 
+            <!-- Række for engangsydelse inkl. kontraktoprettelse -->
             <tr v-show="receivedValue.customer.customerType == 'Split'">
                 <td>Engangsydelse inkl. kontraktoprettelse</td>
                 <td v-if="oneTimeBenefitWithContractCreation" v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
@@ -32,19 +39,22 @@
                 </td>
                 <td v-else>VÆRDI</td>
             </tr>
-            
+
+            <!-- Række for månedlig leasing -->
             <tr v-show="receivedValue.customer.customerType == 'Split'">
                 <td>Månedlig leasing</td>
                 <td v-show="receivedValue.customer.customerType == 'Privat'  || receivedValue.customer.customerType == 'Split'">VÆRDI</td>
                 <td>VÆRDI</td>
             </tr>
 
+            <!-- Række for leasingydelse (privat) -->
             <tr v-show="receivedValue.customer.customerType == 'Split'">
                 <td><b>Leasingydelse - privat</b></td>
                 <td v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'"></td>
                 <td></td>
             </tr>
 
+            <!-- Række for engangsydelse inkl. kontraktoprettelse (privat) -->
             <tr>
                 <td>Engangsydelse inkl. kontraktoprettelse</td>
                 <td v-if="oneTimeBenefitWithContractCreation" v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
@@ -59,6 +69,7 @@
                 <td v-else>VÆRDI</td>
             </tr>
 
+            <!-- Række for månedlig leasing -->
             <tr>
                 <td>Månedlig leasing</td>
                 <td v-if="monthlyLease" v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">{{ monthlyLease }} kr.</td>
@@ -67,15 +78,16 @@
                 <td v-else>VÆRDI</td>
             </tr>
 
+            <!-- Række for totalpris i leasingperiode -->
             <tr>
                 <td><b>Totalpris i leasingperiode</b></td>
                 <td v-if="totalPrice" v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">{{ totalPrice }} kr.</td>
                 <td v-else v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">VÆRDI</td>
                 <td v-if="totalPrice">{{ totalPrice }} kr.</td>
                 <td v-else>VÆRDI</td>
-
             </tr>
 
+            <!-- Række for bilens afskrivning i leasingperioden -->
             <tr>
                 <td>Bilens afskrivning i leasingperioden</td>
                 <td v-if="carDepreciation" v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
@@ -92,6 +104,7 @@
                 </td>
             </tr>
 
+            <!-- Række for restværdi ved udløb -->
             <tr>
                 <td>Restværdi ved udløb</td>
                 <td v-if="resValue" v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
@@ -108,6 +121,7 @@
                 </td>
             </tr>
  
+            <!-- Række for depositum -->
             <tr>
                 <td>Depositum</td>
                 <td v-if="deposit" v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">{{ deposit }} kr.</td>
@@ -116,36 +130,42 @@
                 <td v-else>VÆRDI</td>
             </tr>
 
+            <!-- Række for forsikring pr. md. inkl. vejhjælp (moms fri) -->
             <tr>
                 <td>Forsikring pr. md. inkl. vejhjælp (moms fri)</td>
                 <td v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">0</td>
                 <td>0</td>
             </tr>
 
+            <!-- Række for tilbud om friskadedækning -->
             <tr>
                 <td>Tilbud om friskadedækning</td>
                 <td v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">VÆRDI</td>
                 <td>VÆRDI</td>
             </tr>
 
+            <!-- Række for selvrisiko -->
             <tr>
                 <td>Selvrisiko</td>
                 <td v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">VÆRDI</td>
                 <td>VÆRDI</td>
             </tr>
 
+            <!-- Række for beskatningsgrundlag (kun for erhvervskunder) -->
             <tr v-show="receivedValue.customer.customerType == 'Erhverv'">
                 <td>Beskatningsgrundlag</td>
                 <td v-show="receivedValue.customer.customerType == 'Privat'">VÆRDI</td>
                 <td>VÆRDI</td>
             </tr>
 
+            <!-- Række for momsfradrag pr. måned (kun for erhvervskunder) -->
             <tr v-show="receivedValue.customer.customerType == 'Erhverv'">
                 <td>Momsfradrag pr. måned</td>
                 <td v-show="receivedValue.customer.customerType == 'Privat'">VÆRDI</td>
                 <td>VÆRDI</td>
             </tr>
 
+            <!-- Række for GPS-tracker inkl. abonnement og montering -->
             <tr>
                 <td>GPS-tracker inkl. abonnement og montering</td>
                 <td v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">VÆRDI</td>
@@ -153,65 +173,75 @@
             </tr>
         </table>
 
-
+        <!-- Tabel for indtægter/udgifter i leasingperioden -->
         <table>
             <tr>
                 <th>Overblik over indtægter/udgifter i leasingperioden, ex. moms</th>
                 <th>Beløb</th>
             </tr>
 
+            <!-- Række for indtægter -->
             <tr>
                 <td><b>Indtægter</b></td>
                 <td></td>
             </tr>
 
+            <!-- Række for kontraktoprettelse -->
             <tr>
                 <td>Kontraktoprettelse</td>
                 <td v-if="receivedValue.contractValues.contractCreation">{{ receivedValue.contractValues.contractCreation }}</td>
                 <td v-else>{{ contractCreation }} kr.</td>
             </tr>
 
+            <!-- Række for finansiering (indtægt) -->
             <tr>
                 <td>Finansiering</td>
-                <td v-if="receivedValue.contractValues.interestRate">{{ receivedValue.contractValues.interestRate }}</td>
+                <td v-if="receivedValue.contractValues.interestRate">{{ financing }} kr.</td>
                 <td v-else>VÆRDI</td>
             </tr>
 
+            <!-- Række for samlede indtægter -->
             <tr>
                 <td>Indtægter i alt</td>
-                <td>VÆRDI</td>
+                <td>{{ earningsTotal }} kr.</td>
             </tr>
 
+            <!-- Række for omkostninger -->
             <tr>
                 <td><b>Omkostninger</b></td>
                 <td></td>
             </tr>
 
+            <!-- Række for finansieringsomkostninger -->
             <tr>
                 <td>Finansiering</td>
-                <td v-if="receivedValue.contractValues.interestRate && receivedValue.contractValues.runningTime">{{ (100 * (100 - receivedValue.contractValues.interestRate) / 12) * receivedValue.contractValues.runningTime }}</td>
+                <td v-if="receivedValue.contractValues.interestRate && receivedValue.contractValues.runningTime">{{ finansCost }} kr.</td>
                 <td v-else>VÆRDI</td>
             </tr>
 
+            <!-- Række for dækningsbidrag -->
             <tr>
                 <td><b>Dækningsbidrag</b></td>
                 <td>VÆRDI</td>
             </tr>
             
+            <!-- Række for stålgevinst/valutakursgevinst (vises kun ved kontrakttypen "Nytegning") -->
             <tr v-show="receivedValue.customer.contractType == 'Nytegning' || receivedValue.customer.import == true">
                 <td>Stålgevinst/valutakursgevinst</td>
                 <td v-if="steelGainValutaGain">{{ steelGainValutaGain }}</td>
                 <td v-else>VÆRDI</td>
             </tr>
 
+            <!-- Række for samlet dækningsbidrag (vises kun ved kontrakttypen "Nytegning") -->
             <tr v-show="receivedValue.customer.contractType == 'Nytegning' || receivedValue.customer.import == true">
                 <td><b>Samlet dækningsbidrag</b></td>
                 <td>VÆRDI</td>
             </tr>
 
         </table>
+        <!-- Tabel for indtægter/udgifter slut -->
 
-
+        <!-- Tabel kun vist ved kontrakttypen "Stilstand" eller hvis afgiften er betalt -->
         <table v-show="receivedValue.customer.contractType == 'Stilstand' || receivedValue.vehicle.levyPaid == true">
             <tr>
                 <th>Forholdsmæssig afgift</th>
@@ -219,30 +249,35 @@
                 <th>Beløb</th>
             </tr>
 
+            <!-- Række for forholdsmæssig afgift under 3 mdr. -->
             <tr>
                 <td>Forholdsmæssig afgift under 3 mdr.</td>
                 <td>VÆRDI</td>
                 <td>VÆRDI</td>
             </tr>
 
+            <!-- Række for forholdsmæssig afgift mellem 4 og 36 mdr. -->
             <tr>
                 <td>Forholdsmæssig afgift 4-36 mdr.</td>
                 <td>VÆRDI</td>
                 <td>VÆRDI</td>
             </tr>
             
+            <!-- Række for forholdsmæssig afgift over 36 mdr. -->
             <tr>
                 <td>Forholdsmæssig afgift +36 mdr.</td>
                 <td>VÆRDI</td>
                 <td>VÆRDI</td>
             </tr>
 
+            <!-- Række for rente af forholdsmæssig afgift-->
             <tr>
                 <td>Rente af forholdsmæssig afgift</td>
                 <td></td>
                 <td>VÆRDI</td>
             </tr>
 
+            <!-- Række for forholdsmæssig afgift i alt -->
             <tr>
                 <td><b>Forholdsmæssig afgift i alt</b></td>
                 <td></td>
@@ -250,19 +285,29 @@
             </tr>
 
         </table>
+        <!-- Forholdsmæssig table slut -->
 
     </section>
 </template>
   
+<!-- Script-sektionen indeholder Vue.js komponentdefinitionen -->
 <script>
+// Importer nødvendige funktioner fra Vue.js biblioteket
 import { defineComponent, computed } from 'vue';
 
+// Definer en Vue-komponent med navnet 'Calculation'
 export default defineComponent({
+    // Komponentnavn
     name: 'Calculation',
+
+    // Egenskaber (props) for komponenten
     props: {
+        // Standardværdien for den modtagne værdi er et objekt med specifikke indlejrede strukturer
         receivedValue: {
             type: Object,
+            // Standardfunktionen returnerer et objekt med foruddefineret struktur og standardværdier
             default: () => ({
+                // Indlejrede strukturer for kontraktværdier, kundeoplysninger og køretøjsdetaljer
                 contractValues: {
                     salePrice: '',
                     cost: '',
@@ -305,8 +350,9 @@ export default defineComponent({
         }
     },
 
+    // Beregnede egenskaber for dynamiske beregninger
     computed: {
-        // Bruges til at udregne måneder mellem start og slut dato
+        // Beregn startdato som en Date-objekt
         startDateComp() {
             const startDate = this.receivedValue.customer.startDate;
             const contractStartDate = new Date(startDate);
@@ -314,35 +360,33 @@ export default defineComponent({
             return contractStartDate;
         },
 
-        // Udregner hvor mange måneder en bil er under 36 måneder og over 36 måneder i kontrakt forløb.
+        // Beregn antallet af måneder over og under 36 måneder i kontrakten
         carMonths() {
             const start = new Date(this.receivedValue.vehicle.firstRegistrationDate);
 
             const contractStart = new Date(this.startDateComp);
 
-            // Calculate the number of months from the vehicle's first registration date to the contract start date
+            // Beregn antallet af måneder fra køretøjets første registreringsdato til kontraktens startdato
             const monthsBeforeContract = (contractStart.getFullYear() - start.getFullYear()) * 12 + contractStart.getMonth() - start.getMonth();
 
-            // Calculate the contract end date
+            // Beregn kontraktens slutdato
             const end = new Date(contractStart);
             end.setMonth(end.getMonth() + this.contractRunTime);
 
-            // Calculate the number of months from the vehicle's first registration date to the contract end date
+            // Beregn antallet af måneder fra køretøjets første registreringsdato til kontraktens slutdato
             const vehicleAgeAtContractEnd = (end.getFullYear() - start.getFullYear()) * 12 + end.getMonth() - start.getMonth();
 
-            // Calculate the number of months over and under 36 months during the contract
+            // Beregn antallet af måneder over og under 36 måneder i løbet af kontrakten
             const monthsOver36 = Math.max(0, vehicleAgeAtContractEnd - Math.min(vehicleAgeAtContractEnd, 36));
             const monthsUnder36 = Math.max(0, Math.min(vehicleAgeAtContractEnd, 36 - monthsBeforeContract));
 
             return {
-                monthsBeforeContract,
                 monthsOver36,
                 monthsUnder36,
-                vehicleAgeAtContractEnd
             };
         },
 
-        // Bilens alder.
+        // Beregn køretøjets alder i måneder
         carAge() {
             const registrationDate  = new Date(this.receivedValue.vehicle.firstRegistrationDate);
             const today = new Date();
@@ -350,7 +394,7 @@ export default defineComponent({
             return (today.getFullYear() - registrationDate.getFullYear()) * 12 + today.getMonth() - registrationDate.getMonth();
         },
 
-        //Moms fradrag i måneden 
+        // Beregn månedlig momsfradrag
         momsMonth() {
             const registrationFee = this.receivedValue.contractValues.registrationFee;
             const carMonths = this.carMonths;
@@ -369,7 +413,7 @@ export default defineComponent({
             } 
         },
 
-        // Bilens pris
+        // Bestem bilens pris baseret på kontrakttype
         carPrice() {
             const contractType = this.receivedValue.customer.contractType;
             if (contractType === 'Pristjek') {
@@ -381,7 +425,7 @@ export default defineComponent({
             }
         },
 
-        // Engangsydelse
+        // Beregn engangsydelse baseret på kontrakttype og procentdel
         oneTimeBenefit() {
             const oneTimeBenefitPercent = this.receivedValue.contractValues.oneTimeBenefit;
             const contractType = this.receivedValue.customer.contractType;
@@ -394,7 +438,7 @@ export default defineComponent({
             }
         },
 
-        // Kontrakt oprettelse
+        // Beregn omkostninger ved kontraktoprettelse baseret på kundetype og importstatus
         contractCreation() {
             const customerType = this.receivedValue.customer.customerType;
             const isImport = this.receivedValue.customer.import;
@@ -409,81 +453,74 @@ export default defineComponent({
             }
         },
 
-        // Engangsydelse + kontrakt oprettelse
+        // Beregn engangsydelse med omkostninger ved kontraktoprettelse
         oneTimeBenefitWithContractCreation() {
             return (this.oneTimeBenefit + this.contractCreation).toFixed();
         },
 
-        // Bilens afskrivning
+        // Beregn bilens afskrivning baseret på afskrivningsprocenten
         carDepreciation() {
             const depreciation = this.receivedValue.contractValues.depreciation;
             if (this.carPrice && depreciation) {
-                return (this.carPrice * (depreciation / 100));
+                return Math.round((this.carPrice * (depreciation / 100)));
             } else if (this.carPrice) {
-                return (this.carPrice * 0.15);
+                return Math.round((this.carPrice * 0.15));
             } else {
                 // Hvis hverken carPrice eller depreciation er til stede, returner 0 eller en standardværdi.
                 return 0;
             }
         },
 
-        // Restværdi
+        // Beregn restværdi af køretøjet
         resValue() {
                 return parseInt((this.carPrice - this.carDepreciation).toFixed(2));
         },
 
-        // Stål gevinst og Valuta gevinst
+        // Beregn stålgevinst eller valutagevinst baseret på importstatus
         steelGainValutaGain() {
             const isImport = this.receivedValue.customer.import;
             const salePrice = this.receivedValue.contractValues.salePrice;
             const cost = this.receivedValue.contractValues.cost;
             if (isImport == true && salePrice && cost) {
-                return (salePrice * 7.46) - (cost * 7.46);
+                return Math.round((salePrice * 7.46) - (cost * 7.46));
             } else if (isImport == false && salePrice && cost) {
                 return salePrice - cost;
             }
         },
 
-        // Forholdsmæssig afgift
-        // TODO: kig på at lave udregning af forholdsmæssig afgift
+        // Pladsholder for beregning af forholdsmæssig afgift
         proportionateTax() {
             return 0;
         },
  
-        // Finansering
+        // Beregn finansieringsomkostninger
         financing() {
-                return parseInt(((this.carPrice + this.proportionateTax - this.oneTimeBenefit - this.deposit) *
-          (this.receivedValue.contractValues.interestRate / 100) / 12 /this.contractRunTime).toFixed(2));
+                return Math.round((this.carPrice + this.proportionateTax - this.oneTimeBenefit - this.deposit) * (this.receivedValue.contractValues.interestRate / 100) / 12 /this.contractRunTime);
         },
 
-        // Månedeligleasing ydelse
+        // Beregn månedlig leasingafgift
         monthlyLease() {
             return parseInt((this.proportionateTax + this.contractCreation + this.financing + this.carDepreciation)/this.contractRunTime);
         },
 
-        // Depositum
+        // Beregn depositumssum
         deposit() {
-            let deposit = (this.carPrice + this.proportionateTax) * (this.receivedValue.contractValues.deposit/100)
-
-            if(this.carPrice && this.receivedValue.contractValues.deposit){
-                return  deposit.toFixed(2);
-            }else{
-                return deposit;
-            }
+           
+            return Math.round((this.carPrice + this.proportionateTax) * (this.receivedValue.contractValues.deposit/100));
         },
 
-        // Total prisen
+        // Beregn den samlede kontraktpris
         totalPrice(){
-                return this.oneTimeBenefit + (this.monthlyLease * this.contractRunTime);
+                return Math.round(this.oneTimeBenefit + (this.monthlyLease * this.contractRunTime));
         },
 
-        // Kontraktens løbetid (Lavet for at gøre koden kortere, da den bruges flere gange)
+        // Få kontraktens løbetid til brug i forskellige beregninger
         contractRunTime(){
             const runningTime = this.receivedValue.contractValues.runningTime;
             return runningTime;  
         },
 
-        // Beskatningsgrundlag
+        // Beregn beskatningsgrundlag
         taxBase() {
             const customerType = this.receivedValue.customer.customerType;
             const contractType = this.receivedValue.customer.contractType;
@@ -499,19 +536,25 @@ export default defineComponent({
             }
         },
 
-        // Omkostning - Finansiering
-        // Finansieringsomkostning = (Bilens totalpris * Finansieringsrente / 12) * Kontraktens løbetid
-        // TODO: Finanseringsrente????????
+        // Beregn omkostninger ved finansiering
+        // TODO: Finanseringsrente er IKKE RIGTIG, bare opfundet
         finansCost() {
-            return (this.carPrice * finanseringsrente / 12) * this.contractRunTime;
+            let finanseringsrente = 0.001;
+            return Math.round((this.carPrice * finanseringsrente / 12) * this.contractRunTime);
         },
+
+        // Beregn Indtægter i alt
+        earningsTotal() {
+            return Math.round(this.contractCreation + this.financing);
+        }
         
     }
 });
-
 </script>
 
+<!-- Stil-sektionen indeholder CSS-styling for komponenten -->
 <style>
+/* Styling for Calculation-komponenten */
 .calculation {
     margin-top: 30px; 
     border: 1px solid var(--medium-grey); 
@@ -519,32 +562,39 @@ export default defineComponent({
     padding: 50px;
 }
 
+/* Styling for tabeller inden i Calculation-komponenten */
 .calculation table {
     width: 100%; 
     margin-bottom: 50px;
 }
 
+/* Styling for ulige rækker i tabeller */
 .calculation table tr:nth-child(odd) {
   background-color: var(--light-grey); 
 }
 
+/* Styling for den første række i tabellerne (header) */
 .calculation table tr:first-of-type {
     background-color: var(--table-header-grey);
 }
 
+/* Styling for tabelceller (td og th) */
 .calculation table td, .calculation table th {
     padding: 10px;
 }
 
+/* Styling for tabelheaderceller */
 .calculation table th {
     font-weight: 600;
     font-size: 1.1rem; 
 }
 
+/* Styling for tekstjustering af tabelceller */
 .calculation table tr td,  .calculation table tr th{
     text-align: center; 
 }
 
+/*Styling for den første og sidste celle i hver række */
 .calculation table tr td:first-of-type, .calculation table tr th:first-of-type {
     text-align: left; 
 }
@@ -552,6 +602,4 @@ export default defineComponent({
 .calculation table tr td:last-of-type, .calculation table tr th:last-of-type {
     width: 30%;
 }
-
-
 </style>
