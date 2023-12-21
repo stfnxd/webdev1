@@ -417,7 +417,7 @@ export default defineComponent({
 
         // Engangsydelse + kontrakt oprettelse
         oneTimeBenefitWithContractCreation() {
-            return this.oneTimeBenefit + this.contractCreation;
+            return (this.oneTimeBenefit + this.contractCreation).toFixed();
 
         },
 
