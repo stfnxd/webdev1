@@ -6,7 +6,7 @@
 
         <!-- Inputværdi for beregning -->
         <div>
-            <p>Input value for calculation: {{ monthlyLease }}</p>
+            <p>Input value for calculation: {{ deposit }}</p>
         </div>
 
         <!-- Tabel til leasingtilbud -->
@@ -473,7 +473,7 @@ export default defineComponent({
 
         // Beregn restværdi af køretøjet
         resValue() {
-                return parseInt((this.carPrice - this.carDepreciation).toFixed(2));
+            return parseInt((this.carPrice - this.carDepreciation).toFixed(2));
         },
 
         // Beregn stålgevinst eller valutagevinst baseret på importstatus
@@ -495,7 +495,7 @@ export default defineComponent({
  
         // Beregn finansieringsomkostninger
         financing() {
-                return Math.round(((this.carPrice + this.proportionateTax - this.oneTimeBenefit - this.deposit) * (this.receivedValue.contractValues.interestRate / 100) / 12) *this.contractRunTime);
+            return Math.round(((this.carPrice + this.proportionateTax - this.oneTimeBenefit - this.deposit) * (this.receivedValue.contractValues.interestRate / 100) / 12) *this.contractRunTime);
         },
 
         // Beregn månedlig leasingafgift
@@ -505,13 +505,12 @@ export default defineComponent({
 
         // Beregn depositumssum
         deposit() {
-           
             return Math.round((this.carPrice + this.proportionateTax) * (this.receivedValue.contractValues.deposit/100));
         },
 
         // Beregn den samlede kontraktpris
         totalPrice(){
-                return Math.round(this.oneTimeBenefit + (this.monthlyLease * this.contractRunTime));
+            return Math.round(this.oneTimeBenefit + (this.monthlyLease * this.contractRunTime));
         },
 
         // Få kontraktens løbetid til brug i forskellige beregninger
