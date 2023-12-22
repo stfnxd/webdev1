@@ -489,6 +489,7 @@ export default defineComponent({
         },
 
         // Pladsholder for beregning af forholdsmæssig afgift
+        // Forholdsmæssig afgift retunere 0, i de udregninger vi laver, dog er der andre udregninger som den skal regnes ud.
         proportionateTax() {
             return 0;
         },
