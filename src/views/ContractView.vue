@@ -4,12 +4,15 @@ import ContractPreview from '@/components/ContractPreview.vue'
 
 <template>
     <main>
+        <!-- Tilbage-knap -->
         <router-link :to="{ path: '/' }">
             <button class="backToForm">Tilbage</button>
         </router-link>
+        <!-- ContractPreview komponentet indsættes -->
         <section class="contractView">
             <ContractPreview />
         </section>
+        <!-- Knap til at sende kontrakt til kunden -->
         <button class="makeContract">Send til kunde på mail</button>
     </main>
 </template>

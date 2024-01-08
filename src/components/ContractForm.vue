@@ -10,6 +10,7 @@
                 <option value="Erhverv">Erhverv</option>
                 <option value="Split">Split</option>
             </select>
+            <!-- INPUT VALIDERING: Tjekker om kundetypen er valgt -->
             <span v-if="!isFormValid().customerType" class="warning"><font-awesome-icon icon="circle-exclamation" /> Kunde typen skal vælges</span>
 
             <label for="contractType">Kontrakttype</label>
@@ -20,8 +21,10 @@
                 <option value="Pristjek">Pristjek</option>
                 <option value="Stilstand">Stilstand</option>
             </select>
+            <!-- INPUT VALIDERING: Tjekker om kontrakttypen er valgt -->
             <span v-if="!isFormValid().contractType" class="warning"><font-awesome-icon icon="circle-exclamation" /> Kontrakttypen skal vælges</span>
 
+            <!-- Sæson vises ikke hvis kundetype er 'Split' eller hvis kontrakttypen er 'Stilstand' -->
             <div v-show="formData.customer.customerType == 'Privat' || formData.customer.customerType == 'Erhverv' || formData.customer.contractType == 'Nytegning' || formData.customer.contractType == 'Genleasing' || formData.customer.contractType == 'Pristjek'">
                 <div v-show="formData.customer.customerType != 'Split' && formData.customer.contractType != 'Stilstand'"
                     class="contract-checkbox">
@@ -30,6 +33,7 @@
                 </div>
             </div>
 
+            <!-- Hvis kontrakttype "Nytegning" er valgt - vis dette -->
             <div v-show="formData.customer.contractType == 'Nytegning'" class="contract-checkbox">
                 <label for="checkboxImport">Import</label>
                 <input v-model="formData.customer.import" @input="emitValue" type="checkbox" id="checkboxImport" name="checkbox">
@@ -39,6 +43,7 @@
         <section>
             <h3>Leasingtager</h3>
             
+            <!-- Hvis kontrakttype "Genleasing" er valgt - vis dette -->
             <div v-show="formData.customer.contractType == 'Genleasing'">
             <label for="customerId">Kunde Id</label>
             <input v-model="formData.customerId" @input="emitValue" type="text" id="customerId" class="form-control" name="customerId" placeholder="Indtast kundens id">
@@ -48,6 +53,7 @@
             <label for="name">Navn</label>
             <input v-model="formData.customer.name" @input="emitValue" type="text" id="name" class="form-control" name="name"
                 placeholder="Indtast kundens navn">
+                <!-- INPUT VALIDERING: Tjekker om kontrakttypen er valgt -->
                 <span v-if="!isFormValid().customerName" class="warning"><font-awesome-icon icon="circle-exclamation" /> Kunde navn skal udfyldes</span>
 
             <label for="email">Email</label>
@@ -75,6 +81,7 @@
                 <input v-model="formData.vehicle.newVehicle" @input="emitValue" type="checkbox" id="checkboxNewVehicle" name="checkbox" value="1">
             </div>
 
+            <!-- Hvis kontrakttype ikke er "Stilstand" - vis dette -->
             <div v-show="formData.customer.contractType != 'Stilstand' && formData.customer.contractType != ''" class="contract-checkbox">
                 <label for="checkboxLevyPaid">Fuld afgift betalt</label>
                 <input v-model="formData.vehicle.levyPaid" @input="emitValue" type="checkbox" id="checkboxLevyPaid" name="checkbox"
@@ -92,17 +99,20 @@
                 <option value="Bil">Bil</option>
                 <option value="Motorcykel">Motorcykel</option>
             </select>
+            <!-- INPUT VALIDERING: Tjekker om Køretøjs Type er valgt -->
             <span v-if="!isFormValid().vehicleType" class="warning"><font-awesome-icon icon="circle-exclamation" /> Type køretøj skal vælges</span>
 
             <label for="vehicle">Køretøj</label>
             <input v-model="formData.vehicle.vehicle" @input="emitValue" type="text" id="vehicle" class="form-control" name="vehicle"
                 placeholder="Indtast køretøj">
+                <!-- INPUT VALIDERING: Tjekker om Køretøj er indtastet -->
                 <span v-if="!isFormValid().vehicle" class="warning"><font-awesome-icon icon="circle-exclamation" /> Køretøj skal udfyldes</span>
 
             <label for="framenumber">Stelnummer</label>
             <input v-model="formData.vehicle.frameNumber" @input="emitValue" type="number" id="framenumber" class="form-control"
                 name="framenumber" placeholder="Indtast stelnummer">
 
+            <!-- Vises hvis det ikke er et nyt køretøj -->
             <div v-show="formData.vehicle.newVehicle == false">
                 <label for="firstRegistrationDate">1. Indregistreringsdato</label>
                 <input v-model="formData.vehicle.firstRegistrationDate" @input="checkDate" type="date" id="firstRegistrationDate"
@@ -113,36 +123,47 @@
             <input v-model="formData.vehicle.mileage" @input="emitValue" type="number" id="mileage" class="form-control"
                 name="mileage" placeholder="Indtast kilometerstand">
 
+            <!-- Vises hvis kontraktype ikke er "Stilstand"-->
             <div v-show="formData.customer.contractType != 'Stilstand'">
+                <!-- *Hvis kontrakt type er "Nytegning" og import er true vises dette -->
                 <div v-if="formData.customer.contractType == 'Nytegning' && formData.customer.import == true">
                     <label for="salePrice">Udsalgspris i €</label>
                     <input v-model="formData.contractValues.salePrice" @input="emitValue" type="number" id="salePrice" class="form-control"
                         name="salePrice" placeholder="Indtast udsalgspris i €">
+                        <!-- INPUT VALIDERING: Tjekker om Udsalgspris er indtastet -->
                         <span v-if="!isFormValid().salePrice" class="warning"><font-awesome-icon icon="circle-exclamation" /> Udsalgspris i € skal udfyldes</span>
                 </div>
+                <!-- *Eller vises dette -->
                 <div v-else>
                     <label for="salePrice">Udsalgspris</label>
                     <input v-model="formData.contractValues.salePrice" @input="emitValue" type="number" id="salePrice" class="form-control"
                         name="salePrice" placeholder="Indtast udsalgspris">
+                        <!-- INPUT VALIDERING: Tjekker om Udsalgspris er indtastet -->
                         <span v-if="!isFormValid().salePrice" class="warning"><font-awesome-icon icon="circle-exclamation" /> Udsalgspris skal udfyldes</span>
                 </div>
                 
             </div>
+            <!-- Vises hvis kundetypen er "Split" eller kontrakt typen er "Nytegning" -->
             <div v-show="formData.customer.customerType == 'Split' || formData.customer.contractType == 'Nytegning'">
+                <!-- *Hvis Import er true vises dette -->
                 <div v-if="formData.customer.import == true">
                     <label for="cost">Kostpris i €</label>
                     <input v-model="formData.contractValues.cost" @input="emitValue" type="number" id="cost" class="form-control"
                         name="cost" placeholder="Indtast kostpris i €">
+                        <!-- INPUT VALIDERING: Tjekker om Kostpris er indtastet -->
                         <span v-if="!isFormValid().cost" class="warning"><font-awesome-icon icon="circle-exclamation" /> Kostpris i € skal udfyldes</span>
                 </div>
+                <!-- *Ellers vises dette -->
                 <div v-else>
                     <label for="cost">Kostpris</label>
                     <input v-model="formData.contractValues.cost" @input="emitValue" type="number" id="cost" class="form-control"
                         name="cost" placeholder="Indtast kostpris">
+                        <!-- INPUT VALIDERING: Tjekker om Kostpris er indtastet -->
                         <span v-if="!isFormValid().cost" class="warning"><font-awesome-icon icon="circle-exclamation" /> Kostpris skal udfyldes</span>
                 </div>
             </div>
-
+            
+            <!-- Vises hvis kontrakttypen er "Genleasing" -->
             <div v-show="formData.customer.contractType == 'Genleasing'">
                 <label for="estimatedMarketValue">Skønnet handelsværdi i DK</label>
                 <input v-model="formData.contractValues.estimatedMarketValue" @input="emitValue" type="number" id="estimatedMarketValue"
@@ -150,6 +171,7 @@
                     placeholder="Indtast handelsværdi inkl. moms og afgift">
             </div>
 
+            <!-- Vises hvis kontrakttypen er "Genleasing" eller Stilstand -->
             <div v-show="formData.customer.contractType == 'Genleasing' || formData.customer.contractType == 'Stilstand'">
                 <label for="residualValue">Restværdihæftelse ved kontraktstart</label>
                 <input v-model="formData.contractValues.residualValue" @input="emitValue" type="number" id="residualValue"
@@ -157,41 +179,45 @@
                     <span v-if="!isFormValid().residualValue" class="warning"><font-awesome-icon icon="circle-exclamation" /> Restværdihæftelse skal udfyldes</span>
             </div>
 
+            <!-- Vises hvis kontrakttypen er "Pristjek" -->
             <div v-show="formData.customer.contractType == 'Pristjek'">
                 <label for="cashPrice">Kontantpris (i stedet for udsalgspris)</label>
                 <input v-model="formData.contractValues.cashPrice" @input="emitValue" type="number" id="cashPrice" class="form-control"
                     name="cashPrice" placeholder="Indtast kontantpris">
+                    <!-- INPUT VALIDERING: Tjekker om Kontantpris er indtastet -->
                     <span v-if="!isFormValid().cashPrice" class="warning"><font-awesome-icon icon="circle-exclamation" /> Kontantpris skal udfyldes</span>
             </div>
 
+            <!-- Vises hvis kontrakttypen ikke er "Stilstand" og Fuld afgift ikke er betalt-->
             <div v-show="formData.customer.contractType != 'Stilstand' && formData.customer.contractType != '' && formData.vehicle.levyPaid == false">
                 <label for="registrationFee">Anslået registreringsafgift</label>
                 <input v-model="formData.contractValues.registrationFee" @input="emitValue" type="number" id="registrationFee"
                     class="form-control" name="registrationFee" placeholder="Indtast anslået registreringsafgift">
             </div>
-
+            <!-- Viser 'Nypris inkl. moms og afgift' hvis showInitialPrice er true, kundetypen ikke er 'Split' og kontrakttypen ikke er 'Stilstand' -->
             <div v-show="showInitialPrice && formData.customer.customerType != 'Split' && formData.customer.contractType != 'Stilstand'">
                 <label for="initialPrice">Nypris inkl. moms og afgift</label>
                 <input v-model="formData.vehicle.initialPrice" @input="emitValue" type="number" id="initialPrice"
                     class="form-control" name="initialPrice" placeholder="Indtast nypris">
             </div>
-
         </section>
 
         <section>
-
             <h3>Kontraktoplysninger</h3>
 
             <label for="running-time">Løbetid (i måneder)</label>
             <input v-model="formData.contractValues.runningTime" @input="emitValue" type="number" id="running-time" class="form-control"
                 name="run-time" placeholder="Indtast løbetid i måneder">
+                <!-- INPUT VALIDERING: Tjekker om løbetid er indtastet -->
                 <span v-if="!isFormValid().runningTime" class="warning"><font-awesome-icon icon="circle-exclamation" /> Løbetid skal udfyldes</span>
 
+            <!-- Vises hvis kundetype ikke er false og ikke er split og kontrakttypen ikke er Stilstand-->
             <div v-show="formData.customer.season != false && formData.customer.customerType != 'Split' && formData.customer.contractType != 'Stilstand'">
                 <label for="active-running-time">Aktiv periode i kontraktens løbetid (i måneder)</label>
                 <input v-model="formData.contractValues.activeRunningTime" @input="emitValue" type="number" id="active-running-time"
                     class="form-control" name="active-running-time"
                     placeholder="Indtast aktiv periode i kontraktens løbetid i måneder">
+                    <!-- INPUT VALIDERING: Tjekker om Aktiv periode er indstastet -->
                     <span v-if="!isFormValid().activeRunningTime" class="warning"><font-awesome-icon icon="circle-exclamation" /> Aktiv periode skal udfyldes</span>
             </div>
 
@@ -203,11 +229,13 @@
             <input v-model="formData.contractValues.contractCreation" @input="emitValue" type="number" id="contract-creation"
                 class="form-control" name="contract-creation" placeholder="0">
 
+            <!-- *Hvis kontrakttype ikke er Stilstand vises dette -->
             <div v-if="formData.customer.contractType != 'Stilstand'">
                 <label for="one-time-benefit">Engangsydelse i procent, ex. moms (min. 20% - max. 30%)</label>
                 <input v-model="formData.contractValues.oneTimeBenefit" @input="emitValue" type="number" id="one-time-benefit"
                     class="form-control" name="one-time-benefit" placeholder="20%" min="20" max="30">
             </div>
+            <!-- *Ellers vises dette -->
             <div v-else>
                 <label for="one-time-benefit">Engangsydelse i procent, ex. moms</label>
                 <input v-model="formData.contractValues.oneTimeBenefit" @input="emitValue" type="number" id="one-time-benefit"
@@ -231,7 +259,6 @@
                 <input v-model="formData.contractValues.privateShare" @input="emitValue" type="number" id="private-share"
                     class="form-control" name="private-share" placeholder="Indtast privat andel i procent">
             </div>
-
         </section>
         <button @click.prevent="sendData" class="makeContract" :disabled="!isFormValid()">Lav tilbudskontrakt</button>
     </section>
@@ -247,8 +274,12 @@ import axios from 'axios';
 export default defineComponent({
     setup() {
         const formValidationResults = computed(() => isFormValid());
+
+        // Pinia
         const router = useRouter();
         const myStore = useMyStore();
+
+        // Startværdier for formData
         const formData = ref({
             contractValues: {
                 Id_Køretøjdata: null,
@@ -294,7 +325,7 @@ export default defineComponent({
         });
 
         const buttonClicked = ref(false);
-        const showInitialPrice = ref(false); // Use ref for reactive properties
+        const showInitialPrice = ref(false);
 
         const isFormValid = () => {
             const customerTypeValid = formData.value.customer.customerType && (formData.value.customer.customerType === 'Privat' || formData.value.customer.customerType === 'Erhverv' || formData.value.customer.customerType === 'Split');
@@ -326,7 +357,7 @@ export default defineComponent({
         return buttonClicked.value ? validationResults : { customerName: true, vehicle: true, vehicleType: true, customerType: true, contractType: true, salePrice: true, cost: true, residualValue: true, cashPrice: true, runningTime: true, activeRunningTime: true };
         };
 
-        // checks if first registration date is more than 36 months ago 
+        // Tjekker hvis 1.Indregistreringsdato er mere end 35 måneder siden
         const checkDate = () => {
             const date = new Date(formData.value.vehicle.firstRegistrationDate);
             const today = new Date();
@@ -341,10 +372,11 @@ export default defineComponent({
             }
         };
 
-
-
+        
         const sendData = async () => {
+            // Pinia
             myStore.setData(formData.value);
+            // Validering af input felter
             buttonClicked.value = true;
             const validationResults = isFormValid();
             if (!validationResults.customerType || !validationResults.contractType || !validationResults.customerName || !validationResults.vehicle ||
@@ -355,70 +387,68 @@ export default defineComponent({
             }
 
             try {
-                    // Perform update operations
-                    if (formData.value.contractValues.Id_Køretøjdata) {
-                        const responseVehicle = await axios.put(`http://localhost:5174/api/vehicle/update/${formData.value.contractValues.Id_Køretøjdata}`, formData.value.vehicle);
-                        console.log('Updated vehicle data:', responseVehicle.data);
+                //  Opdaterer information i databasen
+                if (formData.value.contractValues.Id_Køretøjdata) {
+                    const responseVehicle = await axios.put(`http://localhost:5174/api/vehicle/update/${formData.value.contractValues.Id_Køretøjdata}`, formData.value.vehicle);
+                    console.log('Updated vehicle data:', responseVehicle.data);
                     
-                
-                        if (formData.value.customer.Id_Kontraktværdier) {
-                            const responseContractValues = await axios.put(`http://localhost:5174/api/contractValues/update/${formData.value.customer.Id_Kontraktværdier}`, formData.value.contractValues);
-                            console.log('Updated data:', responseContractValues.data);
-                        }
-
-                        if (formData.value.customerId) {
-                            const responseCustomer = await axios.put(`http://localhost:5174/api/customer/update/${formData.value.customerId}`, formData.value.customer);
-                            console.log('Updated customer data:', responseCustomer.data);
+                    if (formData.value.customer.Id_Kontraktværdier) {
+                        const responseContractValues = await axios.put(`http://localhost:5174/api/contractValues/update/${formData.value.customer.Id_Kontraktværdier}`, formData.value.contractValues);
+                        console.log('Updated data:', responseContractValues.data);
                     }
 
-                    } else {
+                    if (formData.value.customerId) {
+                        const responseCustomer = await axios.put(`http://localhost:5174/api/customer/update/${formData.value.customerId}`, formData.value.customer);
+                        console.log('Updated customer data:', responseCustomer.data);
+                    }
 
-                        // Send customer to the first API endpoint and store the auto-incremented ID from the response
-                        const responseFirstAPI = await axios.post('http://localhost:5174/api/vehicle/add', formData.value.vehicle);
-                        const vehicleId = responseFirstAPI.data.insertId;
+                } else {
+                    // Sender customer til det 1. API-endpoint og gemer den autoinkrementerede ID fra svaret
+                    const responseFirstAPI = await axios.post('http://localhost:5174/api/vehicle/add', formData.value.vehicle);
+                    const vehicleId = responseFirstAPI.data.insertId;
 
-                        // Update formData contractValues with the obtained vehicle ID, send contractValues to second API and store the auto-incremented ID from the response
-                        formData.value.contractValues.Id_Køretøjdata = vehicleId;
-                        const responseSecondAPI = await axios.post('http://localhost:5174/api/contractValues/add', formData.value.contractValues);
-                        const contractValuesId = responseSecondAPI.data.insertId;
+                    // Opdater formData contractValues med den opnåede veichle-ID, sender contractValues til det 2. API-endpoint og gem den autoinkrementerede ID fra svaret
+                    formData.value.contractValues.Id_Køretøjdata = vehicleId;
+                    const responseSecondAPI = await axios.post('http://localhost:5174/api/contractValues/add', formData.value.contractValues);
+                    const contractValuesId = responseSecondAPI.data.insertId;
                         
-                        // Update formData customer with the obtained contractValues ID, send vehicle to the third API endpoint
-                        formData.value.customer.Id_Kontraktværdier = contractValuesId;
-                        const responseThirdAPI = await axios.post('http://localhost:5174/api/customer/add', formData.value.customer);
-                       
-                        // Log the responses (you might want to handle these responses according to your needs)
-                        console.log('Response from API 1:', responseFirstAPI.data);
-                        console.log('Response from API 2:', responseSecondAPI.data);
-                        console.log('Response from API 3:', responseThirdAPI.data);
-                    }
-
-                    if (isFormValid()) {
-                        router.push('/contract-preview');
-                    }
-
-                } catch (error) {
-                    console.error('Error sending data:', error);
+                    // Opdater formData customer med den opnåede contractValues-ID, sender veichle til det 3. API-endpoint
+                    formData.value.customer.Id_Kontraktværdier = contractValuesId;
+                    const responseThirdAPI = await axios.post('http://localhost:5174/api/customer/add', formData.value.customer);
+                    // Logger respons fra API end-points
+                    console.log('Response from API 1:', responseFirstAPI.data);
+                    console.log('Response from API 2:', responseSecondAPI.data);
+                    console.log('Response from API 3:', responseThirdAPI.data);
                 }
-            };
 
-        // New method to fetch customer data based on ID
+                // Hvis alle inputs er som de skal, push til /contract-preview
+                if (isFormValid()) {
+                    router.push('/contract-preview');
+                }
+
+            } catch (error) {
+                console.error('Error sending data:', error);
+            }
+        };
+
+        // Metode til at fetch kundedata ud fra kunde ID
         const fetchCustomerData = async () => {
         try {
-                // Validate if searchCustomerId is not empty
+                // Tjekker om searchCustomerId ikke er tomt
                 if (!formData.value.customerId) {
                     console.error('Please enter a Customer ID');
                     return;
                 }
 
-                // Send a request to the server to fetch data based on the entered customer ID
+                // Sender en forespørgel til serveren om at fetche data baseret på det indtastede kunde ID
                 const response = await axios.get(`http://localhost:5174/api/customer/${customerId.value}`);
             
-                // Check if there's data in the response
+                // Tjekker om reponse indeholder data
                 if (response.data.length > 0) {
                     const fetchedData = response.data[0];
 
                     formData.value.customerId = formData.value.customerId;
-                    // Update the formData with the fetched data from 'leasingtager' table
+                    // Opdaterer formData med det fetchede data fra 'leasingtager' tabellen
                     formData.value.customer.Id_Kontraktværdier = fetchedData.Id_Kontraktværdier;
                     formData.value.customer.name = fetchedData.Navn;
                     formData.value.customer.email = fetchedData.Email;
@@ -484,12 +514,14 @@ export default defineComponent({
 
     name: 'ContractForm',
     methods: {
+        // Kaldes hver gang input ændres og sender formData til HomeView.vue og videre til Calculation.vue
         emitValue() {
-                this.$emit('input-updated', this.formData); // Emit the input value
+            this.$emit('input-updated', this.formData);
         },
     },
+    // Kalder emitValue når komponentet bliver mounted
     mounted() {
-        this.emitValue(); // Call emitValue method when the component is mounted
+        this.emitValue();
     }
 });
 
@@ -547,27 +579,10 @@ export default defineComponent({
 
 .warning {
   display: block;
-  background-color: #ffdddd; /* Rød baggrundsfarve */
-  color: #8b0000; /* Mørkerød tekstfarve */
-  padding: 10px; /* Øget polstring for bedre synlighed */
-  border-radius: 5px; /* Afrundede hjørner */
-  margin-top: 5px; /* Afstand fra det tilknyttede inputfelt */
+  background-color: #ffdddd;
+  color: #8b0000;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 5px;
 }
-
-/* select {
-  border: 0;
-  vertical-align: middle;
-  background: transparent;
-  -webkit-appearance: none;
-  appearance: none;
-  padding-left: 5px;
-}
-
-select option:after {
-  content: '\2304';
-  font-size: 30px;
-  line-height: 23px;
-  padding-right: 2px;
-} */
-
 </style>

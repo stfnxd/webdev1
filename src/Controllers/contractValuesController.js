@@ -4,7 +4,7 @@ const contractValuesService = require('../services/contractValuesService');
 module.exports = {
   addContractValues: async (req, res) => {
     try {
-      // Logic to handle adding contractValues
+      // Logik for at håndtere add ContractValues
       const result = await contractValuesService.addContractValues(req.body);
       res.json(result);
     } catch (error) {
@@ -18,7 +18,7 @@ module.exports = {
       const id = req.params.id;
       const updatedValues = req.body;
 
-      // Logic to handle updating contractValues
+      // Logik for at håndterer opdatering af ContractValues
       const result = await contractValuesService.updateContractValues(id, updatedValues);
       res.json(result);
     } catch (error) {

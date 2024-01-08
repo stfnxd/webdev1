@@ -4,6 +4,8 @@ import { expect, test } from "vitest";
 
 const wrapper = mount(Calculation);
 let mockData;
+
+// Sætter mockData.receivedValue til at indeholde tomme strenge før hver test
 beforeEach(() => {
     mockData = {
         receivedValue: {

@@ -12,7 +12,7 @@ module.exports = {
       }
     } 
 
-    // Use parameterized queries to prevent SQL injection
+    // Bruger parametriseret forespørgelser for at undgå SQL injection
     var query = `
     INSERT INTO beregninger
     (Restværdi, MånedligLeasing_Privat, Aktivperiode, Bekastingsgrundlag, Privatandel, Forsinkring, Engangsydelse_Privat, Depositum, Afskrivning, Engangsydelse_Erhverv, MånedligLeasing_Erhverv, Friskadedækning, GPS, Kontraktoprettelse, Finasering, Indtægter_Ialt, Dækningsbidrag, Stålgevinst/Valutakursgevinst, Samlet_Dækningsbidrag, Forholdsmæssig_Afgift_under3, Forholdsmæssig_Afgift_4-36, Forholdsmæssig_Afgift_+36, Forholdsmæssig_Rente, Forholdsmæssig_Ialt )

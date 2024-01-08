@@ -17,7 +17,7 @@ module.exports = {
       const id = req.params.id;
       const updatedValues = req.body;
 
-      // Logic to handle updating vehicle data
+      // Logik til at håndtere opdatering af vehicle data
       const result = await vehicleService.updateVehicleData(id, updatedValues);
       res.json(result);
     } catch (error) {

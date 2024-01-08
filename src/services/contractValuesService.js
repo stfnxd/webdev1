@@ -2,7 +2,7 @@
 const { execute } = require('../../Database/database.js');
 
 module.exports = {
-  // Function to add contractValues
+  // Funktion for at add contractValues
   addContractValues: async (data) => {
     const excludedFields = ['Id'];
     const values = [];
@@ -13,7 +13,7 @@ module.exports = {
       }
     } 
     
-    // Use parameterized queries to prevent SQL injection
+    // Bruger parametriseret forespørgsler for at undgå SQL Injections
     var query = `
     INSERT INTO kontrakt_værdier
     (Id_Køretøjdata, Udsalgspris, Kostpris, Handelsværdi_DK, Restværdihæftelse, Kontantpris, Løbetid, Kontraktens_Løbetid, Rente, Kontraktoprettelse, Engangsydelse, Depositum, Afskrivning, Provision, Privat_Andel, Registeringsafgift )
@@ -33,7 +33,7 @@ module.exports = {
     }
   },
 
-  // Logic to update contractValues by ID
+  // Logik til at opdaterer contractValue efter ID
   updateContractValues: async (id, updatedValues) => {
 
     var query = `

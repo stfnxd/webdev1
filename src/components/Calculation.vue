@@ -8,18 +8,19 @@
             <!-- Overskriftsrække med momsinformation afhængig af kundetype -->
             <tr>
                 <th>Overblik leasingtilbud</th>
+                <!-- Vises kun hvis kundetype er "Privat" eller "Split"-->
                 <th v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">Inkl. moms</th>
                 <th>Ekskl. moms</th>
             </tr>
 
-            <!-- Række for leasingydelse (erhverv) -->
+            <!-- Række for leasingydelse (erhverv) vises hvis kundetype er "split" -->
             <tr v-show="receivedValue.customer.customerType == 'Split'">
                 <td><b>Leasingydelse - erhverv</b></td>
                 <td v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'"></td>
                 <td></td>
             </tr>
 
-            <!-- Række for engangsydelse inkl. kontraktoprettelse -->
+            <!-- Række for engangsydelse inkl. kontraktoprettelse vises hvis kundetypen er "Split"-->
             <tr v-show="receivedValue.customer.customerType == 'Split'">
                 <td>Engangsydelse inkl. kontraktoprettelse</td>
                 <td v-if="oneTimeBenefitWithContractCreation" v-show="receivedValue.customer.customerType == 'Privat' || receivedValue.customer.customerType == 'Split'">
@@ -540,9 +541,7 @@ export default defineComponent({
 });
 </script>
 
-<!-- Stil-sektionen indeholder CSS-styling for komponenten -->
 <style>
-/* Styling for Calculation-komponenten */
 .calculation {
     margin-top: 30px; 
     border: 1px solid var(--medium-grey); 
@@ -550,39 +549,32 @@ export default defineComponent({
     padding: 50px;
 }
 
-/* Styling for tabeller inden i Calculation-komponenten */
 .calculation table {
     width: 100%; 
     margin-bottom: 50px;
 }
 
-/* Styling for ulige rækker i tabeller */
 .calculation table tr:nth-child(odd) {
   background-color: var(--light-grey); 
 }
 
-/* Styling for den første række i tabellerne (header) */
 .calculation table tr:first-of-type {
     background-color: var(--table-header-grey);
 }
 
-/* Styling for tabelceller (td og th) */
 .calculation table td, .calculation table th {
     padding: 10px;
 }
 
-/* Styling for tabelheaderceller */
 .calculation table th {
     font-weight: 600;
     font-size: 1.1rem; 
 }
 
-/* Styling for tekstjustering af tabelceller */
 .calculation table tr td,  .calculation table tr th{
     text-align: center; 
 }
 
-/*Styling for den første og sidste celle i hver række */
 .calculation table tr td:first-of-type, .calculation table tr th:first-of-type {
     text-align: left; 
 }
