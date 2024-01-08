@@ -93,7 +93,7 @@ describe('carAge', () => {
         mockData.receivedValue.vehicle.firstRegistrationDate = '2021-06-01';
         mockData.registrationDate  = new Date(mockData.receivedValue.vehicle.firstRegistrationDate);
         mockData.today = new Date('2023-12-01');
-
+        
         const wrapper = mount(Calculation, { data: () => mockData });
 
         const computedValue = wrapper.vm.carAge;

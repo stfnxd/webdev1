@@ -1,13 +1,7 @@
 <template>
     <!-- Beregningssektionen -->
     <section class="calculation col-7">
-        <!-- Overskrift -->
         <h2>Beregning</h2>
-
-        <!-- Inputværdi for beregning -->
-        <div>
-            <p>Input value for calculation: {{ deposit }}</p>
-        </div>
 
         <!-- Tabel til leasingtilbud -->
         <table>
@@ -239,7 +233,6 @@
             </tr>
 
         </table>
-        <!-- Tabel for indtægter/udgifter slut -->
 
         <!-- Tabel kun vist ved kontrakttypen "Stilstand" eller hvis afgiften er betalt -->
         <table v-show="receivedValue.customer.contractType == 'Stilstand' || receivedValue.vehicle.levyPaid == true">
@@ -285,19 +278,13 @@
             </tr>
 
         </table>
-        <!-- Forholdsmæssig table slut -->
-
     </section>
 </template>
-  
-<!-- Script-sektionen indeholder Vue.js komponentdefinitionen -->
+
 <script>
-// Importer nødvendige funktioner fra Vue.js biblioteket
 import { defineComponent, computed } from 'vue';
 
-// Definer en Vue-komponent med navnet 'Calculation'
 export default defineComponent({
-    // Komponentnavn
     name: 'Calculation',
 
     // Egenskaber (props) for komponenten
@@ -389,7 +376,10 @@ export default defineComponent({
         // Beregn køretøjets alder i måneder
         carAge() {
             const registrationDate  = new Date(this.receivedValue.vehicle.firstRegistrationDate);
-            const today = new Date();
+            let today = new Date();
+            if (this.today) {
+                today = new Date(this.today);
+            }
 
             return (today.getFullYear() - registrationDate.getFullYear()) * 12 + today.getMonth() - registrationDate.getMonth();
         },
