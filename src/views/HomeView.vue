@@ -2,6 +2,7 @@
 <template>
     <main>
         <section class="frontpage">
+            <!-- ContractForm og Calculationer komponenterne indsættes -->
             <ContractForm @input-updated="updateValue" />
             <Calculation :receivedValue="receivedValue" />
         </section>
@@ -15,7 +16,6 @@ import Calculation from '@/components/Calculation.vue';
 
 
 export default {
-
     components: {
         ContractForm,
         Calculation
@@ -61,12 +61,12 @@ export default {
                     levyPaid: '',
                     mileage: '',
                 },
-            } // Initialize receivedValue
+            }
         };
     },
     methods: {
         updateValue(value) {
-            this.receivedValue = value; // Update receivedValue with input value from ContractForm
+            this.receivedValue = value;
         }
     }
 };

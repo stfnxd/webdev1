@@ -1,6 +1,6 @@
 <template>
+    <!-- Kontraktpreview -->
     <section class="contract-preview">
-
         <div class="contract-header">
             <h1>Privat leasingtilbud</h1>
             <div class="image">
@@ -8,6 +8,7 @@
             </div>
 
         </div>
+        <!-- Kontrakt header med information om EASY-LEASE og leasingtager -->
         <section class="contract-header">
             <div>
                 <h4>Leasinggiver</h4>
@@ -24,6 +25,7 @@
         </section>
 
         <div>
+            <!-- Kontraktinformationer om køretøj -->
             <h4>Leasingkøretøj</h4>
             <table>
                 <tr>
@@ -44,6 +46,7 @@
                     <td>{{ receivedData.vehicle.mileage }}</td>
                 </tr>
             </table>
+            <!-- Kontraktinformationer om leasingperiode -->
             <h4>Leasingperiode</h4>
             <table>
                 <tr>
@@ -60,7 +63,7 @@
                     <td>{{ correctStartDate }}</td>
                 </tr>
             </table>
-
+            <!-- Kontraktinformationer om leasingydelser -->
             <h4>Leasingydelser</h4>
             <table>
                 <tr>
@@ -75,8 +78,7 @@
                     <td>VÆRDI</td>
                 </tr>
             </table>
-
-
+            <!-- Kontraktinformationer om depositum -->
             <h4>Depositum</h4>
             <table>
                 <tr>
@@ -84,7 +86,7 @@
                     <td>VÆRDI</td>
                 </tr>
             </table>
-
+            <!-- Kontraktinformationer om restværdi -->
             <h4>Restværdi</h4>
             <table>
                 <tr>
@@ -95,7 +97,7 @@
                     <td>VÆRDI</td>
                 </tr>
             </table>
-
+            <!-- Kontraktinformationer om forsikringstilbud -->
             <h4>Forsikringstilbud</h4>
             <table>
                 <tr>
@@ -110,7 +112,7 @@
                     <td>VÆRDI</td>
                 </tr>
             </table>
-
+            <!-- Kontraktinformationer om GPS-overvågning -->
             <h4>GPS-overvågning</h4>
             <table>
                 <tr>
@@ -120,6 +122,7 @@
                 </tr>
             </table>
         </div>
+        <!-- Kontraktfooter med tilbudsvilkår -->
         <div class="contractFooter">
             <h4>Tilbudsvilkår</h4>
             <p class="smallFont">Priserne er ekskl. grøn ejerafgift, service og vedligeholdelse.</p>
@@ -137,19 +140,19 @@ import { useMyStore } from '@/store/myStore';
 
 export default defineComponent({
     setup() {
+        // Henter data fra Pinia store og lægger det i recievedData
         const myStore = useMyStore();
-
-        // Use computed property to automatically update when data changes
         const receivedData = computed(() => myStore.data);
+
+        // Sætter startdato for leasingkontrakten i korrekt datoformat DD-MM-YYYY
         let wrongStartDate = receivedData.value.customer.startDate;
         let wrongStartDateSplit = wrongStartDate.split('-');
         let correctStartDate = `${wrongStartDateSplit[2]}.${wrongStartDateSplit[1]}.${wrongStartDateSplit[0]}`;
 
+        // Sætter 1.indregistreringsdato i korrekt datoformat DD-MM-YYYY
         let wrongFirstRegistrationDate = receivedData.value.vehicle.firstRegistrationDate;
         let wrongFirstRegistrationDateSplit = wrongFirstRegistrationDate.split('-');
         let correctFirstRegistrationDate = `${wrongFirstRegistrationDateSplit[2]}.${wrongFirstRegistrationDateSplit[1]}.${wrongFirstRegistrationDateSplit[0]}`;
-
-        
 
         return {
             receivedData,

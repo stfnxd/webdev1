@@ -4,7 +4,7 @@ const calculationsService = require('../services/calculationsService');
 module.exports = {
   addCalculations: async (req, res) => {
     try {
-      // Logic to handle adding calculations
+      // Logik for at håndtere add Calculations
       const result = await calculationsService.addCalculations(req.body);
       res.json(result);
     } catch (error) {

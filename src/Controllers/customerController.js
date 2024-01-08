@@ -2,7 +2,7 @@
 const customerService = require('../services/customerService');
 
 module.exports = {
-  // Logic to adding customer data
+  // Logik til at tilføje customer data
   addCustomerData: async (req, res) => {
     try {
       const result = await customerService.addCustomerData(req.body);
@@ -13,7 +13,7 @@ module.exports = {
     }
   },
 
-  // Logic to handle getting  customer, contractValues and vehicle data, by customer Id
+  // Logik til at håndtere at få customer, contractValues og vehicle data ud fra customer Id
   getAllByCustomerId: async (req, res) => {
     try {
       const { id } = req.params;
@@ -25,13 +25,13 @@ module.exports = {
     }
   },
 
-  // Logic to update customer data, by customer Id
+  // Logik til at update customer data med customer Id
   updateCustomerData: async (req, res) => {
     try {
       const id = req.params.id;
       const updatedValues = req.body;
 
-      // Logic to handle updating customer data
+      // Logik til at håndtere opdatering af customer data
       const result = await customerService.updateCustomerData(id, updatedValues);
       res.json(result);
     } catch (error) {

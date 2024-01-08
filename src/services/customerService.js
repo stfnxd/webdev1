@@ -12,7 +12,7 @@ module.exports = {
   }
 } 
 
-    // Use parameterized queries to prevent SQL injection
+    // Bruger parametriseret forespørgsler for at undgå SQL Injections
     var query = `
     INSERT INTO leasingtager
     (Id_Kontraktværdier, Navn, Email, Under_25, Kundetype, Kontrakttype, Tilbudsdato, Sæson, Import )
@@ -30,7 +30,7 @@ module.exports = {
       }
   },
 
-  // Function to get customer, contractValues and vehicle data, by customer Id
+  // Funktion til at få customer, contractValues og vehicle data ud fra customer Id
   getAllByCustomerId: async (id) => {
     const query = `
       SELECT leasingtager.*, kontrakt_værdier.*, køretøjdata.*
@@ -49,7 +49,7 @@ module.exports = {
     }
   },
 
-  // Function to update customer data, customer Id
+  // Funktion til at opdaterer customer data, customer ID
   updateCustomerData: async (id, updatedValues) => {
 
     var query = `

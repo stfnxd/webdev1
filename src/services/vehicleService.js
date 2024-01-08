@@ -12,7 +12,7 @@ module.exports = {
   }
 } 
 
-    // Use parameterized queries to prevent SQL injection
+    // Bruger parametriseret forespørgelser for at undgå SQL injection
     var query = `
     INSERT INTO køretøjdata
     (Id_Stelnummer, Køretøj, NytKøretøj, RegDato, Nypris, Momsdød, Type, Fuld_Afgift, Kilometerafstand )
@@ -31,7 +31,7 @@ module.exports = {
         }
   },
 
-  // Function to update vehicle data, vehicle Id
+  // Funktion til at opdatere vehicle data, vehicle Id
   updateVehicleData: async (id, updatedValues) => {
 
     var query = `
