@@ -380,11 +380,52 @@ export default defineComponent({
             // Validering af input felter
             buttonClicked.value = true;
             const validationResults = isFormValid();
-            if (!validationResults.customerType || !validationResults.contractType || !validationResults.customerName || !validationResults.vehicle ||
-                !validationResults.vehicleType || !validationResults.salePrice || !validationResults.cost || /*!validationResults.residualValue ||*/
-                /*!validationResults.cashPrice ||*/ !validationResults.runningTime /*|| !validationResults.activeRunningTime*/){
-                console.error('En eller flere felter er ikke udfyldt korrekt!');
-                return;
+            if(formData.value.customer.season == true) {
+                if (formData.value.customer.contractType == 'Nytegning') {
+                    if (!validationResults.customerType || !validationResults.contractType || !validationResults.customerName || !validationResults.vehicle ||
+                        !validationResults.vehicleType || !validationResults.salePrice || !validationResults.cost || /*!validationResults.residualValue ||*/
+                        /*!validationResults.cashPrice ||*/ !validationResults.runningTime || !validationResults.activeRunningTime){
+                        alert('En eller flere felter er ikke udfyldt korrekt!');
+                        return;
+                    }
+                } else if (formData.value.customer.contractType == 'Genleasing') {
+                    if (!validationResults.customerType || !validationResults.contractType || !validationResults.customerName || !validationResults.vehicle ||
+                        !validationResults.vehicleType || !validationResults.salePrice || /* !validationResults.cost ||*/ !validationResults.residualValue ||
+                        /*!validationResults.cashPrice ||*/ !validationResults.runningTime || !validationResults.activeRunningTime){
+                        alert('En eller flere felter er ikke udfyldt korrekt!');
+                        return;
+                    }
+                } else if (formData.value.customer.contractType == 'Pristjek') {
+                    if (!validationResults.customerType || !validationResults.contractType || !validationResults.customerName || !validationResults.vehicle ||
+                        !validationResults.vehicleType || !validationResults.salePrice || /*!validationResults.cost || !validationResults.residualValue ||*/
+                        !validationResults.cashPrice || !validationResults.runningTime || !validationResults.activeRunningTime){
+                        alert('En eller flere felter er ikke udfyldt korrekt!');
+                        return;
+                    }
+                }
+            } else {
+                if (formData.value.customer.contractType == 'Nytegning') {
+                    if (!validationResults.customerType || !validationResults.contractType || !validationResults.customerName || !validationResults.vehicle ||
+                        !validationResults.vehicleType || !validationResults.salePrice || !validationResults.cost || /*!validationResults.residualValue ||*/
+                        /*!validationResults.cashPrice ||*/ !validationResults.runningTime /*|| !validationResults.activeRunningTime*/){
+                        alert('En eller flere felter er ikke udfyldt korrekt!');
+                        return;
+                    }
+                } else if (formData.value.customer.contractType == 'Genleasing') {
+                    if (!validationResults.customerType || !validationResults.contractType || !validationResults.customerName || !validationResults.vehicle ||
+                        !validationResults.vehicleType || !validationResults.salePrice || /* !validationResults.cost ||*/ !validationResults.residualValue ||
+                        /*!validationResults.cashPrice ||*/ !validationResults.runningTime /*|| !validationResults.activeRunningTime*/){
+                        alert('En eller flere felter er ikke udfyldt korrekt!');
+                        return;
+                    }
+                } else if (formData.value.customer.contractType == 'Pristjek') {
+                    if (!validationResults.customerType || !validationResults.contractType || !validationResults.customerName || !validationResults.vehicle ||
+                        !validationResults.vehicleType || !validationResults.salePrice || /*!validationResults.cost || !validationResults.residualValue ||*/
+                        !validationResults.cashPrice || !validationResults.runningTime /*|| !validationResults.activeRunningTime*/){
+                        alert('En eller flere felter er ikke udfyldt korrekt!');
+                        return;
+                    }
+                }
             }
 
             try {
