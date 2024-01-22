@@ -275,8 +275,9 @@ export default defineComponent({
     setup() {
         const formValidationResults = computed(() => isFormValid());
 
-        // Pinia
         const router = useRouter();
+        
+        // Pinia
         const myStore = useMyStore();
 
         // Startværdier for formData
@@ -380,8 +381,8 @@ export default defineComponent({
             buttonClicked.value = true;
             const validationResults = isFormValid();
             if (!validationResults.customerType || !validationResults.contractType || !validationResults.customerName || !validationResults.vehicle ||
-                !validationResults.vehicleType || !validationResults.salePrice || !validationResults.cost || !validationResults.residualValue ||
-                !validationResults.cashPrice || !validationResults.runningTime || !validationResults.activeRunningTime){
+                !validationResults.vehicleType || !validationResults.salePrice || !validationResults.cost || /*!validationResults.residualValue ||*/
+                /*!validationResults.cashPrice ||*/ !validationResults.runningTime /*|| !validationResults.activeRunningTime*/){
                 console.error('En eller flere felter er ikke udfyldt korrekt!');
                 return;
             }

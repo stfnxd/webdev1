@@ -6,7 +6,6 @@
             <div class="image">
                 <img alt="Vue logo" class="logo" src="@/assets/images/logo-black.png" />
             </div>
-
         </div>
         <!-- Kontrakt header med information om EASY-LEASE og leasingtager -->
         <section class="contract-header">
@@ -35,7 +34,7 @@
 
                 <tr>
                     <td>Stelnummer</td>
-                    <td>{{ receivedData.frameNumber }}</td>
+                    <td>{{ receivedData.vehicle.frameNumber }}</td>
                 </tr>
                 <tr>
                     <td>1. indregistreringsdato</td>
@@ -43,7 +42,7 @@
                 </tr>
                 <tr>
                     <td>Kilometerstand</td>
-                    <td>{{ receivedData.vehicle.mileage }}</td>
+                    <td>{{ receivedData.vehicle.mileage }} km</td>
                 </tr>
             </table>
             <!-- Kontraktinformationer om leasingperiode -->
@@ -69,13 +68,13 @@
                 <tr>
                     <td>Engangsydelse <span>inkl. moms<br><span class="smallFont">Import af køretøj, kontraktoprettelse og
                                 45-pkt. uvildigt autotjek inkluderet</span></span></td>
-                    <td>VÆRDI</td>
+                    <td>{{ calculationData.oneTimeBenefit }} kr</td>
                 </tr>
             </table>
             <table class="mt-3 mb-4">
                 <tr>
                     <td>Månedlig leasingydelse <span>inkl. moms</span></td>
-                    <td>VÆRDI</td>
+                    <td>{{ calculationData.monthlyLease }} kr</td>
                 </tr>
             </table>
             <!-- Kontraktinformationer om depositum -->
@@ -83,7 +82,7 @@
             <table>
                 <tr>
                     <td>Sikkerhedsstillelse <span>inkl. moms - tilbagebetales efter endt aftaleperiode</span></td>
-                    <td>VÆRDI</td>
+                    <td>{{ calculationData.deposit }} kr</td>
                 </tr>
             </table>
             <!-- Kontraktinformationer om restværdi -->
@@ -94,7 +93,7 @@
                                 leasingtager på anfordring forpligtet til at anvise CVR-registreret tredjemand som køber.
                                 Såfremt restværdien de facto ikke kan opnås er leasingtager forpligtet til at indbetale
                                 differencen tillagt moms.</span></span></td>
-                    <td>VÆRDI</td>
+                    <td>{{ calculationData.resValue }} kr</td>
                 </tr>
             </table>
             <!-- Kontraktinformationer om forsikringstilbud -->
@@ -143,6 +142,7 @@ export default defineComponent({
         // Henter data fra Pinia store og lægger det i recievedData
         const myStore = useMyStore();
         const receivedData = computed(() => myStore.data);
+        const calculationData = computed(() => myStore.dataFromCalculation);
 
         // Sætter startdato for leasingkontrakten i korrekt datoformat DD-MM-YYYY
         let wrongStartDate = receivedData.value.customer.startDate;
@@ -157,7 +157,8 @@ export default defineComponent({
         return {
             receivedData,
             correctStartDate,
-            correctFirstRegistrationDate
+            correctFirstRegistrationDate,
+            calculationData
         };
         
     },
