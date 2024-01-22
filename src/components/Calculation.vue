@@ -541,32 +541,11 @@ export default defineComponent({
     methods: {
         updatePiniaStore() {
             const myStore = useMyStore();
-            console.log('Updating Pinia Store:', this.monthlyLease); // Add more log statements as needed
-            console.log('Car Price:', this.carPrice);
-            console.log('Proportionate Tax:', this.proportionateTax);
-            console.log('One Time Benefit:', this.oneTimeBenefit);
             myStore.setCalculationData({
-                // Add the relevant data properties that you want to share with ContractPreview.vue
-                startDateComp: this.startDateComp,
-                carMonths: this.carMonths,
-                carAge: this.carAge,
-                momsMonth: this.momsMonth,
-                carPrice: this.carPrice,
                 oneTimeBenefit: this.oneTimeBenefit,
-                contractCreation: this.contractCreation,
-                oneTimeBenefitWithContractCreation: this.oneTimeBenefitWithContractCreation,
-                carDepreciation: this.carDepreciation,
                 resValue: this.resValue,
-                steelGainValutaGain: this.steelGainValutaGain,
-                proportionateTax: this.proportionateTax,
-                financing: this.financing,
                 monthlyLease: this.monthlyLease,
                 deposit: this.deposit,
-                totalPrice: this.totalPrice,
-                contractRunTime: this.contractRunTime,
-                taxBase: this.taxBase,
-                finansCost: this.finansCost,
-                earningsTotal: this.earningsTotal
             })
         }
     },
