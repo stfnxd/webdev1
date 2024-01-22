@@ -573,6 +573,8 @@ export default defineComponent({
     watch: {
         monthlyLease: 'updatePiniaStore',
         oneTimeBenefit: 'updatePiniaStore',
+        deposit: 'updatePiniaStore',
+        resValue: 'updatePiniaStore',
     },
 });
 </script>
