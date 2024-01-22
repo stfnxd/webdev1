@@ -1,135 +1,135 @@
 <template>
     <!-- Kontraktpreview -->
-    <section class="contract-preview">
+    <section class="contract-preview" style="border: 1px solid black; text-align: left; padding: 50px 70px;">
         <div class="contract-header">
-            <h1>Privat leasingtilbud</h1>
+            <h1 style="font-weight: 700; font-size:40px;">Privat leasingtilbud</h1>
             <div class="image">
                 <img alt="Vue logo" class="logo" src="@/assets/images/logo-black.png" />
             </div>
 
         </div>
         <!-- Kontrakt header med information om EASY-LEASE og leasingtager -->
-        <section class="contract-header">
+        <section class="contract-header" style="display: flex; justify-content: space-between; width:100%;">
             <div>
-                <h4>Leasinggiver</h4>
-                <p>EASY-LEASE A/S</p>
-                <p>Vestre Havnepromenade 5</p>
-                <p>9000 Aalborg</p>
-                <p>CVR: 36036761</p>
+                <h4 style="margin-bottom: 5px; font-size: 20px; font-weight: 700; margin-top: 10px; margin-bottom: 0;">Leasinggiver</h4>
+                <p style="font-weight: 600;">EASY-LEASE A/S</p>
+                <p style="font-weight: 600;">Vestre Havnepromenade 5</p>
+                <p style="font-weight: 600;">9000 Aalborg</p>
+                <p style="font-weight: 600;">CVR: 36036761</p>
             </div>
             <div>
-                <h4>Leasingtager</h4>
-                <p>{{ receivedData.customer.name }}</p>
-                <p>E-mail: {{ receivedData.customer.email }}</p>
+                <h4 style=" margin-bottom: 5px; font-size: 20px; font-weight: 700; margin-top: 10px; margin-bottom: 0;">Leasingtager</h4>
+                <p id="customer-name">{{ receivedData.customer.name }}</p>
+                <p id="customer-email">{{ receivedData.customer.email }}</p>
                 <p>Tilbudsdato: {{ correctStartDate }}</p>
             </div>
         </section>
 
         <div>
             <!-- Kontraktinformationer om køretøj -->
-            <h4>Leasingkøretøj</h4>
-            <table>
-                <tr>
-                    <td>Mærke/model</td>
-                    <td>{{ receivedData.vehicle.vehicle }}</td>
+            <h4 style=" margin-bottom: 5px; font-size: 20px; font-weight: 700; margin-top: 10px; margin-bottom: 0;">Leasingkøretøj</h4>
+            <table style="width: 100%;">
+                <tr style="display: flex; align-items: start; justify-content: space-between;">
+                    <td style="padding: 5px 0 0;font-size: 16px;font-weight: 600; width: 80%;">Mærke/model</td>
+                    <td style="padding: 5px 0 0;font-size: 16px;font-weight: 600; text-align: right;font-weight: 400;">{{ receivedData.vehicle.vehicle }}</td>
                 </tr>
 
-                <tr>
-                    <td>Stelnummer</td>
-                    <td>{{ receivedData.frameNumber }}</td>
+                <tr style="display: flex; align-items: start; justify-content: space-between;">
+                    <td style="padding: 5px 0 0;font-size: 16px;font-weight: 600; width: 80%;">Stelnummer</td>
+                    <td style="padding: 5px 0 0;font-size: 16px;font-weight: 600; text-align: right;font-weight: 400;">{{ receivedData.frameNumber }}</td>
                 </tr>
-                <tr>
-                    <td>1. indregistreringsdato</td>
-                    <td>{{ correctFirstRegistrationDate }}</td>
+                <tr style="display: flex; align-items: start; justify-content: space-between;">
+                    <td style="padding: 5px 0 0;font-size: 16px;font-weight: 600; width: 80%;">1. indregistreringsdato</td>
+                    <td style="padding: 5px 0 0;font-size: 16px;font-weight: 600; text-align: right;font-weight: 400;">{{ correctFirstRegistrationDate }}</td>
                 </tr>
-                <tr>
-                    <td>Kilometerstand</td>
-                    <td>{{ receivedData.vehicle.mileage }}</td>
+                <tr style="display: flex; align-items: start; justify-content: space-between;">
+                    <td style="padding: 5px 0 0;font-size: 16px;font-weight: 600; width: 80%;">Kilometerstand</td>
+                    <td style="padding: 5px 0 0;font-size: 16px;font-weight: 600; text-align: right;font-weight: 400;">{{ receivedData.vehicle.mileage }}</td>
                 </tr>
             </table>
             <!-- Kontraktinformationer om leasingperiode -->
-            <h4>Leasingperiode</h4>
-            <table>
-                <tr>
-                    <td>Kontraktlængde</td>
-                    <td>{{ receivedData.contractValues.runningTime }} måneder</td>
+            <h4 style=" margin-bottom: 5px; font-size: 20px; font-weight: 700; margin-top: 10px; margin-bottom: 0;">Leasingperiode</h4>
+            <table style="width: 100%;">
+                <tr style="display: flex; align-items: start; justify-content: space-between;">
+                    <td style="padding: 5px 0 0;font-size: 16px;font-weight: 600; width: 80%;">Kontraktlængde</td>
+                    <td style="padding: 5px 0 0;font-size: 16px;font-weight: 600; text-align: right;font-weight: 400;">{{ receivedData.contractValues.runningTime }} måneder</td>
                 </tr>
 
-                <tr>
-                    <td>Indregistreringsperiode <span>- med ubegrænset antal kilometer</span></td>
-                    <td>VÆRDI</td>
+                <tr style="display: flex; align-items: start; justify-content: space-between;">
+                    <td style="padding: 5px 0 0;font-size: 16px;font-weight: 600; width: 80%;">Indregistreringsperiode <span style="font-weight: 400;">- med ubegrænset antal kilometer</span></td>
+                    <td style="padding: 5px 0 0;font-size: 16px;font-weight: 600; text-align: right;font-weight: 400;">VÆRDI</td>
                 </tr>
-                <tr>
-                    <td>Forventet startdato</td>
-                    <td>{{ correctStartDate }}</td>
+                <tr style="display: flex; align-items: start; justify-content: space-between;">
+                    <td style="padding: 5px 0 0;font-size: 16px;font-weight: 600; width: 80%;">Forventet startdato</td>
+                    <td style="padding: 5px 0 0;font-size: 16px;font-weight: 600; text-align: right;font-weight: 400;">{{ correctStartDate }}</td>
                 </tr>
             </table>
             <!-- Kontraktinformationer om leasingydelser -->
-            <h4>Leasingydelser</h4>
-            <table>
-                <tr>
-                    <td>Engangsydelse <span>inkl. moms<br><span class="smallFont">Import af køretøj, kontraktoprettelse og
+            <h4 style=" margin-bottom: 5px; font-size: 20px; font-weight: 700; margin-top: 10px; margin-bottom: 0;">Leasingydelser</h4>
+            <table style="width: 100%;">
+                <tr style="display: flex; align-items: start; justify-content: space-between;">
+                    <td style="padding: 5px 0 0;font-size: 16px;font-weight: 600; width: 80%;">Engangsydelse <span style="font-weight: 400;">inkl. moms<br><span class="smallFont" style="font-weight: 400; font-size: 14px;">Import af køretøj, kontraktoprettelse og
                                 45-pkt. uvildigt autotjek inkluderet</span></span></td>
-                    <td>VÆRDI</td>
+                    <td style="padding: 5px 0 0;font-size: 16px;font-weight: 600; text-align: right;font-weight: 400;">VÆRDI</td>
                 </tr>
             </table>
-            <table class="mt-3 mb-4">
-                <tr>
-                    <td>Månedlig leasingydelse <span>inkl. moms</span></td>
-                    <td>VÆRDI</td>
+            <table class="mt-3 mb-4" style="width: 100%;">
+                <tr style="display: flex; align-items: start; justify-content: space-between;">
+                    <td style="padding: 5px 0 0;font-size: 16px;font-weight: 600; width: 80%;">Månedlig leasingydelse <span style="font-weight: 400;">inkl. moms</span></td>
+                    <td style="padding: 5px 0 0;font-size: 16px;font-weight: 600; text-align: right;font-weight: 400;">VÆRDI</td>
                 </tr>
             </table>
             <!-- Kontraktinformationer om depositum -->
-            <h4>Depositum</h4>
-            <table>
-                <tr>
-                    <td>Sikkerhedsstillelse <span>inkl. moms - tilbagebetales efter endt aftaleperiode</span></td>
-                    <td>VÆRDI</td>
+            <h4 style=" margin-bottom: 5px; font-size: 20px; font-weight: 700; margin-top: 10px; margin-bottom: 0;">Depositum</h4>
+            <table style="width: 100%;">
+                <tr style="display: flex; align-items: start; justify-content: space-between;">
+                    <td style="padding: 5px 0 0;font-size: 16px;font-weight: 600; width: 80%;">Sikkerhedsstillelse <span style="font-weight: 400;">inkl. moms - tilbagebetales efter endt aftaleperiode</span></td>
+                    <td style="padding: 5px 0 0;font-size: 16px;font-weight: 600; text-align: right;font-weight: 400;">VÆRDI</td>
                 </tr>
             </table>
             <!-- Kontraktinformationer om restværdi -->
-            <h4>Restværdi</h4>
-            <table>
-                <tr>
-                    <td>Køretøjets restværdi ved kontraktudløb<br><span class="smallFont"><span>Ved aftaleperiodens udløb er
+            <h4 style=" margin-bottom: 5px; font-size: 20px; font-weight: 700; margin-top: 10px; margin-bottom: 0;">Restværdi</h4>
+            <table style="width: 100%;">
+                <tr style="display: flex; align-items: start; justify-content: space-between;">
+                    <td style="padding: 5px 0 0;font-size: 16px;font-weight: 600; width: 80%;">Køretøjets restværdi ved kontraktudløb<br><span class="smallFont" style="font-weight: 400; font-size: 14px;"><span>Ved aftaleperiodens udløb er
                                 leasingtager på anfordring forpligtet til at anvise CVR-registreret tredjemand som køber.
                                 Såfremt restværdien de facto ikke kan opnås er leasingtager forpligtet til at indbetale
                                 differencen tillagt moms.</span></span></td>
-                    <td>VÆRDI</td>
+                    <td style="padding: 5px 0 0;font-size: 16px;font-weight: 600; text-align: right;font-weight: 400;">VÆRDI</td>
                 </tr>
             </table>
             <!-- Kontraktinformationer om forsikringstilbud -->
-            <h4>Forsikringstilbud</h4>
-            <table>
-                <tr>
-                    <td>Forsikringspræmie pr. måned <span>v/ tilladt kørsel inkl. vejhjælp</span></td>
-                    <td>VÆRDI</td>
+            <h4 style=" margin-bottom: 5px; font-size: 20px; font-weight: 700; margin-top: 10px; margin-bottom: 0;">Forsikringstilbud</h4>
+            <table style="width: 100%;">
+                <tr style="display: flex; align-items: start; justify-content: space-between;">
+                    <td style="padding: 5px 0 0;font-size: 16px;font-weight: 600; width: 80%;">Forsikringspræmie pr. måned <span>v/ tilladt kørsel inkl. vejhjælp</span></td>
+                    <td style="padding: 5px 0 0;font-size: 16px;font-weight: 600; text-align: right;font-weight: 400;">VÆRDI</td>
                 </tr>
 
-                <tr>
-                    <td>Forsikringspræmie pr. måned <span>v/ stilstand</span><br><span class="smallFont">Mekanisk
-                            garantiforsikring kan tilvælges. Kontakt os for individuelt tilbud<br><span>*Indtegningskrav:
+                <tr style="display: flex; align-items: start; justify-content: space-between;">
+                    <td style="padding: 5px 0 0;font-size: 16px;font-weight: 600; width: 80%;">Forsikringspræmie pr. måned <span style="font-weight: 400;">v/ stilstand</span><br><span class="smallFont" style="font-weight: 400; font-size: 14px;">Mekanisk
+                            garantiforsikring kan tilvælges. Kontakt os for individuelt tilbud<br><span style="font-weight: 400;">*Indtegningskrav:
                                 Minimum 25 år og 3 års skadefri kørsel. Friskadedækning kan tilvælges.</span></span></td>
-                    <td>VÆRDI</td>
+                    <td style="padding: 5px 0 0;font-size: 16px;font-weight: 600; text-align: right;font-weight: 400;">VÆRDI</td>
                 </tr>
             </table>
             <!-- Kontraktinformationer om GPS-overvågning -->
-            <h4>GPS-overvågning</h4>
-            <table>
-                <tr>
-                    <td>GPS-tracker og abbonement i leasingperioden <span>inkl. moms</span><br><span
-                            class="smallFont"><span>*Forudsat accept af forsikringstilbud</span></span></td>
-                    <td>VÆRDI</td>
+            <h4 style=" margin-bottom: 5px; font-size: 20px; font-weight: 700; margin-top: 10px; margin-bottom: 0;">GPS-overvågning</h4>
+            <table style="width: 100%;">
+                <tr style="display: flex; align-items: start; justify-content: space-between;">
+                    <td style="padding: 5px 0 0;font-size: 16px;font-weight: 600; width: 80%;">GPS-tracker og abbonement i leasingperioden <span style="font-weight: 400; ">inkl. moms</span><br><span style="font-weight: 400; font-size: 14px;"
+                            class="smallFont"><span style="font-weight: 400;">*Forudsat accept af forsikringstilbud</span></span></td>
+                    <td style="padding: 5px 0 0;font-size: 16px;font-weight: 600; text-align: right;font-weight: 400;">VÆRDI</td>
                 </tr>
             </table>
         </div>
         <!-- Kontraktfooter med tilbudsvilkår -->
         <div class="contractFooter">
-            <h4>Tilbudsvilkår</h4>
-            <p class="smallFont">Priserne er ekskl. grøn ejerafgift, service og vedligeholdelse.</p>
-            <p class="smallFont">Der tages forbehold for positiv kreditgodkendelse, regne- og trykfejl, afgiftsændringer,
+            <h4 style=" margin-bottom: 5px; font-size: 20px; font-weight: 700; margin-top: 10px; margin-bottom: 0;">Tilbudsvilkår</h4>
+            <p class="smallFont" style="font-size: 14px;">Priserne er ekskl. grøn ejerafgift, service og vedligeholdelse.</p>
+            <p class="smallFont" style="font-size: 14px;">Der tages forbehold for positiv kreditgodkendelse, regne- og trykfejl, afgiftsændringer,
                 leveringshindringer samt ændringer i beskatningsgrundlag</p>
-            <p class="smallFont">Tilbuddet er gældende i 10 dage fra tilbudsdato og er underlagt EASY-LEASE A/S’
+            <p class="smallFont" style="font-size: 14px;">Tilbuddet er gældende i 10 dage fra tilbudsdato og er underlagt EASY-LEASE A/S’
                 standardvilkår</p>
         </div>
     </section>
@@ -145,6 +145,7 @@ export default defineComponent({
         const myStore = useMyStore();
         const receivedData = computed(() => myStore.data);
 
+        console.log(receivedData.value)
         // Sætter startdato for leasingkontrakten i korrekt datoformat DD-MM-YYYY
         let wrongStartDate = receivedData.value.customer.startDate;
         let wrongStartDateSplit = wrongStartDate.split('-');
@@ -160,13 +161,12 @@ export default defineComponent({
             correctStartDate,
             correctFirstRegistrationDate
         };
-        
     },
 });
 
 </script>
 
-<style>
+<!-- <style>
 .contract-header h1 {
     font-weight: 700;
 }
@@ -234,4 +234,4 @@ export default defineComponent({
     font-weight: 400;
 }
 </style>
-   
+    -->

@@ -1,6 +1,7 @@
 <script setup>
 import ContractPreview from '@/components/ContractPreview.vue'
 import html2pdf from 'html2pdf.js';
+import emailjs from 'emailjs-com';
 
 </script>
 
@@ -43,6 +44,26 @@ export default {
             }
 
             html2pdf().set(opt).from(element).save();
+        },
+        sendEmail() {
+            try {
+                const customerName = document.getElementById('customer-name').innerHTML;
+                const customerEmail = document.getElementById('customer-email').innerHTML;
+                console.log(customerEmail);
+                const element = document.querySelector('.contract-preview');
+                console.log(element)
+                emailjs.send(
+                    'service_z016lgr',
+                    'template_iknqt4v',
+                    { //ServiceID, templateID
+                        to_name: customerName,
+                        to_email: customerEmail,
+                        message: element.outerHTML,
+                    }, 'g3KFnI6apFcO6R3TL') //Public key
+
+            } catch (error) {
+                console.log({ error })
+            }
         },
     }
 };
