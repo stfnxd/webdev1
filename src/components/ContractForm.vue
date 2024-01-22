@@ -60,7 +60,6 @@
             <input v-model="formData.customer.email" @input="emitValue" type="email" id="email" class="form-control" name="email"
                 placeholder="Indtast kundens email adresse">
 
-
             <div class="contract-checkbox">
                 <label for="checkboxAge">Kunden er under 25 år</label>
                 <input v-model="formData.customer.under25" type="checkbox" id="checkboxAge" name="checkbox" value="1">
@@ -125,42 +124,30 @@
 
             <!-- Vises hvis kontraktype ikke er "Stilstand"-->
             <div v-show="formData.customer.contractType != 'Stilstand'">
-                <!-- *Hvis kontrakt type er "Nytegning" og import er true vises dette -->
-                <div v-if="formData.customer.contractType == 'Nytegning' && formData.customer.import == true">
-                    <label for="salePrice">Udsalgspris i €</label>
-                    <input v-model="formData.contractValues.salePrice" @input="emitValue" type="number" id="salePrice" class="form-control"
-                        name="salePrice" placeholder="Indtast udsalgspris i €">
-                        <!-- INPUT VALIDERING: Tjekker om Udsalgspris er indtastet -->
-                        <span v-if="!isFormValid().salePrice" class="warning"><font-awesome-icon icon="circle-exclamation" /> Udsalgspris i € skal udfyldes</span>
-                </div>
-                <!-- *Eller vises dette -->
-                <div v-else>
-                    <label for="salePrice">Udsalgspris</label>
-                    <input v-model="formData.contractValues.salePrice" @input="emitValue" type="number" id="salePrice" class="form-control"
-                        name="salePrice" placeholder="Indtast udsalgspris">
-                        <!-- INPUT VALIDERING: Tjekker om Udsalgspris er indtastet -->
-                        <span v-if="!isFormValid().salePrice" class="warning"><font-awesome-icon icon="circle-exclamation" /> Udsalgspris skal udfyldes</span>
-                </div>
-                
+                <label for="salePrice">
+                    {{ formData.customer.contractType == 'Nytegning' && formData.customer.import == true ? 'Udsalgspris i €' : 'Udsalgspris' }}
+                </label>
+                <input v-model="formData.contractValues.salePrice" @input="emitValue" type="number" id="salePrice" class="form-control"
+                    name="salePrice" :placeholder="formData.customer.contractType == 'Nytegning' && formData.customer.import == true ? 'Indtast udsalgspris i €' : 'Indtast udsalgspris'">
+                <!-- INPUT VALIDERING: Tjekker om Udsalgspris er indtastet -->
+                <span v-if="!isFormValid().salePrice" class="warning">
+                    <font-awesome-icon icon="circle-exclamation" />
+                    {{ formData.customer.contractType == 'Nytegning' && formData.customer.import == true ? 'Udsalgspris i € skal udfyldes' : 'Udsalgspris skal udfyldes' }}
+                </span>
             </div>
+
             <!-- Vises hvis kundetypen er "Split" eller kontrakt typen er "Nytegning" -->
             <div v-show="formData.customer.customerType == 'Split' || formData.customer.contractType == 'Nytegning'">
-                <!-- *Hvis Import er true vises dette -->
-                <div v-if="formData.customer.import == true">
-                    <label for="cost">Kostpris i €</label>
-                    <input v-model="formData.contractValues.cost" @input="emitValue" type="number" id="cost" class="form-control"
-                        name="cost" placeholder="Indtast kostpris i €">
-                        <!-- INPUT VALIDERING: Tjekker om Kostpris er indtastet -->
-                        <span v-if="!isFormValid().cost" class="warning"><font-awesome-icon icon="circle-exclamation" /> Kostpris i € skal udfyldes</span>
-                </div>
-                <!-- *Ellers vises dette -->
-                <div v-else>
-                    <label for="cost">Kostpris</label>
-                    <input v-model="formData.contractValues.cost" @input="emitValue" type="number" id="cost" class="form-control"
-                        name="cost" placeholder="Indtast kostpris">
-                        <!-- INPUT VALIDERING: Tjekker om Kostpris er indtastet -->
-                        <span v-if="!isFormValid().cost" class="warning"><font-awesome-icon icon="circle-exclamation" /> Kostpris skal udfyldes</span>
-                </div>
+                <label for="cost">
+                    {{ formData.customer.import == true ? 'Kostpris i €' : 'Kostpris' }}
+                </label>
+                <input v-model="formData.contractValues.cost" @input="emitValue" type="number" id="cost" class="form-control"
+                    name="cost" :placeholder="formData.customer.import == true ? 'Indtast kostpris i €' : 'Indtast kostpris'">
+                <!-- INPUT VALIDERING: Tjekker om Kostpris er indtastet -->
+                <span v-if="!isFormValid().cost" class="warning">
+                    <font-awesome-icon icon="circle-exclamation" />
+                    {{ formData.customer.import == true ? 'Kostpris i € skal udfyldes' : 'Kostpris skal udfyldes' }}
+                </span>
             </div>
             
             <!-- Vises hvis kontrakttypen er "Genleasing" -->
@@ -171,11 +158,12 @@
                     placeholder="Indtast handelsværdi inkl. moms og afgift">
             </div>
 
-            <!-- Vises hvis kontrakttypen er "Genleasing" eller Stilstand -->
+            <!-- Vises hvis kontrakttypen er "Genleasing" eller "Stilstand" -->
             <div v-show="formData.customer.contractType == 'Genleasing' || formData.customer.contractType == 'Stilstand'">
                 <label for="residualValue">Restværdihæftelse ved kontraktstart</label>
                 <input v-model="formData.contractValues.residualValue" @input="emitValue" type="number" id="residualValue"
                     class="form-control" name="residualValue" placeholder="Indtast restværdihæftelse">
+                     <!-- INPUT VALIDERING: Tjekker om Restværdihæftelse ved kontrakt start er indtastet -->
                     <span v-if="!isFormValid().residualValue" class="warning"><font-awesome-icon icon="circle-exclamation" /> Restværdihæftelse skal udfyldes</span>
             </div>
 
@@ -346,14 +334,14 @@ export default defineComponent({
                 customerName: customerNameValid,
                 vehicle: vehicleValid,
                 vehicleType: vehicleTypeValid,
-                salePrice: salePriceValid,
-                cost: costValid,
-                residualValue: residualValueValid,
-                cashPrice: cashPriceValid,
+                salePrice: formData.value.customer.contractType !== 'Stilstand' ? salePriceValid : true,
+                cost: (formData.value.customer.customerType === 'Split' || formData.value.customer.contractType === 'Nytegning') ? costValid : true,
+                residualValue: (formData.value.customer.contractType === 'Genleasing' || formData.value.customer.contractType === 'Stilstand') ? residualValueValid : true,
+                cashPrice: formData.value.customer.contractType === 'Pristjek' ? cashPriceValid : true,
                 runningTime:runningTimeValid,
-                activeRunningTime: activeRunningTimeValid,
+                activeRunningTime: formData.value.customer.contractType === 'Split' || formData.value.customer.contractType === 'Stilstand' ? activeRunningTimeValid : true,
             };
-
+            
         return buttonClicked.value ? validationResults : { customerName: true, vehicle: true, vehicleType: true, customerType: true, contractType: true, salePrice: true, cost: true, residualValue: true, cashPrice: true, runningTime: true, activeRunningTime: true };
         };
 
