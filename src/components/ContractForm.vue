@@ -11,7 +11,8 @@
                 <option value="Split">Split</option>
             </select>
             <!-- INPUT VALIDERING: Tjekker om kundetypen er valgt -->
-            <span v-if="!isFormValid().customerType" class="warning"><font-awesome-icon icon="circle-exclamation" /> Kunde typen skal vælges</span>
+            <!-- <span v-if="!isFormValid().customerType" class="warning"><font-awesome-icon icon="circle-exclamation" /> Kunde typen skal vælges</span> -->
+            
 
             <label for="contractType">Kontrakttype</label>
             <select name="contractType" v-model="formData.customer.contractType" @input="emitValue">
@@ -22,7 +23,7 @@
                 <option value="Stilstand">Stilstand</option>
             </select>
             <!-- INPUT VALIDERING: Tjekker om kontrakttypen er valgt -->
-            <span v-if="!isFormValid().contractType" class="warning"><font-awesome-icon icon="circle-exclamation" /> Kontrakttypen skal vælges</span>
+            <!-- <span v-if="!isFormValid().contractType" class="warning"><font-awesome-icon icon="circle-exclamation" /> Kontrakttypen skal vælges</span> -->
 
             <!-- Sæson vises ikke hvis kundetype er 'Split' eller hvis kontrakttypen er 'Stilstand' -->
             <div v-show="formData.customer.customerType == 'Privat' || formData.customer.customerType == 'Erhverv' || formData.customer.contractType == 'Nytegning' || formData.customer.contractType == 'Genleasing' || formData.customer.contractType == 'Pristjek'">
@@ -54,7 +55,7 @@
             <input v-model="formData.customer.name" @input="emitValue" type="text" id="name" class="form-control" name="name"
                 placeholder="Indtast kundens navn">
                 <!-- INPUT VALIDERING: Tjekker om kontrakttypen er valgt -->
-                <span v-if="!isFormValid().customerName" class="warning"><font-awesome-icon icon="circle-exclamation" /> Kunde navn skal udfyldes</span>
+                <!-- <span v-if="!isFormValid().customerName" class="warning"><font-awesome-icon icon="circle-exclamation" /> Kunde navn skal udfyldes</span> -->
 
             <label for="email">Email</label>
             <input v-model="formData.customer.email" @input="emitValue" type="email" id="email" class="form-control" name="email"
@@ -100,13 +101,13 @@
                 <option value="Motorcykel">Motorcykel</option>
             </select>
             <!-- INPUT VALIDERING: Tjekker om Køretøjs Type er valgt -->
-            <span v-if="!isFormValid().vehicleType" class="warning"><font-awesome-icon icon="circle-exclamation" /> Type køretøj skal vælges</span>
+            <!-- <span v-if="!isFormValid().vehicleType" class="warning"><font-awesome-icon icon="circle-exclamation" /> Type køretøj skal vælges</span> -->
 
             <label for="vehicle">Køretøj</label>
             <input v-model="formData.vehicle.vehicle" @input="emitValue" type="text" id="vehicle" class="form-control" name="vehicle"
                 placeholder="Indtast køretøj">
                 <!-- INPUT VALIDERING: Tjekker om Køretøj er indtastet -->
-                <span v-if="!isFormValid().vehicle" class="warning"><font-awesome-icon icon="circle-exclamation" /> Køretøj skal udfyldes</span>
+                <!-- <span v-if="!isFormValid().vehicle" class="warning"><font-awesome-icon icon="circle-exclamation" /> Køretøj skal udfyldes</span> -->
 
             <label for="framenumber">Stelnummer</label>
             <input v-model="formData.vehicle.frameNumber" @input="emitValue" type="number" id="framenumber" class="form-control"
@@ -131,7 +132,7 @@
                     <input v-model="formData.contractValues.salePrice" @input="emitValue" type="number" id="salePrice" class="form-control"
                         name="salePrice" placeholder="Indtast udsalgspris i €">
                         <!-- INPUT VALIDERING: Tjekker om Udsalgspris er indtastet -->
-                        <span v-if="!isFormValid().salePrice" class="warning"><font-awesome-icon icon="circle-exclamation" /> Udsalgspris i € skal udfyldes</span>
+                        <!-- <span v-if="!isFormValid().salePrice" class="warning"><font-awesome-icon icon="circle-exclamation" /> Udsalgspris i € skal udfyldes</span> -->
                 </div>
                 <!-- *Eller vises dette -->
                 <div v-else>
@@ -139,7 +140,7 @@
                     <input v-model="formData.contractValues.salePrice" @input="emitValue" type="number" id="salePrice" class="form-control"
                         name="salePrice" placeholder="Indtast udsalgspris">
                         <!-- INPUT VALIDERING: Tjekker om Udsalgspris er indtastet -->
-                        <span v-if="!isFormValid().salePrice" class="warning"><font-awesome-icon icon="circle-exclamation" /> Udsalgspris skal udfyldes</span>
+                        <!-- <span v-if="!isFormValid().salePrice" class="warning"><font-awesome-icon icon="circle-exclamation" /> Udsalgspris skal udfyldes</span> -->
                 </div>
                 
             </div>
@@ -151,7 +152,7 @@
                     <input v-model="formData.contractValues.cost" @input="emitValue" type="number" id="cost" class="form-control"
                         name="cost" placeholder="Indtast kostpris i €">
                         <!-- INPUT VALIDERING: Tjekker om Kostpris er indtastet -->
-                        <span v-if="!isFormValid().cost" class="warning"><font-awesome-icon icon="circle-exclamation" /> Kostpris i € skal udfyldes</span>
+                        <!-- <span v-if="!isFormValid().cost" class="warning"><font-awesome-icon icon="circle-exclamation" /> Kostpris i € skal udfyldes</span> -->
                 </div>
                 <!-- *Ellers vises dette -->
                 <div v-else>
@@ -159,7 +160,7 @@
                     <input v-model="formData.contractValues.cost" @input="emitValue" type="number" id="cost" class="form-control"
                         name="cost" placeholder="Indtast kostpris">
                         <!-- INPUT VALIDERING: Tjekker om Kostpris er indtastet -->
-                        <span v-if="!isFormValid().cost" class="warning"><font-awesome-icon icon="circle-exclamation" /> Kostpris skal udfyldes</span>
+                        <!-- <span v-if="!isFormValid().cost" class="warning"><font-awesome-icon icon="circle-exclamation" /> Kostpris skal udfyldes</span> -->
                 </div>
             </div>
             
@@ -176,7 +177,7 @@
                 <label for="residualValue">Restværdihæftelse ved kontraktstart</label>
                 <input v-model="formData.contractValues.residualValue" @input="emitValue" type="number" id="residualValue"
                     class="form-control" name="residualValue" placeholder="Indtast restværdihæftelse">
-                    <span v-if="!isFormValid().residualValue" class="warning"><font-awesome-icon icon="circle-exclamation" /> Restværdihæftelse skal udfyldes</span>
+                    <!-- <span v-if="!isFormValid().residualValue" class="warning"><font-awesome-icon icon="circle-exclamation" /> Restværdihæftelse skal udfyldes</span> -->
             </div>
 
             <!-- Vises hvis kontrakttypen er "Pristjek" -->
@@ -185,7 +186,7 @@
                 <input v-model="formData.contractValues.cashPrice" @input="emitValue" type="number" id="cashPrice" class="form-control"
                     name="cashPrice" placeholder="Indtast kontantpris">
                     <!-- INPUT VALIDERING: Tjekker om Kontantpris er indtastet -->
-                    <span v-if="!isFormValid().cashPrice" class="warning"><font-awesome-icon icon="circle-exclamation" /> Kontantpris skal udfyldes</span>
+                    <!-- <span v-if="!isFormValid().cashPrice" class="warning"><font-awesome-icon icon="circle-exclamation" /> Kontantpris skal udfyldes</span> -->
             </div>
 
             <!-- Vises hvis kontrakttypen ikke er "Stilstand" og Fuld afgift ikke er betalt-->
@@ -209,7 +210,7 @@
             <input v-model="formData.contractValues.runningTime" @input="emitValue" type="number" id="running-time" class="form-control"
                 name="run-time" placeholder="Indtast løbetid i måneder">
                 <!-- INPUT VALIDERING: Tjekker om løbetid er indtastet -->
-                <span v-if="!isFormValid().runningTime" class="warning"><font-awesome-icon icon="circle-exclamation" /> Løbetid skal udfyldes</span>
+                <!-- <span v-if="!isFormValid().runningTime" class="warning"><font-awesome-icon icon="circle-exclamation" /> Løbetid skal udfyldes</span> -->
 
             <!-- Vises hvis kundetype ikke er false og ikke er split og kontrakttypen ikke er Stilstand-->
             <div v-show="formData.customer.season != false && formData.customer.customerType != 'Split' && formData.customer.contractType != 'Stilstand'">
@@ -218,7 +219,7 @@
                     class="form-control" name="active-running-time"
                     placeholder="Indtast aktiv periode i kontraktens løbetid i måneder">
                     <!-- INPUT VALIDERING: Tjekker om Aktiv periode er indstastet -->
-                    <span v-if="!isFormValid().activeRunningTime" class="warning"><font-awesome-icon icon="circle-exclamation" /> Aktiv periode skal udfyldes</span>
+                    <!-- <span v-if="!isFormValid().activeRunningTime" class="warning"><font-awesome-icon icon="circle-exclamation" /> Aktiv periode skal udfyldes</span> -->
             </div>
 
             <label for="interest-rate">Rente</label>
@@ -260,7 +261,8 @@
                     class="form-control" name="private-share" placeholder="Indtast privat andel i procent">
             </div>
         </section>
-        <button @click.prevent="sendData" class="makeContract" :disabled="!isFormValid()">Lav tilbudskontrakt</button>
+        <button @click.prevent="sendData" class="makeContract">Lav tilbudskontrakt</button>
+        <!-- <button @click.prevent="sendData" class="makeContract" :disabled="!isFormValid()">Lav tilbudskontrakt</button> -->
     </section>
 </template>
 
@@ -378,13 +380,13 @@ export default defineComponent({
             myStore.setData(formData.value);
             // Validering af input felter
             buttonClicked.value = true;
-            const validationResults = isFormValid();
-            if (!validationResults.customerType || !validationResults.contractType || !validationResults.customerName || !validationResults.vehicle ||
-                !validationResults.vehicleType || !validationResults.salePrice || !validationResults.cost || !validationResults.residualValue ||
-                !validationResults.cashPrice || !validationResults.runningTime || !validationResults.activeRunningTime){
-                console.error('En eller flere felter er ikke udfyldt korrekt!');
-                return;
-            }
+            // const validationResults = isFormValid();
+            // if (!validationResults.customerType || !validationResults.contractType || !validationResults.customerName || !validationResults.vehicle ||
+            //     !validationResults.vehicleType || !validationResults.salePrice || !validationResults.cost || !validationResults.residualValue ||
+            //     !validationResults.cashPrice || !validationResults.runningTime || !validationResults.activeRunningTime){
+            //     console.error('En eller flere felter er ikke udfyldt korrekt!');
+            //     return;
+            // }
 
             try {
                 //  Opdaterer information i databasen

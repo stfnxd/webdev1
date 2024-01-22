@@ -8,7 +8,10 @@
         </section>
 
     </main>
+
 </template>
+
+
 
 <script>
 import ContractForm from '@/components/ContractForm.vue';

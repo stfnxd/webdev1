@@ -20,6 +20,7 @@
             <div>
                 <h4>Leasingtager</h4>
                 <p>{{ receivedData.customer.name }}</p>
+                <p>E-mail: {{ receivedData.customer.email }}</p>
                 <p>Tilbudsdato: {{ correctStartDate }}</p>
             </div>
         </section>
