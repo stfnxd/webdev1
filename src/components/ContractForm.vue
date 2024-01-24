@@ -404,7 +404,7 @@ export default defineComponent({
             // Validering af input felter
             buttonClicked.value = true;
             const validationResults = isFormValid();
-            if (formData.value.customer.contractType == '' && formData.value.customer.customerType == '') {
+            if (formData.value.customer.contractType == '' || formData.value.customer.customerType == '') {
                 alert('En eller flere felter er ikke udfyldt korrekt!');
                 return;
             } else {
@@ -655,4 +655,6 @@ export default defineComponent({
     padding: 10px;
     border-radius: 5px;
     margin-top: 5px;
-}</style>
+}
+
+</style>
